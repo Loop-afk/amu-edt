@@ -1,3 +1,8 @@
+stages:
+    - build
+    - test
+    - deploy
+
 build-job:
     stage: build
     script:
