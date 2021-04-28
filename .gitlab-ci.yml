@@ -1,0 +1,16 @@
+build-job:
+    stage: build
+    script:
+        - docker build -t nuxt-docker-test .
+
+test-job:
+    stage: test
+    script:
+        - echo "DOCKER BUILD PASSED"
+        - echo "last push by $GITLAB_USER_LOGIN"
+        - echo "on branch $CI_COMMIT_BRANCH"
+
+deploy-job:
+    stages: deploy
+    script:
+        - docker run -d -p 5000:5000 --rm nuxt-docker-test
