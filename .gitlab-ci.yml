@@ -1,21 +1,17 @@
+image:
+    ubuntu:20.04
+
 stages:
     - build
-    - test
     - deploy
 
-build-job:
+build_job:
     stage: build
     script:
         - docker build -t nuxt-docker-test app/.
 
-test-job:
-    stage: test
-    script:
-        - echo "DOCKER BUILD PASSED"
-        - echo "last push by $GITLAB_USER_LOGIN"
-        - echo "on branch $CI_COMMIT_BRANCH"
-
-deploy-job:
+deploy_job:
     stage: deploy
+    needs: [build_job]
     script:
         - docker run -d -p 5000:5000 --rm app/nuxt-docker-test
