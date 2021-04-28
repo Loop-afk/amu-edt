@@ -6,7 +6,7 @@ stages:
 build-job:
     stage: build
     script:
-        - docker build -t nuxt-docker-test .
+        - docker build -t nuxt-docker-test app/.
 
 test-job:
     stage: test
