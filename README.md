@@ -17,4 +17,8 @@ $ npm run start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+## Production Build with docker
+
+```bash
+$ docker build -t nuxt-docker-test .
+```
