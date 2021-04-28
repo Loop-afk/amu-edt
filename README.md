@@ -20,7 +20,5 @@ $ npm run generate
 ## Production Build with docker
 
 ```bash
-# build and launch for production
 $ docker build -t nuxt-docker-test .
-$ docker run nuxt-docker-test
 ```
