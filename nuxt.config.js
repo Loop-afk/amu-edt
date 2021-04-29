@@ -40,6 +40,11 @@ export default {
     '@nuxtjs/axios'
   ],
 
+  server: {
+    port: 3000, // port of node.js server
+    host: '0', // allow to serve lan-wide
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
