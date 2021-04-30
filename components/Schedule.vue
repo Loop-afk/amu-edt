@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div>{{ scheduleSettingsDate.getDay() }} {{ hello }}</div>
+    <div>{{ hello }}</div>
     <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id">
-      {{ day.id }} - {{ day.day }} - {{ day.isToday }}
+      {{ day.id }} - {{ day.dayString }} - {{ day.isToday }}
     </div>
   </div>
 </template>
@@ -17,28 +17,30 @@ export default {
   },
   data () {
     return {
-      hello: 'world',
-      dayWeek: [
-        { id: 1, day: 'Lundi' },
-        { id: 2, day: 'Mardi' },
-        { id: 3, day: 'Mercredi' },
-        { id: 4, day: 'Jeudi' },
-        { id: 5, day: 'Vendredi' },
-        { id: 6, day: 'Samedi' },
-        { id: 7, day: 'Dimanche' }
-      ]
+      hello: 'hello world'
     }
   },
   mounted () {
   },
   methods: {
+    capitalizeFirstLetter (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1)
+    },
+    addDays (date, days) { // pris sur internet
+      const copy = new Date(Number(date))
+      copy.setDate(date.getDate() + days)
+      return copy
+    },
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
-      for (const dayWeekKey of this.dayWeek) {
+      const currentDate = this.addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
+      for (const dayWeekKey of Array(7).keys()) {
+        const tempDate = this.addDays(currentDate, dayWeekKey)
         dayWeek.push({
-          id: dayWeekKey.id,
-          day: dayWeekKey.day,
-          isToday: (this.scheduleSettingsDate.getDay() === dayWeekKey.id)
+          id: dayWeekKey,
+          dayString: this.capitalizeFirstLetter(
+            tempDate.toLocaleDateString('fr-fr', { weekday: 'long' })),
+          isToday: (this.scheduleSettingsDate.getDay() - 1 === dayWeekKey)
         })
       }
       return dayWeek
