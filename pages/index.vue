@@ -6,7 +6,7 @@
           <list-groups />
         </b-col>
         <b-col cols="8" class="box">
-          <schedule />
+          <schedule :scheduleSettingsDate="day"/>
         </b-col>
       </b-row>
     </b-container>
@@ -19,6 +19,11 @@ import Schedule from '~/components/Schedule.vue'
 export default {
   components: {
     ListGroups, Schedule
+  },
+  data () {
+    return {
+      day: new Date()
+    }
   }
 }
 </script>
