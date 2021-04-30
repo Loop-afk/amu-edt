@@ -6,7 +6,7 @@
           <list-groups />
         </b-col>
         <b-col cols="8" class="box">
-          <schedule :scheduleSettingsDate="day"/>
+          <schedule :schedule-settings-date="day" />
         </b-col>
       </b-row>
     </b-container>
@@ -28,8 +28,5 @@ export default {
 }
 </script>
 
-<style>
-.box{
-  box-shadow: 1px 1px 1px red;
-}
+<style scoped>
 </style>

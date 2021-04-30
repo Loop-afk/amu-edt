@@ -1,14 +1,17 @@
 <template>
   <div>
     <div>{{ hello }}</div>
-    <b-container>
-      <b-row>
-        <b-col v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" cols="1" class="box">
-          <!--{{ day.id }} - {{ day.dayString }} - {{ day.isToday }} - {{ day.dayExact }}-->
+    <div class="schedule-row">
+      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" cols="1">
+        <!--{{ day.id }} - {{ day.dayString }} - {{ day.isToday }} - {{ day.dayExact }}-->
+        <span v-if="day.isToday === true" class="schedule-today">
           {{ day.dayString + ' ' + day.dayDay }}
-        </b-col>
-      </b-row>
-    </b-container>
+        </span>
+        <span v-else>
+          {{ day.dayString + ' ' + day.dayDay }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,8 +59,22 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .box{
-  box-shadow: 1px 1px 1px red;
+  box-shadow: 0px 0px 0px 1px rgb(255, 71, 71);
+}
+
+.schedule-row {
+  display: flex;
+  flex-flow: row;
+  text-align: center;
+}
+
+.schedule-row-child {
+  width: 100%;
+}
+
+.schedule-today {
+  color: blue;
 }
 </style>
