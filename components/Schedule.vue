@@ -1,9 +1,14 @@
 <template>
   <div>
     <div>{{ hello }}</div>
-    <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id">
-      {{ day.id }} - {{ day.dayString }} - {{ day.isToday }}
-    </div>
+    <b-container>
+      <b-row>
+        <b-col v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" cols="1" class="box">
+          <!--{{ day.id }} - {{ day.dayString }} - {{ day.isToday }} - {{ day.dayExact }}-->
+          {{ day.dayString + ' ' + day.dayDay }}
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -40,7 +45,9 @@ export default {
           id: dayWeekKey,
           dayString: this.capitalizeFirstLetter(
             tempDate.toLocaleDateString('fr-fr', { weekday: 'long' })),
-          isToday: (this.scheduleSettingsDate.getDay() - 1 === dayWeekKey)
+          isToday: (this.scheduleSettingsDate.getDay() - 1 === dayWeekKey),
+          dayExact: tempDate.toLocaleDateString('fr-fr'),
+          dayDay: tempDate.toLocaleDateString('fr-fr', { day: 'numeric' })
         })
       }
       return dayWeek
@@ -48,3 +55,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.box{
+  box-shadow: 1px 1px 1px red;
+}
+</style>
