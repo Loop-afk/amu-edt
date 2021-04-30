@@ -1,34 +1,45 @@
 <template>
-  <div>
+  <div :style="{height: scheduleHeight}">
     <div>{{ hello }}</div>
     <div class="schedule-row">
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" cols="1">
-        <!--{{ day.id }} - {{ day.dayString }} - {{ day.isToday }} - {{ day.dayExact }}-->
-        <span v-if="day.isToday === true" class="schedule-today">
-          {{ day.dayString + ' ' + day.dayDay }}
-        </span>
-        <span v-else>
-          {{ day.dayString + ' ' + day.dayDay }}
-        </span>
+      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box">
+        <schedule-day :schedule-day-settings-date="day" :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 export default {
+  components: {
+    ScheduleDay
+  },
   props: {
     scheduleSettingsDate: {
       type: Date,
       required: true
+    },
+    scheduleHeight: {
+      type: String,
+      default: '800px'
+    },
+    scheduleSchedule: {
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
-      hello: 'hello world'
+      hello: 'hello world',
+      daysOfTheWeek: 7
     }
   },
+  beforeMount () {
+
+  },
   mounted () {
+
   },
   methods: {
     capitalizeFirstLetter (word) {
@@ -42,7 +53,7 @@ export default {
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
       const currentDate = this.addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
-      for (const dayWeekKey of Array(7).keys()) {
+      for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) { // à changer en profondeur si 5 jours
         const tempDate = this.addDays(currentDate, dayWeekKey)
         dayWeek.push({
           id: dayWeekKey,
@@ -54,6 +65,9 @@ export default {
         })
       }
       return dayWeek
+    },
+    scheduleParseSchedule (schedule, day) {
+      return schedule
     }
   }
 }
@@ -72,9 +86,5 @@ export default {
 
 .schedule-row-child {
   width: 100%;
-}
-
-.schedule-today {
-  color: blue;
 }
 </style>

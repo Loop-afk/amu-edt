@@ -6,7 +6,7 @@
           <list-groups />
         </b-col>
         <b-col cols="8" class="box">
-          <schedule :schedule-settings-date="day" />
+          <schedule :schedule-settings-date="day" :schedule-schedule="schedule" />
         </b-col>
       </b-row>
     </b-container>
@@ -23,6 +23,23 @@ export default {
   data () {
     return {
       day: new Date()
+    }
+  },
+  computed: {
+    schedule () {
+      return {
+        otherProperties: "it's on",
+        data: [
+          {
+            id: 1,
+            start: new Date(2020, 5, 1, 15, 15),
+            end: new Date(2020, 5, 1, 17, 15),
+            title: 'First Event Ever!',
+            teacher: 'Nobody :(',
+            room: 'Home'
+          }
+        ]
+      }
     }
   }
 }
