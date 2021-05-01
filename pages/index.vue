@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      day: new Date()
+      day: new Date() // date initiale qu'affiche le schedule
     }
   },
   computed: {
@@ -45,7 +45,7 @@ export default {
         },
         data: [
           {
-            day: '01/05/2021', // todo ? virer ça dans l'objet (et pas dans l'array)
+            day: '01/05/2021',
             start: {
               hours: 15,
               minutes: 15
@@ -113,6 +113,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

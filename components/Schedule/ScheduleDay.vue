@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%">
     <span :class="{scheduleToday: isDateToday(scheduleDaySettingsDate.date)}" style="position: relative;" class="scheduleHeaderDate">
-      {{ getFormatedDay(scheduleDaySettingsDate.date) }}
+      {{ getFormatedWeekDay(scheduleDaySettingsDate.date) }}
     </span>
     <div class="scheduleDayContainer">
       <div
@@ -42,7 +42,7 @@ export default {
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
-    getFormatedDay (date) {
+    getFormatedWeekDay (date) {
       const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
       return this.capitalizeFirstLetter(dateString)
     },
@@ -54,7 +54,6 @@ export default {
     scheduleGetTopFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const top = (unit * (course.start.hours - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.minutes / 60))
-      // console.table([unit, top])
       return top + 'px'
     },
     isDateToday (date) {

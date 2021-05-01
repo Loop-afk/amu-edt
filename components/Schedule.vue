@@ -58,7 +58,7 @@ export default {
       }
       return dayWeek
     },
-    scheduleParseSchedule (schedule, day) {
+    scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const a = schedule.data.filter(course => course.day === day.day)
       return { data: a, workingHours: schedule.workingHours }
     }
