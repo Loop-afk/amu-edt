@@ -16,6 +16,7 @@
 
 <script>
 import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
+import addDays from '~/assets/js/addDays.js'
 export default {
   components: {
     ScheduleDay
@@ -50,16 +51,11 @@ export default {
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
-    addDays (date, days) { // prise sur stackoverflow
-      const copy = new Date(Number(date))
-      copy.setDate(date.getDate() + days)
-      return copy
-    },
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
-      const weekDate = this.addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
+      const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
-        const tempDate = this.addDays(weekDate, dayWeekKey)
+        const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push({
           id: dayWeekKey,
           dayString: this.capitalizeFirstLetter(
