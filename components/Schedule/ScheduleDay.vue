@@ -1,14 +1,14 @@
 <template>
   <div style="height: 100%">
     <!--{{ day.id }} - {{ day.dayString }} - {{ day.isToday }} - {{ day.dayExact }} -->
-    <span v-if="scheduleDaySettingsDate.isToday === true" class="schedule-today">
+    <span :class="{scheduleToday: scheduleDaySettingsDate.isToday}" style="position: relative;">
       {{ scheduleDaySettingsDate.dayString + ' ' + scheduleDaySettingsDate.dayDay }}
     </span>
-    <span v-else>
-      {{ scheduleDaySettingsDate.dayString + ' ' + scheduleDaySettingsDate.dayDay }}
-    </span>
-    <div v-for="course in scheduleSchedule.data" :key="course.id">
-      {{ course.title }}
+    <!-- container day appointments -->
+    <div style="height: 100%; position: relative;">
+      <div v-for="(course, key) in scheduleSchedule.data" :key="key" class="appointment">
+        {{ course.title }}
+      </div>
     </div>
   </div>
 </template>
@@ -30,13 +30,23 @@ export default {
     return {
 
     }
+  },
+  methods: {
+    scheduleSetHeightFromDate (date) {
+      return 100
+    }
   }
 }
 </script>
 
 <style>
-.schedule-today {
+.scheduleToday {
   color: blue;
 }
 
+.appointment {
+    box-shadow: 0px 0px 0px 1px rgb(53, 139, 72);
+    position: absolute;
+    top: 0px;
+}
 </style>

@@ -31,7 +31,6 @@ export default {
         otherProperties: "it's on",
         data: [
           {
-            id: 1,
             start: new Date(2020, 5, 1, 15, 15),
             end: new Date(2020, 5, 1, 17, 15),
             title: 'First Event Ever!',

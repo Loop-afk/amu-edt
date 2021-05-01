@@ -45,21 +45,22 @@ export default {
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
-    addDays (date, days) { // pris sur internet
+    addDays (date, days) { // prise sur stackoverflow
       const copy = new Date(Number(date))
       copy.setDate(date.getDate() + days)
       return copy
     },
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
-      const currentDate = this.addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
-      for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) { // à changer en profondeur si 5 jours
-        const tempDate = this.addDays(currentDate, dayWeekKey)
+      const weekDate = this.addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
+      for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
+        const tempDate = this.addDays(weekDate, dayWeekKey)
         dayWeek.push({
           id: dayWeekKey,
           dayString: this.capitalizeFirstLetter(
             tempDate.toLocaleDateString('fr-fr', { weekday: 'long' })),
-          isToday: (this.scheduleSettingsDate.getDay() - 1 === dayWeekKey),
+          isToday: (this.scheduleSettingsDate.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) ===
+            tempDate.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })),
           dayExact: tempDate.toLocaleDateString('fr-fr'),
           dayDay: tempDate.toLocaleDateString('fr-fr', { day: 'numeric' })
         })
