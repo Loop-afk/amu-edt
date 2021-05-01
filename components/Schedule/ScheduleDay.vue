@@ -6,7 +6,7 @@
     </span>
     <!-- container day appointments -->
     <div style="height: 100%; position: relative;">
-      <div v-for="(course, key) in scheduleSchedule.data" :key="key" class="appointment">
+      <div v-for="(course, key) in scheduleSchedule.data" :key="key" class="appointment" :style="{top: scheduleSetHeightFromDate(course)}">
         {{ course.title }}
       </div>
     </div>
@@ -24,6 +24,10 @@ export default {
       type: Object,
       default: null,
       required: false
+    },
+    scheduleHeight: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -32,8 +36,11 @@ export default {
     }
   },
   methods: {
-    scheduleSetHeightFromDate (date) {
-      return 100
+    scheduleSetHeightFromDate (course) {
+      const unit = 800 / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
+      console.table(unit)
+      const top = (unit * course.start.getHours() - this.scheduleSchedule.workingHours.start) + (unit * (course.start.getMinutes() / 60))
+      return top + 'px'
     }
   }
 }

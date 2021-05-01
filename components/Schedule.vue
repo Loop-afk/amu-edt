@@ -2,8 +2,9 @@
   <div :style="{height: scheduleHeight}">
     <div>{{ hello }}</div>
     <div class="schedule-row">
+      <!-- exécuté 7 fois -->
       <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box">
-        <schedule-day :schedule-day-settings-date="day" :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)" />
+        <schedule-day :schedule-day-settings-date="day" :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)" :schedule-height="scheduleHeight" />
       </div>
     </div>
   </div>

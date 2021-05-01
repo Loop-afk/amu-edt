@@ -29,6 +29,10 @@ export default {
     schedule () {
       return {
         otherProperties: "it's on",
+        workingHours: {
+          start: 6,
+          end: 20
+        },
         data: [
           {
             start: new Date(2020, 5, 1, 15, 15),
