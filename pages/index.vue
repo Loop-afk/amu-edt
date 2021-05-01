@@ -6,7 +6,7 @@
           <list-groups />
         </b-col>
         <b-col cols="8" class="box">
-          <schedule :schedule-settings-date="day" :schedule-schedule="schedule" />
+          <schedule :schedule-settings-date="day" :schedule-schedule="schedule" :schedule-height="600" />
         </b-col>
       </b-row>
     </b-container>

@@ -1,10 +1,14 @@
 <template>
-  <div :style="{height: scheduleHeight}">
+  <div :style="{height: scheduleHeight + 'px'}">
     <div>{{ hello }}</div>
     <div class="schedule-row">
-      <!-- exécuté 7 fois -->
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box">
-        <schedule-day :schedule-day-settings-date="day" :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)" :schedule-height="scheduleHeight" />
+      <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind -->
+      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 15%">
+        <schedule-day
+          :schedule-day-settings-date="day"
+          :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
+          :schedule-height="scheduleHeight"
+        />
       </div>
     </div>
   </div>
@@ -22,8 +26,8 @@ export default {
       required: true
     },
     scheduleHeight: {
-      type: String,
-      default: '800px'
+      type: Number,
+      default: 800
     },
     scheduleSchedule: {
       type: Object,

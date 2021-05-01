@@ -1,12 +1,12 @@
 <template>
   <div style="height: 100%">
     <!--{{ day.id }} - {{ day.dayString }} - {{ day.isToday }} - {{ day.dayExact }} -->
-    <span :class="{scheduleToday: scheduleDaySettingsDate.isToday}" style="position: relative;">
+    <span :class="{scheduleToday: scheduleDaySettingsDate.isToday}" style="position: relative;" class="scheduleHeaderDate">
       {{ scheduleDaySettingsDate.dayString + ' ' + scheduleDaySettingsDate.dayDay }}
     </span>
     <!-- container day appointments -->
     <div style="height: 100%; position: relative;">
-      <div v-for="(course, key) in scheduleSchedule.data" :key="key" class="appointment" :style="{top: scheduleSetHeightFromDate(course)}">
+      <div v-for="(course, key) in scheduleSchedule.data" :key="key" class="scheduleCourse" :style="{top: scheduleSetHeightFromDate(course)}">
         {{ course.title }}
       </div>
     </div>
@@ -26,7 +26,7 @@ export default {
       required: false
     },
     scheduleHeight: {
-      type: String,
+      type: Number,
       required: true
     }
   },
@@ -37,9 +37,9 @@ export default {
   },
   methods: {
     scheduleSetHeightFromDate (course) {
-      const unit = 800 / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
-      console.table(unit)
-      const top = (unit * course.start.getHours() - this.scheduleSchedule.workingHours.start) + (unit * (course.start.getMinutes() / 60))
+      const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
+      const top = (unit * (course.start.getHours() - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.getMinutes() / 60))
+      // console.table([unit, top])
       return top + 'px'
     }
   }
@@ -51,8 +51,12 @@ export default {
   color: blue;
 }
 
-.appointment {
-    box-shadow: 0px 0px 0px 1px rgb(53, 139, 72);
+.scheduleHeaderDate{
+  font-style: italic;
+}
+
+.scheduleCourse{
+  box-shadow: 0px 0px 0px 1px rgb(53, 139, 72);
     position: absolute;
     top: 0px;
 }
