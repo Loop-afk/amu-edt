@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%">
     <span :class="{scheduleToday: isDateToday(scheduleDaySettingsDate.date)}" style="position: relative;" class="scheduleHeaderDate">
-      {{ this.getFormatedDay(scheduleDaySettingsDate.date) }}
+      {{ getFormatedDay(scheduleDaySettingsDate.date) }}
     </span>
     <!-- container for day appointments -->
     <div style="height: 100%; position: relative;">
