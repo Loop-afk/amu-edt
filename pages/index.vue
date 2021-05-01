@@ -11,6 +11,7 @@
           <schedule
             :schedule-settings-date="day"
             :schedule-schedule="schedule"
+            :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="600"
           />
         </b-col>
@@ -32,7 +33,8 @@ export default {
   },
   data () {
     return {
-      day: new Date() // date initiale qu'affiche le schedule
+      day: new Date(), // date initiale qu'affiche le schedule
+      scheduleDisplayedGroups: [2]
     }
   },
   computed: {
@@ -46,6 +48,7 @@ export default {
         data: [
           {
             day: '01/05/2021',
+            group: [2],
             start: {
               hours: 15,
               minutes: 15
@@ -60,6 +63,7 @@ export default {
           },
           {
             day: '01/05/2021',
+            group: [1, 2],
             start: {
               hours: 8,
               minutes: 0
@@ -74,6 +78,7 @@ export default {
           },
           {
             day: '02/05/2021',
+            group: [1],
             start: {
               hours: 8,
               minutes: 45
@@ -88,6 +93,7 @@ export default {
           },
           {
             day: '05/05/2021',
+            group: [1],
             start: {
               hours: 8,
               minutes: 45
@@ -96,7 +102,7 @@ export default {
               hours: 10,
               minutes: 0
             },
-            title: 'Third Event',
+            title: 'Fourth Event',
             teacher: 'Nobody.',
             room: 'Home.'
           }
