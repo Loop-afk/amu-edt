@@ -3,9 +3,13 @@
     <span :class="{scheduleToday: isDateToday(scheduleDaySettingsDate.date)}" style="position: relative;" class="scheduleHeaderDate">
       {{ getFormatedDay(scheduleDaySettingsDate.date) }}
     </span>
-    <!-- container for day appointments -->
-    <div style="height: 100%; position: relative;">
-      <div v-for="(course, key) in scheduleSchedule.data" :key="key" class="scheduleCourse" :style="{top: scheduleSetHeightFromDate(course)}">
+    <div class="scheduleDayContainer">
+      <div
+        v-for="(course, key) in scheduleSchedule.data"
+        :key="key"
+        class="scheduleCourse"
+        :style="{top: scheduleGetTopFromDate(course), height: scheduleGetHeightFromDate(course)}"
+      >
         {{ course.title }}
       </div>
     </div>
@@ -42,7 +46,12 @@ export default {
       const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
       return this.capitalizeFirstLetter(dateString)
     },
-    scheduleSetHeightFromDate (course) {
+    scheduleGetHeightFromDate (course) {
+      const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
+      const height = (unit * (course.end.getHours() - course.start.getHours())) + (unit * ((course.end.getMinutes() - course.start.getMinutes()) / 60))
+      return height + 'px'
+    },
+    scheduleGetTopFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const top = (unit * (course.start.getHours() - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.getMinutes() / 60))
       // console.table([unit, top])
@@ -62,8 +71,13 @@ export default {
   color: blue;
 }
 
-.scheduleHeaderDate{
+.scheduleHeaderDate {
   font-style: italic;
+}
+
+.scheduleDayContainer {
+  height: 100%;
+  position: relative;
 }
 
 .scheduleCourse{

@@ -52,13 +52,15 @@ export default {
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push({
-          date: tempDate
+          date: tempDate,
+          day: tempDate.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })
         })
       }
       return dayWeek
     },
     scheduleParseSchedule (schedule, day) {
-      return schedule
+      const a = schedule.data.filter(course => course.day === day.day)
+      return { data: a, workingHours: schedule.workingHours }
     }
   }
 }
