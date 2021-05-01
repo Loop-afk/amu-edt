@@ -45,20 +45,60 @@ export default {
         },
         data: [
           {
-            day: '01/05/2021', //todo ? virer ça dans l'objet (et pas dans l'array)
-            start: new Date(2020, 5, 1, 15, 15),
-            end: new Date(2020, 5, 1, 18, 0),
+            day: '01/05/2021', // todo ? virer ça dans l'objet (et pas dans l'array)
+            start: {
+              hours: 15,
+              minutes: 15
+            },
+            end: {
+              hours: 18,
+              minutes: 15
+            },
             title: 'First Event Ever!',
             teacher: 'Nobody :(',
             room: 'Home'
           },
           {
             day: '01/05/2021',
-            start: new Date(2020, 5, 1, 8, 0),
-            end: new Date(2020, 5, 1, 10, 30),
+            start: {
+              hours: 8,
+              minutes: 0
+            },
+            end: {
+              hours: 12,
+              minutes: 15
+            },
             title: 'Second Event',
             teacher: 'Still Nobody :(',
             room: 'Home'
+          },
+          {
+            day: '02/05/2021',
+            start: {
+              hours: 8,
+              minutes: 45
+            },
+            end: {
+              hours: 17,
+              minutes: 0
+            },
+            title: 'Third Event',
+            teacher: 'Nobody',
+            room: 'Home'
+          },
+          {
+            day: '05/05/2021',
+            start: {
+              hours: 8,
+              minutes: 45
+            },
+            end: {
+              hours: 10,
+              minutes: 0
+            },
+            title: 'Third Event',
+            teacher: 'Nobody.',
+            room: 'Home.'
           }
         ]
       }

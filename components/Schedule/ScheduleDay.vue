@@ -48,12 +48,12 @@ export default {
     },
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
-      const height = (unit * (course.end.getHours() - course.start.getHours())) + (unit * ((course.end.getMinutes() - course.start.getMinutes()) / 60))
+      const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
       return height + 'px'
     },
     scheduleGetTopFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
-      const top = (unit * (course.start.getHours() - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.getMinutes() / 60))
+      const top = (unit * (course.start.hours - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.minutes / 60))
       // console.table([unit, top])
       return top + 'px'
     },
