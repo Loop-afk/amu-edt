@@ -1,9 +1,8 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
-    <div>{{ hello }}</div>
     <div class="schedule-row">
       <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind -->
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 15%">
+      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 14%">
         <schedule-day
           :schedule-day-settings-date="day"
           :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
@@ -37,7 +36,6 @@ export default {
   },
   data () {
     return {
-      hello: 'hello world',
       daysOfTheWeek: 7
     }
   },
@@ -48,22 +46,13 @@ export default {
 
   },
   methods: {
-    capitalizeFirstLetter (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1)
-    },
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push({
-          id: dayWeekKey,
-          dayString: this.capitalizeFirstLetter(
-            tempDate.toLocaleDateString('fr-fr', { weekday: 'long' })),
-          isToday: (this.scheduleSettingsDate.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) ===
-            tempDate.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })),
-          dayExact: tempDate.toLocaleDateString('fr-fr'),
-          dayDay: tempDate.toLocaleDateString('fr-fr', { day: 'numeric' })
+          date: tempDate
         })
       }
       return dayWeek

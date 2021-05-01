@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-container>
+      <!-- todo enlever marge -->
       <b-row>
         <b-col cols="4" class="box">
           <list-groups />
