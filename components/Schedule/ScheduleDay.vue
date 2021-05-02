@@ -1,6 +1,6 @@
 <template>
-  <div style="height: 100%">
-    <div class="scheduleDayContainer">
+  <div style="height: 100%; width: 100%; position: relative">
+    <div class="scheduleDayContainer" style="width: 100%">
       <div
         v-for="(course, key) in scheduleSchedule.data"
         :id="'course-target-'+generateTargetId()"

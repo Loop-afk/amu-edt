@@ -3,18 +3,18 @@
     <div class="schedule-row">
       <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
       <div style="position: absolute; width: 100%; display: flex;" class="box">
-        <div v-for="(day, key) in scheduleSettingsGetWeekDays()" :key="key" style="width: 14%;" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
+        <div v-for="(day, key) in generateWeekDays()" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
-      <div style="width: 100%; height: 100%; display: flex">
+      <div style="position: absolute; width: 100%; display: flex;">
         <ordinate-axis
           :style="{height: scheduleHeight}"
-          style="position: absolute; left: 0px"
+          style="left: -15px"
           :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
-        <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child" style="width: 14%; flex-direction: row;">
+        <div v-for="(day, key) in generateWeekDays()" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
             :schedule-height="scheduleHeight"
@@ -29,6 +29,7 @@
 import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 import addDays from '~/assets/js/addDays.js'
 import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
+import { getWeekDays, setWeekDays, lenWeekDays } from '~/assets/js/weekDays.js'
 export default {
   components: {
     ScheduleDay, OrdinateAxis
@@ -93,6 +94,17 @@ export default {
     },
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
+    },
+    lenWeekDays () {
+      console.log(lenWeekDays())
+      return lenWeekDays()
+    },
+    generateWeekDays () {
+      let weekDays = getWeekDays()
+      if (weekDays != null) { return weekDays }
+      weekDays = this.scheduleSettingsGetWeekDays()
+      setWeekDays(weekDays)
+      return weekDays
     }
   }
 }

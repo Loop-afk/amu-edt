@@ -64,7 +64,7 @@ export default {
             room: 'Home'
           },
           {
-            day: '03/05/2021',
+            day: '05/05/2021',
             group: [1, 2],
             start: {
               hours: 8,
