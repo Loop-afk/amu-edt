@@ -1,8 +1,5 @@
 <template>
   <div style="height: 100%">
-    <span :class="{scheduleToday: isDateToday(scheduleDaySettingsDate.date)}" style="position: relative;" class="scheduleHeaderDate">
-      {{ getFormatedWeekDay(scheduleDaySettingsDate.date) }}
-    </span>
     <div class="scheduleDayContainer">
       <div
         v-for="(course, key) in scheduleSchedule.data"
@@ -31,10 +28,6 @@
 import { generateTargetId, getTargetId } from '~/assets/js/targetId.js'
 export default {
   props: {
-    scheduleDaySettingsDate: {
-      type: Object,
-      required: true
-    },
     scheduleSchedule: {
       type: Object,
       default: null,
@@ -51,17 +44,11 @@ export default {
     }
   },
   methods: {
-    capitalizeFirstLetter (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1)
-    },
     getFormatedMinutes (minutes) {
       if (minutes < 10) { return '0' + minutes }
       return minutes
     },
-    getFormatedWeekDay (date) {
-      const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
-      return this.capitalizeFirstLetter(dateString)
-    },
+
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
@@ -82,11 +69,6 @@ export default {
         display: (parseInt(top) > this.scheduleHeight) ? 'none' : 'block'
       }
     },
-    isDateToday (date) {
-      const today = new Date()
-      if (today.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) === date.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })) { return true }
-      return false
-    },
     generateTargetId () { // permet d'utiliser les fonctions importés dans la template
       return generateTargetId()
     },
@@ -100,10 +82,6 @@ export default {
 <style>
 .scheduleToday {
   color: blue;
-}
-
-.scheduleHeaderDate {
-  font-style: italic;
 }
 
 .scheduleDayContainer {

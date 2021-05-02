@@ -3,14 +3,18 @@
     <div class="schedule-row">
       <ordinate-axis
         :style="{height: scheduleHeight}"
-        style="width: 12.5%"
+        style="width: 12.5%; position: absolute; left: 0px"
         :working-hours="scheduleSchedule.workingHours"
         :schedule-height="scheduleHeight"
       />
       <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 12.5%">
+      <div style="position: absolute; width: 100%; display: flex;">
+        <div v-for="(day, key) in scheduleSettingsGetWeekDays()" :key="key" :class="{scheduleToday: isDateToday(day)}" style="flex-direction: row; position: relative;width: 12.5%;   word-wrap: break-word;" class="scheduleHeaderDate">
+          {{ getFormatedWeekDay(day) }}
+        </div>
+      </div>
+      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child" style="width: 12.5%">
         <schedule-day
-          :schedule-day-settings-date="day"
           :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
           :schedule-height="scheduleHeight"
         />
@@ -75,6 +79,18 @@ export default {
       const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.group.includes(eachGroup)) === true)
       // const b = a.filter(course => course.group.some(courseGroup => this.scheduleDisplayedGroups.includes(courseGroup)) === true)
       return { data: b, workingHours: schedule.workingHours }
+    },
+    isDateToday (date) {
+      const today = new Date()
+      if (today.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) === date.day) { return true }
+      return false
+    },
+    getFormatedWeekDay (date) {
+      const dateString = date.date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
+      return this.capitalizeFirstLetter(dateString)
+    },
+    capitalizeFirstLetter (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1)
     }
   }
 }
@@ -89,6 +105,10 @@ export default {
   display: flex;
   flex-flow: row;
   text-align: center;
+}
+
+.scheduleHeaderDate {
+  font-style: italic;
 }
 
 .schedule-row-child {
