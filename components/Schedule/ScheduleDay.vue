@@ -74,7 +74,7 @@ export default {
       if (top < 0) { return '0px' }
       return top + 'px'
     },
-    getCourseStyle (course) {
+    getCourseStyle (course) { // todo couleur des events
       const top = this.scheduleGetTopFromDate(course)
       return {
         top,
@@ -117,6 +117,5 @@ export default {
   top: 0px;
   word-wrap: break-word;
   width: 100%;
-
 }
 </style>

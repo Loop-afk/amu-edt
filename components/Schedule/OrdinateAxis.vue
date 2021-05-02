@@ -2,7 +2,7 @@
   <div>
     <!--((workingHours.end - workingHours.start) / ordinateAxisHoursInterval) -->
     <div
-      v-for="currentInterval in (1, ((workingHours.end - workingHours.start) / ordinateAxisHoursInterval))"
+      v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval))"
       :key="currentInterval"
       :style="{top: scheduleGetHeightFromDate(currentInterval)}"
       class="hourInterval"
