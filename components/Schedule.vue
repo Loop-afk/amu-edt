@@ -1,8 +1,14 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
     <div class="schedule-row">
-      <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind -->
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 14%">
+      <ordinate-axis
+        :style="{height: scheduleHeight}"
+        style="width: 12.5%"
+        :working-hours="scheduleSchedule.workingHours"
+        :schedule-height="scheduleHeight"
+      />
+      <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
+      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 12.5%">
         <schedule-day
           :schedule-day-settings-date="day"
           :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
@@ -16,9 +22,10 @@
 <script>
 import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 import addDays from '~/assets/js/addDays.js'
+import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 export default {
   components: {
-    ScheduleDay
+    ScheduleDay, OrdinateAxis
   },
   props: {
     scheduleSettingsDate: {

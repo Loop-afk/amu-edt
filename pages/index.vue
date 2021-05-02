@@ -3,11 +3,11 @@
     <b-container>
       <!-- todo enlever marge -->
       <b-row>
-        <b-col cols="4" class="box">
+        <b-col cols="2" class="box">
           <list-groups />
           <navigator-arrow @weekChangeEvent="weekChange($event)" />
         </b-col>
-        <b-col cols="8" class="box">
+        <b-col cols="10" class="box">
           <schedule
             :schedule-settings-date="day"
             :schedule-schedule="schedule"

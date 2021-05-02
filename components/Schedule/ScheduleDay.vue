@@ -11,8 +11,15 @@
         class="scheduleCourse"
         :style="{top: scheduleGetTopFromDate(course), height: scheduleGetHeightFromDate(course)}"
       >
-        <b-popover :target="'course-target-'+getTargetId()" triggers="hover" placement="right">
-          {{ course.room }} {{ course.teacher }}
+        <b-popover
+          :target="'course-target-'+getTargetId()"
+          :triggers="['hover']"
+          placement="right"
+          delay="0"
+        >
+          {{ course.room + ' ' + course.teacher }}
+          <br>
+          {{ course.start.hours + 'h' + getFormatedMinutes(course.start.minutes) }}
         </b-popover>
         {{ course.title }}
       </div>
@@ -46,6 +53,10 @@ export default {
   methods: {
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
+    },
+    getFormatedMinutes (minutes) {
+      if (minutes < 10) { return '0' + minutes }
+      return minutes
     },
     getFormatedWeekDay (date) {
       const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
