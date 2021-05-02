@@ -39,6 +39,11 @@ export default {
       scheduleDisplayedGroups: [1, 2]
     }
   },
+  head () {
+    return {
+      title: 'AMU edt'
+    }
+  },
   computed: {
     schedule () {
       return {
