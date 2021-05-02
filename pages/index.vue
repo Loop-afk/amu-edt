@@ -3,11 +3,11 @@
     <b-container>
       <!-- todo enlever marge -->
       <b-row>
-        <b-col cols="2" class="box">
+        <b-col cols="2">
           <list-groups />
           <navigator-arrow @weekChangeEvent="weekChange($event)" />
         </b-col>
-        <b-col cols="10" class="box">
+        <b-col cols="10">
           <schedule
             :schedule-settings-date="day"
             :schedule-schedule="schedule"
@@ -94,10 +94,10 @@ export default {
             room: 'Home'
           },
           {
-            day: '12/05/2021',
+            day: '09/05/2021',
             group: [1],
             start: {
-              hours: 8,
+              hours: 7,
               minutes: 45
             },
             end: {

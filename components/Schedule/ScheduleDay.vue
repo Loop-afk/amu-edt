@@ -80,9 +80,6 @@ export default {
 </script>
 
 <style>
-.scheduleToday {
-  color: blue;
-}
 
 .scheduleDayContainer {
   height: 100%;

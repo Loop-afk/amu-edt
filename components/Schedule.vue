@@ -1,23 +1,25 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
     <div class="schedule-row">
-      <ordinate-axis
-        :style="{height: scheduleHeight}"
-        style="width: 12.5%; position: absolute; left: 0px"
-        :working-hours="scheduleSchedule.workingHours"
-        :schedule-height="scheduleHeight"
-      />
       <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
-      <div style="position: absolute; width: 100%; display: flex;">
-        <div v-for="(day, key) in scheduleSettingsGetWeekDays()" :key="key" :class="{scheduleToday: isDateToday(day)}" style="flex-direction: row; position: relative;width: 12.5%;   word-wrap: break-word;" class="scheduleHeaderDate">
+      <div style="position: absolute; width: 100%; display: flex;" class="box">
+        <div v-for="(day, key) in scheduleSettingsGetWeekDays()" :key="key" style="width: 14%;" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child" style="width: 12.5%">
-        <schedule-day
-          :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
+      <div style="width: 100%; height: 100%; display: flex">
+        <ordinate-axis
+          :style="{height: scheduleHeight}"
+          style="position: absolute; left: 0px"
+          :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
+        <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child" style="width: 14%; flex-direction: row;">
+          <schedule-day
+            :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
+            :schedule-height="scheduleHeight"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -109,6 +111,13 @@ export default {
 
 .scheduleHeaderDate {
   font-style: italic;
+  flex-direction: row;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.scheduleToday {
+  color: blue;
 }
 
 .schedule-row-child {
