@@ -1,6 +1,6 @@
 let targetId = -1
 
-export default function clearIdTarget () {
+export function clearIdTarget () {
   targetId = -1
 }
 
