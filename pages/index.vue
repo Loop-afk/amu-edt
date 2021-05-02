@@ -25,6 +25,8 @@ import ListGroups from '~/components/ListGroups.vue'
 import NavigatorArrow from '~/components/Navigator/NavigatorArrow.vue'
 import Schedule from '~/components/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
+import clearIdTarget from '~/assets/js/targetId.js'
+
 export default {
   components: {
     ListGroups,
@@ -34,7 +36,7 @@ export default {
   data () {
     return {
       day: new Date(), // date initiale qu'affiche le schedule
-      scheduleDisplayedGroups: [2]
+      scheduleDisplayedGroups: [1, 2]
     }
   },
   computed: {
@@ -47,7 +49,7 @@ export default {
         },
         data: [
           {
-            day: '01/05/2021',
+            day: '03/05/2021',
             group: [2],
             start: {
               hours: 15,
@@ -62,7 +64,7 @@ export default {
             room: 'Home'
           },
           {
-            day: '01/05/2021',
+            day: '03/05/2021',
             group: [1, 2],
             start: {
               hours: 8,
@@ -77,7 +79,7 @@ export default {
             room: 'Home'
           },
           {
-            day: '02/05/2021',
+            day: '04/05/2021',
             group: [1],
             start: {
               hours: 8,
@@ -92,7 +94,7 @@ export default {
             room: 'Home'
           },
           {
-            day: '05/05/2021',
+            day: '12/05/2021',
             group: [1],
             start: {
               hours: 8,
@@ -113,7 +115,8 @@ export default {
   methods: {
     weekChange (event) {
       let offset
-      if (event === 'right') { offset = 7 } else if (event === 'left') { offset = -7 } else { console.warn('Illegal value from event: ' + event) }
+      clearIdTarget()
+      if (event === 'right') { offset = 7 } else if (event === 'left') { offset = -7 } else { console.warn('Illegal value from weekChange event: ' + event) }
       this.day = addDays(this.day, offset)
     }
   }

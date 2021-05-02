@@ -6,10 +6,14 @@
     <div class="scheduleDayContainer">
       <div
         v-for="(course, key) in scheduleSchedule.data"
+        :id="'course-target-'+generateTargetId()"
         :key="key"
         class="scheduleCourse"
         :style="{top: scheduleGetTopFromDate(course), height: scheduleGetHeightFromDate(course)}"
       >
+        <b-popover :target="'course-target-'+getTargetId()" triggers="hover" placement="right">
+          {{ course.room }} {{ course.teacher }}
+        </b-popover>
         {{ course.title }}
       </div>
     </div>
@@ -17,6 +21,7 @@
 </template>
 
 <script>
+import { generateTargetId, getTargetId } from '~/assets/js/targetId.js'
 export default {
   props: {
     scheduleDaySettingsDate: {
@@ -60,6 +65,12 @@ export default {
       const today = new Date()
       if (today.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) === date.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })) { return true }
       return false
+    },
+    generateTargetId () { // permet d'utiliser les fonctions importés dans la template
+      return generateTargetId()
+    },
+    getTargetId () {
+      return getTargetId()
     }
   }
 }
@@ -81,7 +92,10 @@ export default {
 
 .scheduleCourse{
   box-shadow: 0px 0px 0px 1px rgb(53, 139, 72);
-    position: absolute;
-    top: 0px;
+  position: absolute;
+  top: 0px;
+  word-wrap: break-word;
+  width: 100%;
+
 }
 </style>
