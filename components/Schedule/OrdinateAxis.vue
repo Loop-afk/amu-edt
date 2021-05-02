@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ordinateAxis">
     <!--((workingHours.end - workingHours.start) / ordinateAxisHoursInterval) -->
     <div
       v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval))"
@@ -44,7 +44,14 @@ export default {
 
 <style>
 .hourInterval {
-    position: absolute;
+  position: absolute;
+}
+
+.ordinateAxis {
+  position: relative;
+  top: 0px;
+  box-shadow: 0px 0px 0px 1px rgb(93, 62, 177);
+
 }
 
 </style>
