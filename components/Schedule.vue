@@ -32,6 +32,11 @@ export default {
     scheduleSchedule: {
       type: Object,
       default: null
+    },
+    scheduleDisplayedGroups: {
+      type: Array,
+      default: () => [],
+      required: false
     }
   },
   data () {
@@ -58,9 +63,11 @@ export default {
       }
       return dayWeek
     },
-    scheduleParseSchedule (schedule, day) {
+    scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const a = schedule.data.filter(course => course.day === day.day)
-      return { data: a, workingHours: schedule.workingHours }
+      const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.group.includes(eachGroup)) === true)
+      // const b = a.filter(course => course.group.some(courseGroup => this.scheduleDisplayedGroups.includes(courseGroup)) === true)
+      return { data: b, workingHours: schedule.workingHours }
     }
   }
 }
