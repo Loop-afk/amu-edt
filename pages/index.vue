@@ -44,8 +44,8 @@ export default {
       return {
         otherProperties: "it's on",
         workingHours: {
-          start: 6,
-          end: 20
+          start: 4,
+          end: 24
         },
         data: [
           {
@@ -68,11 +68,11 @@ export default {
             group: [1, 2],
             start: {
               hours: 8,
-              minutes: 0
+              minutes: 15
             },
             end: {
-              hours: 12,
-              minutes: 15
+              hours: 11,
+              minutes: 45
             },
             title: 'Second Event',
             teacher: 'Still Nobody :(',
@@ -82,11 +82,11 @@ export default {
             day: '04/05/2021',
             group: [1],
             start: {
-              hours: 8,
-              minutes: 45
+              hours: 6,
+              minutes: 0
             },
             end: {
-              hours: 17,
+              hours: 20,
               minutes: 0
             },
             title: 'Third Event',

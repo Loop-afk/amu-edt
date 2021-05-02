@@ -2,10 +2,12 @@
   <div>
     <!--((workingHours.end - workingHours.start) / ordinateAxisHoursInterval) -->
     <div
-      v-for="interval in 12"
-      :key="interval"
+      v-for="currentInterval in (1, ((workingHours.end - workingHours.start) / ordinateAxisHoursInterval))"
+      :key="currentInterval"
+      :style="{top: scheduleGetHeightFromDate(currentInterval)}"
+      class="hourInterval"
     >
-      {{ interval }}
+      {{ currentInterval * ordinateAxisHoursInterval + workingHours.start }}
     </div>
   </div>
 </template>
@@ -15,7 +17,7 @@ export default {
   props: {
     workingHours: {
       type: Object,
-      default () { return { start: 6, end: 22 } }
+      default () { return { start: 6, end: 20 } }
     },
     scheduleHeight: {
       type: Number,
@@ -25,21 +27,24 @@ export default {
       type: Number,
       default: 2
     },
-    ordinateAxisMinutesInterval: {
+    ordinateAxisMinutesInterval: { // unused
       type: Number,
-      default: 0 // unused
+      default: 0
     }
   },
   methods: {
-    scheduleGetHeightFromDate (course) {
+    scheduleGetHeightFromDate (currentInterval) {
       const unit = this.scheduleHeight / (this.workingHours.end - this.workingHours.start)
-      const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
-      return height + 'px'
+      const top = (unit * currentInterval * this.ordinateAxisHoursInterval)
+      return top + 'px'
     }
   }
 }
 </script>
 
 <style>
+.hourInterval {
+    position: absolute;
+}
 
 </style>

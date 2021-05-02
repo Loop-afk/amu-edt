@@ -9,7 +9,7 @@
         :id="'course-target-'+generateTargetId()"
         :key="key"
         class="scheduleCourse"
-        :style="{top: scheduleGetTopFromDate(course), height: scheduleGetHeightFromDate(course)}"
+        :style="getCourseStyle(course)"
       >
         <b-popover
           :target="'course-target-'+getTargetId()"
@@ -65,12 +65,22 @@ export default {
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
+      if (height > this.scheduleHeight) { return this.scheduleHeight + 'px' }
       return height + 'px'
     },
     scheduleGetTopFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const top = (unit * (course.start.hours - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.minutes / 60))
+      if (top < 0) { return '0px' }
       return top + 'px'
+    },
+    getCourseStyle (course) {
+      const top = this.scheduleGetTopFromDate(course)
+      return {
+        top,
+        height: this.scheduleGetHeightFromDate(course),
+        display: (parseInt(top) > this.scheduleHeight) ? 'none' : 'block'
+      }
     },
     isDateToday (date) {
       const today = new Date()
