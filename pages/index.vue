@@ -45,7 +45,7 @@ export default {
         },
         data: [
           {
-            day: '01/05/2021', //todo ? virer ça dans l'objet (et pas dans l'array)
+            day: '01/05/2021', // todo ? virer ça dans l'objet (et pas dans l'array)
             start: new Date(2020, 5, 1, 15, 15),
             end: new Date(2020, 5, 1, 18, 0),
             title: 'First Event Ever!',
