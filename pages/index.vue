@@ -3,11 +3,11 @@
     <b-container>
       <!-- todo enlever marge -->
       <b-row>
-        <b-col cols="4" class="box">
+        <b-col cols="2">
           <list-groups />
           <navigator-arrow @weekChangeEvent="weekChange($event)" />
         </b-col>
-        <b-col cols="8" class="box">
+        <b-col cols="10">
           <schedule
             :schedule-settings-date="day"
             :schedule-schedule="schedule"
@@ -49,8 +49,8 @@ export default {
       return {
         otherProperties: "it's on",
         workingHours: {
-          start: 6,
-          end: 20
+          start: 4,
+          end: 24
         },
         data: [
           {
@@ -69,15 +69,15 @@ export default {
             room: 'Home'
           },
           {
-            day: '03/05/2021',
+            day: '05/05/2021',
             group: [1, 2],
             start: {
               hours: 8,
-              minutes: 0
+              minutes: 15
             },
             end: {
-              hours: 12,
-              minutes: 15
+              hours: 11,
+              minutes: 45
             },
             title: 'Second Event',
             teacher: 'Still Nobody :(',
@@ -87,11 +87,11 @@ export default {
             day: '04/05/2021',
             group: [1],
             start: {
-              hours: 8,
-              minutes: 45
+              hours: 6,
+              minutes: 0
             },
             end: {
-              hours: 17,
+              hours: 20,
               minutes: 0
             },
             title: 'Third Event',
@@ -99,10 +99,10 @@ export default {
             room: 'Home'
           },
           {
-            day: '12/05/2021',
+            day: '09/05/2021',
             group: [1],
             start: {
-              hours: 8,
+              hours: 7,
               minutes: 45
             },
             end: {
@@ -122,7 +122,9 @@ export default {
       let offset
       clearIdTarget()
       if (event === 'right') { offset = 7 } else if (event === 'left') { offset = -7 } else { console.warn('Illegal value from weekChange event: ' + event) }
+      console.log(this.day)
       this.day = addDays(this.day, offset)
+      console.log(this.day)
     }
   }
 }

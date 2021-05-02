@@ -1,13 +1,25 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
     <div class="schedule-row">
-      <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind -->
-      <div v-for="day in scheduleSettingsGetWeekDays()" :key="day.id" class="schedule-row-child box" style="width: 14%">
-        <schedule-day
-          :schedule-day-settings-date="day"
-          :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
+      <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
+      <div style="position: absolute; width: 100%; display: flex;" class="box">
+        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
+          {{ getFormatedWeekDay(day) }}
+        </div>
+      </div>
+      <div style="position: absolute; width: 100%; display: flex; top: 70px;">
+        <ordinate-axis
+          :style="{height: scheduleHeight}"
+          style="left: -20px"
+          :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
+        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" style="width: 100%;">
+          <schedule-day
+            :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
+            :schedule-height="scheduleHeight"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -16,9 +28,11 @@
 <script>
 import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 import addDays from '~/assets/js/addDays.js'
+import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
+import { getWeekDays, setWeekDays, lenWeekDays } from '~/assets/js/weekDays.js'
 export default {
   components: {
-    ScheduleDay
+    ScheduleDay, OrdinateAxis
   },
   props: {
     scheduleSettingsDate: {
@@ -54,6 +68,7 @@ export default {
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
+      console.log('11111111')
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push({
@@ -68,6 +83,29 @@ export default {
       const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.group.includes(eachGroup)) === true)
       // const b = a.filter(course => course.group.some(courseGroup => this.scheduleDisplayedGroups.includes(courseGroup)) === true)
       return { data: b, workingHours: schedule.workingHours }
+    },
+    isDateToday (date) {
+      const today = new Date()
+      if (today.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) === date.day) { return true }
+      return false
+    },
+    getFormatedWeekDay (date) {
+      const dateString = date.date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
+      return this.capitalizeFirstLetter(dateString)
+    },
+    capitalizeFirstLetter (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1)
+    },
+    lenWeekDays () {
+      console.log(lenWeekDays())
+      return lenWeekDays()
+    },
+    generateWeekDays (date) {
+      let weekDays = getWeekDays(date)
+      if (weekDays != null) { return weekDays }
+      weekDays = this.scheduleSettingsGetWeekDays()
+      setWeekDays(weekDays)
+      return weekDays
     }
   }
 }
@@ -82,6 +120,17 @@ export default {
   display: flex;
   flex-flow: row;
   text-align: center;
+}
+
+.scheduleHeaderDate {
+  font-style: italic;
+  flex-direction: row;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.scheduleToday {
+  color: blue;
 }
 
 .schedule-row-child {

@@ -1,18 +1,22 @@
 <template>
-  <div style="height: 100%">
-    <span :class="{scheduleToday: isDateToday(scheduleDaySettingsDate.date)}" style="position: relative;" class="scheduleHeaderDate">
-      {{ getFormatedWeekDay(scheduleDaySettingsDate.date) }}
-    </span>
-    <div class="scheduleDayContainer">
+  <div style="height: 100%; width: 100%; position: relative">
+    <div class="scheduleDayContainer" style="width: 100%">
       <div
         v-for="(course, key) in scheduleSchedule.data"
         :id="'course-target-'+generateTargetId()"
         :key="key"
         class="scheduleCourse"
-        :style="{top: scheduleGetTopFromDate(course), height: scheduleGetHeightFromDate(course)}"
+        :style="getCourseStyle(course)"
       >
-        <b-popover :target="'course-target-'+getTargetId()" triggers="hover" placement="right">
-          {{ course.room }} {{ course.teacher }}
+        <b-popover
+          :target="'course-target-'+getTargetId()"
+          :triggers="['hover']"
+          placement="right"
+          delay="0"
+        >
+          {{ course.room + ' ' + course.teacher }}
+          <br>
+          {{ course.start.hours + 'h' + getFormatedMinutes(course.start.minutes) }}
         </b-popover>
         {{ course.title }}
       </div>
@@ -24,10 +28,6 @@
 import { generateTargetId, getTargetId } from '~/assets/js/targetId.js'
 export default {
   props: {
-    scheduleDaySettingsDate: {
-      type: Object,
-      required: true
-    },
     scheduleSchedule: {
       type: Object,
       default: null,
@@ -44,27 +44,30 @@ export default {
     }
   },
   methods: {
-    capitalizeFirstLetter (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1)
+    getFormatedMinutes (minutes) {
+      if (minutes < 10) { return '0' + minutes }
+      return minutes
     },
-    getFormatedWeekDay (date) {
-      const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
-      return this.capitalizeFirstLetter(dateString)
-    },
+
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
+      if (height > this.scheduleHeight) { return this.scheduleHeight + 'px' }
       return height + 'px'
     },
     scheduleGetTopFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const top = (unit * (course.start.hours - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.minutes / 60))
+      if (top < 0) { return '0px' }
       return top + 'px'
     },
-    isDateToday (date) {
-      const today = new Date()
-      if (today.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) === date.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })) { return true }
-      return false
+    getCourseStyle (course) { // todo couleur des events
+      const top = this.scheduleGetTopFromDate(course)
+      return {
+        top,
+        height: this.scheduleGetHeightFromDate(course),
+        display: (parseInt(top) > this.scheduleHeight) ? 'none' : 'block'
+      }
     },
     generateTargetId () { // permet d'utiliser les fonctions importés dans la template
       return generateTargetId()
@@ -77,13 +80,6 @@ export default {
 </script>
 
 <style>
-.scheduleToday {
-  color: blue;
-}
-
-.scheduleHeaderDate {
-  font-style: italic;
-}
 
 .scheduleDayContainer {
   height: 100%;
@@ -96,6 +92,5 @@ export default {
   top: 0px;
   word-wrap: break-word;
   width: 100%;
-
 }
 </style>
