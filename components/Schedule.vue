@@ -3,7 +3,7 @@
     <div class="schedule-row">
       <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
       <div style="position: absolute; width: 100%; display: flex;" class="box">
-        <div v-for="(day, key) in generateWeekDays()" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
+        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
@@ -14,7 +14,7 @@
           :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
-        <div v-for="(day, key) in generateWeekDays()" :key="key" style="width: 100%;">
+        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
             :schedule-height="scheduleHeight"
@@ -100,8 +100,8 @@ export default {
       console.log(lenWeekDays())
       return lenWeekDays()
     },
-    generateWeekDays () {
-      let weekDays = getWeekDays()
+    generateWeekDays (date) {
+      let weekDays = getWeekDays(date)
       if (weekDays != null) { return weekDays }
       weekDays = this.scheduleSettingsGetWeekDays()
       setWeekDays(weekDays)
