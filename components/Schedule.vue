@@ -68,7 +68,6 @@ export default {
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
-      console.log('11111111')
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push({
@@ -97,7 +96,6 @@ export default {
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
     lenWeekDays () {
-      console.log(lenWeekDays())
       return lenWeekDays()
     },
     generateWeekDays (date) {
