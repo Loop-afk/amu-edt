@@ -16,7 +16,7 @@
         >
           {{ course.room + ' ' + course.teacher }}
           <br>
-          {{ course.start.hours + 'h' + getFormatedMinutes(course.start.minutes) }}
+          {{ getFormatedDate(course) }}
         </b-popover>
         {{ course.title }}
       </div>
@@ -48,7 +48,12 @@ export default {
       if (minutes < 10) { return '0' + minutes }
       return minutes
     },
-
+    getFormatedHoursMinutes (courseDate) {
+      return courseDate.hours + 'h' + this.getFormatedMinutes(courseDate.minutes)
+    },
+    getFormatedDate (course) {
+      return this.getFormatedHoursMinutes(course.start) + ' - ' + this.getFormatedHoursMinutes(course.end)
+    },
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))

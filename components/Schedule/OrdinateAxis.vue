@@ -50,8 +50,6 @@ export default {
 .ordinateAxis {
   position: relative;
   top: 0px;
-  box-shadow: 0px 0px 0px 1px rgb(93, 62, 177);
-
 }
 
 </style>
