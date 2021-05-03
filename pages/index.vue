@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-container>
-      <!-- todo enlever marge -->
       <b-row>
         <b-col cols="2">
           <list-groups />
@@ -47,7 +46,6 @@ export default {
   computed: {
     schedule () {
       return {
-        otherProperties: "it's on",
         workingHours: {
           start: 4,
           end: 24

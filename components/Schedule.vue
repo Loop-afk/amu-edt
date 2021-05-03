@@ -1,7 +1,6 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
     <div class="schedule-row">
-      <!-- scheduleSettingsGetWeekDays exécuté 7 fois (à corriger) + width à bind + day.id à remove -->
       <div style="position: absolute; width: 100%; display: flex;" class="box">
         <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
