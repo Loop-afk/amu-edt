@@ -1,5 +1,10 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
+    <ordinate-line
+      :working-hours="scheduleSchedule.workingHours"
+      :schedule-height="scheduleHeight"
+      style="position: absolute;"
+    />
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex;" class="box">
         <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
@@ -7,9 +12,9 @@
         </div>
       </div>
       <div style="position: absolute; width: 100%; display: flex; top: 70px;">
+        <!--:style="{height: scheduleHeight}" -->
         <ordinate-axis
-          :style="{height: scheduleHeight}"
-          style="left: -20px; top: -20px;"
+          style="left: -20px; top: -20px; position: absolute;"
           :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
@@ -29,9 +34,10 @@ import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 import addDays from '~/assets/js/addDays.js'
 import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getWeekDays, setWeekDays, lenWeekDays } from '~/assets/js/weekDays.js'
+import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
 export default {
   components: {
-    ScheduleDay, OrdinateAxis
+    ScheduleDay, OrdinateAxis, OrdinateLine
   },
   props: {
     scheduleSettingsDate: {
@@ -79,7 +85,6 @@ export default {
     scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const a = schedule.data.filter(course => course.day === day.day)
       const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.group.includes(eachGroup)) === true)
-      // const b = a.filter(course => course.group.some(courseGroup => this.scheduleDisplayedGroups.includes(courseGroup)) === true)
       return { data: b, workingHours: schedule.workingHours }
     },
     isDateToday (date) {

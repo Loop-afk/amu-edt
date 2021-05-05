@@ -22,7 +22,7 @@
 <script>
 import ListGroups from '~/components/ListGroups.vue'
 import NavigatorArrow from '~/components/Navigator/NavigatorArrow.vue'
-import Schedule from '~/components/Schedule.vue'
+import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
 
