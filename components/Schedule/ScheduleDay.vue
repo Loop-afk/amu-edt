@@ -97,5 +97,7 @@ export default {
   top: 0px;
   word-wrap: break-word;
   width: 100%;
+  background-color: aqua;
+  z-index: 10;
 }
 </style>

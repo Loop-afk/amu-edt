@@ -12,7 +12,6 @@
         </div>
       </div>
       <div style="position: absolute; width: 100%; display: flex; top: 70px;">
-        <!--:style="{height: scheduleHeight}" -->
         <ordinate-axis
           style="left: -20px; top: -20px; position: absolute;"
           :working-hours="scheduleSchedule.workingHours"

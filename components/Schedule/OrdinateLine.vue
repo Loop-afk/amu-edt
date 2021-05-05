@@ -29,10 +29,15 @@ export default {
       default: 0
     }
   },
+  data () {
+    return {
+      offset: 10
+    }
+  },
   methods: {
     scheduleGetHeightFromDate (currentInterval) {
       const unit = this.scheduleHeight / (this.workingHours.end - this.workingHours.start)
-      const top = (unit * currentInterval * this.ordinateAxisHoursInterval + unit * this.ordinateAxisHoursInterval)
+      const top = (unit * currentInterval * this.ordinateAxisHoursInterval + unit * this.ordinateAxisHoursInterval) + this.offset
       return top + 'px'
     }
   }
@@ -44,6 +49,7 @@ export default {
   position: absolute;
   width: 100%;
   box-shadow: 0px 0px 0px 1px rgb(50, 27, 184);
+  z-index: 9;
 }
 
 </style>
