@@ -10,7 +10,6 @@
         <b-col cols="10">
           <schedule
             :schedule-settings-date="day"
-            :schedule-schedule="schedule"
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
             class="schedule"
@@ -49,76 +48,6 @@ export default {
     }
   },
   computed: {
-    schedule () {
-      return {
-        workingHours: {
-          start: 4,
-          end: 24
-        },
-        data: [
-          {
-            day: '03/05/2021',
-            group: [2],
-            start: {
-              hours: 15,
-              minutes: 15
-            },
-            end: {
-              hours: 18,
-              minutes: 15
-            },
-            title: 'First Event Ever!',
-            teacher: 'Nobody :(',
-            room: 'Home'
-          },
-          {
-            day: '05/05/2021',
-            group: [1, 2],
-            start: {
-              hours: 8,
-              minutes: 15
-            },
-            end: {
-              hours: 11,
-              minutes: 45
-            },
-            title: 'Second Event',
-            teacher: 'Still Nobody :(',
-            room: 'Home'
-          },
-          {
-            day: '04/05/2021',
-            group: [1],
-            start: {
-              hours: 6,
-              minutes: 0
-            },
-            end: {
-              hours: 20,
-              minutes: 0
-            },
-            title: 'Third Event',
-            teacher: 'Nobody',
-            room: 'Home'
-          },
-          {
-            day: '09/05/2021',
-            group: [1],
-            start: {
-              hours: 7,
-              minutes: 45
-            },
-            end: {
-              hours: 10,
-              minutes: 0
-            },
-            title: 'Fourth Event',
-            teacher: 'Nobody.',
-            room: 'Home.'
-          }
-        ]
-      }
-    }
   },
   methods: {
     weekChange (event) {
