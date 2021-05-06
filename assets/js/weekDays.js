@@ -1,12 +1,15 @@
+import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
+
 let weekDays = null
 let date = null
 
 export function getWeekDays (scheduleSettingsDate) {
+  const scheduleSettingsDateComparable = getComparableFromDate(scheduleSettingsDate)
   if (date === null) {
-    date = scheduleSettingsDate
+    date = scheduleSettingsDateComparable
     return weekDays
   }
-  if (date === scheduleSettingsDate) {
+  if (compareComparableDate(date, scheduleSettingsDateComparable)) {
     return weekDays
   }
 

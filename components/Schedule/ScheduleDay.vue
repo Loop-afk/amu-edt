@@ -60,7 +60,7 @@ export default {
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
-      if (height > this.scheduleHeight) { return this.scheduleHeight + 'px' }
+      if (height > this.scheduleHeight) { return (unit * (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start - 2)) + 'px' } // - 2 totalement faux
       return height + 'px'
     },
     scheduleGetTopFromDate (course) {

@@ -33,6 +33,7 @@ import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 import addDays from '~/assets/js/addDays.js'
 import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getWeekDays, setWeekDays, lenWeekDays } from '~/assets/js/weekDays.js'
+import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
 export default {
   components: {
@@ -59,28 +60,11 @@ export default {
       scheduleSchedule: {
         workingHours: {
           start: 4,
-          end: 24
+          end: 22
         },
         data: [
-          /*
           {
-            day: '03/05/2021',
-            group: [2],
-            start: {
-              hours: 15,
-              minutes: 15
-            },
-            end: {
-              hours: 18,
-              minutes: 15
-            },
-            title: 'First Event Ever!',
-            teacher: { id: 1, value: 'Nobody :(' },
-            room: 'Home'
-          },
-          */
-          {
-            day: { day: 4, month: 5, year: 2021 },
+            day: { month: 5, day: 4, year: 2021 },
             groups: [{ id: 1, value: 'L3 info' }],
             start: {
               hours: 7,
@@ -92,6 +76,30 @@ export default {
             },
             ue: {
               field: { id: 1, value: 'Fourth Event' },
+              date: {
+                year: 2020,
+                semester: 0
+              }
+            },
+            teacher: { id: 1, value: 'Nobody.' },
+            place: {
+              room: { id: 1, value: 'Home' },
+              campus: { id: 1, value: 'Luminy' }
+            }
+          },
+          {
+            day: { month: 4, day: 6, year: 2021 },
+            groups: [{ id: 1, value: 'L3 info' }],
+            start: {
+              hours: 6,
+              minutes: 0
+            },
+            end: {
+              hours: 28,
+              minutes: 0
+            },
+            ue: {
+              field: { id: 1, value: 'Third Event' },
               date: {
                 year: 2020,
                 semester: 0
@@ -124,14 +132,14 @@ export default {
       return dayWeek
     },
     scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
-      const comparableDay = this.getComparableFromDate(day)
-      const a = schedule.data.filter(course => this.compareComparableDate(course.day, comparableDay))
+      const comparableDay = getComparableFromDate(day)
+      const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
       const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
-      return { data: b, workingHours: schedule.workingHours }
+      return { data: b, workingHours: schedule.workingHours } // attention avant chaque modification de data
     },
-    isDateToday (date) { // updated
+    isDateToday (date) {
       const today = new Date()
-      if (this.compareComparableDate(this.getComparableFromDate(today), this.getComparableFromDate(date))) { return true }
+      if (compareComparableDate(getComparableFromDate(today), getComparableFromDate(date))) { return true }
       return false
     },
     getFormatedWeekDay (date) {
@@ -146,16 +154,11 @@ export default {
     },
     generateWeekDays (date) {
       let weekDays = getWeekDays(date)
+      console.log(weekDays)
       if (weekDays != null) { return weekDays }
       weekDays = this.scheduleSettingsGetWeekDays()
       setWeekDays(weekDays)
       return weekDays
-    },
-    getComparableFromDate (date) {
-      return { day: date.getDay(), month: date.getMonth() + 1, year: date.getFullYear() }
-    },
-    compareComparableDate (c1, c2) {
-      return c1.day === c2.day && c1.month === c2.month && c1.year === c2.year
     }
   }
 }

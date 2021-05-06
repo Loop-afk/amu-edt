@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
     <div
-      v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval))"
+      v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval)) + 1"
       :key="currentInterval"
       :style="{top: scheduleGetHeightFromDate(currentInterval)}"
       class="line"
@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      offset: 10
+      offset: 0 // px
     }
   },
   methods: {
