@@ -8,13 +8,16 @@
         class="scheduleCourse"
         :style="getCourseStyle(course)"
       >
+        <div class="scheduleCourseMessage">
+          {{ course.ue.field.value }}
+        </div>
         <b-popover
           :target="'course-target-'+getTargetId()"
           :triggers="['hover']"
           placement="right"
           delay="0"
         >
-          {{ course.room + ' ' + course.teacher }}
+          {{ course.place.room.value + ' ' + course.teacher.value }}
           <br>
           {{ getFormatedDate(course) }}
         </b-popover>
@@ -99,5 +102,9 @@ export default {
   width: 100%;
   background-color: aqua;
   z-index: 10;
+}
+
+.scheduleCourseMessage {
+  text-align: center;
 }
 </style>

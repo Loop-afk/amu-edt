@@ -62,6 +62,7 @@ export default {
           end: 24
         },
         data: [
+          /*
           {
             day: '03/05/2021',
             group: [2],
@@ -74,42 +75,13 @@ export default {
               minutes: 15
             },
             title: 'First Event Ever!',
-            teacher: 'Nobody :(',
+            teacher: { id: 1, value: 'Nobody :(' },
             room: 'Home'
           },
+          */
           {
-            day: '05/05/2021',
-            group: [1, 2],
-            start: {
-              hours: 8,
-              minutes: 15
-            },
-            end: {
-              hours: 11,
-              minutes: 45
-            },
-            title: 'Second Event',
-            teacher: 'Still Nobody :(',
-            room: 'Home'
-          },
-          {
-            day: '04/05/2021',
-            group: [1],
-            start: {
-              hours: 6,
-              minutes: 0
-            },
-            end: {
-              hours: 20,
-              minutes: 0
-            },
-            title: 'Third Event',
-            teacher: 'Nobody',
-            room: 'Home'
-          },
-          {
-            day: '09/05/2021',
-            group: [1],
+            day: { day: 4, month: 5, year: 2021 },
+            groups: [{ id: 1, value: 'L3 info' }],
             start: {
               hours: 7,
               minutes: 45
@@ -118,9 +90,18 @@ export default {
               hours: 10,
               minutes: 0
             },
-            title: 'Fourth Event',
-            teacher: 'Nobody.',
-            room: 'Home.'
+            ue: {
+              field: { id: 1, value: 'Fourth Event' },
+              date: {
+                year: 2020,
+                semester: 0
+              }
+            },
+            teacher: { id: 1, value: 'Nobody.' },
+            place: {
+              room: { id: 1, value: 'Home' },
+              campus: { id: 1, value: 'Luminy' }
+            }
           }
         ]
       }
@@ -138,25 +119,23 @@ export default {
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
-        dayWeek.push({
-          date: tempDate,
-          day: tempDate.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' })
-        })
+        dayWeek.push(tempDate)
       }
       return dayWeek
     },
     scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
-      const a = schedule.data.filter(course => course.day === day.day)
-      const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.group.includes(eachGroup)) === true)
+      const comparableDay = this.getComparableFromDate(day)
+      const a = schedule.data.filter(course => this.compareComparableDate(course.day, comparableDay))
+      const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
       return { data: b, workingHours: schedule.workingHours }
     },
-    isDateToday (date) {
+    isDateToday (date) { // updated
       const today = new Date()
-      if (today.toLocaleDateString('fr-fr', { day: 'numeric', month: 'numeric', year: 'numeric' }) === date.day) { return true }
+      if (this.compareComparableDate(this.getComparableFromDate(today), this.getComparableFromDate(date))) { return true }
       return false
     },
     getFormatedWeekDay (date) {
-      const dateString = date.date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
+      const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
       return this.capitalizeFirstLetter(dateString)
     },
     capitalizeFirstLetter (word) {
@@ -171,6 +150,12 @@ export default {
       weekDays = this.scheduleSettingsGetWeekDays()
       setWeekDays(weekDays)
       return weekDays
+    },
+    getComparableFromDate (date) {
+      return { day: date.getDay(), month: date.getMonth() + 1, year: date.getFullYear() }
+    },
+    compareComparableDate (c1, c2) {
+      return c1.day === c2.day && c1.month === c2.month && c1.year === c2.year
     }
   }
 }
