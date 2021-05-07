@@ -124,17 +124,26 @@ export default {
   methods: {
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
+      // console.log(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
+        console.log(weekDate, dayWeekKey, tempDate)
         dayWeek.push(tempDate)
       }
+      console.table(dayWeek)
       return dayWeek
     },
     scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
+      console.log(comparableDay)
       const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
-      const b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
+      let b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
+      // console.log(b)
+      // console.log('---')
+      if (b.length === 0) {
+        b = null
+      }
       return { data: b, workingHours: schedule.workingHours } // attention avant chaque modification de data
     },
     isDateToday (date) {
@@ -154,7 +163,6 @@ export default {
     },
     generateWeekDays (date) {
       let weekDays = getWeekDays(date)
-      console.log(weekDays)
       if (weekDays != null) { return weekDays }
       weekDays = this.scheduleSettingsGetWeekDays()
       setWeekDays(weekDays)

@@ -10,6 +10,8 @@
       >
         <div class="scheduleCourseMessage">
           {{ course.ue.field.value }}
+          <br>
+          {{ getFormatedDate(course) }}
         </div>
         <b-popover
           :target="'course-target-'+getTargetId()"
@@ -19,7 +21,7 @@
         >
           {{ course.place.room.value + ' ' + course.teacher.value }}
           <br>
-          {{ getFormatedDate(course) }}
+          {{ getFormatedTime(course) }}
         </b-popover>
         {{ course.title }}
       </div>
@@ -47,15 +49,18 @@ export default {
     }
   },
   methods: {
-    getFormatedMinutes (minutes) {
+    getFormatedUnit (minutes) {
       if (minutes < 10) { return '0' + minutes }
       return minutes
     },
     getFormatedHoursMinutes (courseDate) {
-      return courseDate.hours + 'h' + this.getFormatedMinutes(courseDate.minutes)
+      return courseDate.hours + 'h' + this.getFormatedUnit(courseDate.minutes)
+    },
+    getFormatedTime (course) {
+      return this.getFormatedHoursMinutes(course.start) + ' - ' + this.getFormatedHoursMinutes(course.end)
     },
     getFormatedDate (course) {
-      return this.getFormatedHoursMinutes(course.start) + ' - ' + this.getFormatedHoursMinutes(course.end)
+      return this.getFormatedUnit(course.day.day) + '/' + this.getFormatedUnit(course.day.month) + '/' + course.day.year
     },
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
