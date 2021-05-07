@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <form>
+  <div class="formularContainer">
+    <!-- novalidate à tester -->
+    <form novalidate="true" @submit="onSubmit" @reset="clear">
       <label>Matière</label>
-      <b-form-input v-model="formular.title" type="text" list="list_title" placeholder="Matière du cours" />
+      <b-form-input v-model="formular.title" type="text" list="list_title" placeholder="Nom du cours" required />
       <b-form-datalist id="list_title" :options="formular_options.title" />
-      <b-form-input v-model="formular.day" type="date" />
-      <b-form-input v-model="startTime" type="time" />
-      <b-form-input v-model="endTime" type="time" />
+      <b-form-input v-model="formular.day" type="date" required />
+      <b-form-input v-model="startTime" type="time" required />
+      <b-form-input v-model="endTime" type="time" required />
       <b-form-input v-model="formular.teacher" type="text" list="list_teacher" placeholder="Professeur" />
       <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
-
-      <!--
-      -->
       <br>
       <br>
       <br>
@@ -19,6 +17,12 @@
       <div class="debug">
         {{ endTime }}
       </div>
+      <b-button type="submit" variant="primary">
+        Ajouter un cour
+      </b-button>
+      <b-button type="reset" variant="secondary">
+        Effacer
+      </b-button>
     </form>
   </div>
 </template>
@@ -41,8 +45,7 @@ export default {
       formular_options: {
         title: ['Algorithmique', 'Logique', 'Projet'],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
-        groups: ['L3 info', 'L3 info']
-
+        groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie']
       }
     }
   },
@@ -73,5 +76,7 @@ export default {
 </script>
 
 <style scoped>
+.formularContainer {
 
+}
 </style>

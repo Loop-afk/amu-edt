@@ -35,6 +35,7 @@ export default {
     NavigatorArrow,
     Formular
   },
+  layout: 'default',
   data () {
     return {
       day: new Date(), // date initiale qu'affiche le schedule
