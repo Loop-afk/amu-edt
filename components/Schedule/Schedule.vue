@@ -64,7 +64,7 @@ export default {
         },
         data: [
           {
-            day: { month: 5, day: 4, year: 2021 },
+            day: { day: 4, month: 5, year: 2021 },
             groups: [{ id: 1, value: 'L3 info' }],
             start: {
               hours: 7,
@@ -88,7 +88,7 @@ export default {
             }
           },
           {
-            day: { month: 4, day: 6, year: 2021 },
+            day: { day: 6, month: 5, year: 2021 },
             groups: [{ id: 1, value: 'L3 info' }],
             start: {
               hours: 6,
@@ -124,23 +124,19 @@ export default {
   methods: {
     scheduleSettingsGetWeekDays () {
       const dayWeek = []
-      // console.log(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
-        console.log(weekDate, dayWeekKey, tempDate)
         dayWeek.push(tempDate)
+        // récuperer json et ajouter à scheduleSchedule ici
+        // todo : optimiser ça
       }
-      console.table(dayWeek)
       return dayWeek
     },
     scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
-      console.log(comparableDay)
       const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
       let b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
-      // console.log(b)
-      // console.log('---')
       if (b.length === 0) {
         b = null
       }

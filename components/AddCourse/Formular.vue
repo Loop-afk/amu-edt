@@ -37,18 +37,17 @@ export default {
         teacher: null,
         room: null
       },
-      test: '',
 
       formular_options: {
         title: ['Algorithmique', 'Logique', 'Projet'],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
-        groups: [1, 2, 3]
+        groups: ['L3 info', 'L3 info']
 
       }
     }
   },
   computed: {
-    startTime: { // overide
+    startTime: { // @Overide de v-model
       get () {
         return this.formular.start.hour + ':' + this.formular.start.minutes
       },
@@ -58,7 +57,7 @@ export default {
         this.formular.start.minutes = temp[1]
       }
     },
-    endTime: { // overide
+    endTime: { // @Overide de v-model
       get () {
         return this.formular.end.hour + ':' + this.formular.end.minutes
       },

@@ -55,8 +55,7 @@ export default {
       clearIdTarget()
       // à optimiser
       if (event === 'right') { offset = 7 } else if (event === 'left') { offset = -7 } else { console.warn('Illegal value from weekChange event: ' + event) }
-      const nday = addDays(this.day, offset)
-      this.day = nday
+      this.day = addDays(this.day, offset)
     }
   }
 }
