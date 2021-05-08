@@ -1,5 +1,13 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
+    <div
+      style="position: absolute; top: -30px;"
+    >
+      {{ scheduleReferenceDate + daysOfTheWeek }}
+    </div>
+    <div v-for="(index, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key">
+      {{ 'key: ' + key }}
+    </div>
     <ordinate-line
       :working-hours="scheduleSchedule.workingHours"
       :schedule-height="scheduleHeight"
@@ -7,7 +15,7 @@
     />
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex; top: 0px;" class="box">
-        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate, daysOfTheWeek)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
+        <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
@@ -17,9 +25,9 @@
           :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
-        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate, daysOfTheWeek)" :key="key" style="width: 100%;">
+        <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
           <schedule-day
-            :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
+            :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
           />
         </div>
@@ -40,7 +48,7 @@ export default {
     ScheduleDay, OrdinateAxis, OrdinateLine
   },
   props: {
-    scheduleSettingsDate: {
+    scheduleReferenceDate: {
       type: Date,
       required: true
     },
@@ -126,12 +134,11 @@ export default {
 
   },
   methods: {
-    testf () {
-      return this.daysOfTheWeek + 1
-    },
-    scheduleSettingsGetWeekDays (daysDisplayed) {
+    scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
       const dayWeek = []
-      const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
+      let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
+      if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) < daysDisplayed) { weekDate = scheduleReferenceDate }
+      console.log((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)))
       for (const dayWeekKey of Array(daysDisplayed).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push(tempDate)
@@ -139,23 +146,21 @@ export default {
       return dayWeek
     },
     // todo supprimer et remplaer par requete REST
-    scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
+    scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
-      let b = a.filter(course => this.scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
+      let b = a.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
       if (b.length === 0) {
         b = null
       }
       return { data: b, workingHours: schedule.workingHours } // attention avant chaque modification de data
     },
     isDateToday (date) {
-      const today = new Date()
-      if (compareComparableDate(getComparableFromDate(today), getComparableFromDate(date))) { return true }
+      if (compareComparableDate(getComparableFromDate(new Date()), getComparableFromDate(date))) { return true }
       return false
     },
     getFormatedWeekDay (date) {
-      const dateString = date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' })
-      return this.capitalizeFirstLetter(dateString)
+      return this.capitalizeFirstLetter(date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' }))
     },
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
@@ -166,7 +171,7 @@ export default {
     generateWeekDays (date, days) {
       let weekDays = getWeekDays(date)
       if (weekDays != null) { return weekDays }
-      weekDays = this.scheduleSettingsGetWeekDays(days)
+      weekDays = this.scheduleSettingsGetWeekDays(days, date)
       setWeekDays(weekDays)
       return weekDays
     }

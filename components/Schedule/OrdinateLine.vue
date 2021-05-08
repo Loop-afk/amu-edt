@@ -3,7 +3,7 @@
     <div
       v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval)) + 1"
       :key="currentInterval"
-      :style="{top: scheduleGetHeightFromDate(currentInterval)}"
+      :style="{top: scheduleGetHeightFromDate(currentInterval, scheduleHeight, ordinateAxisHoursInterval)}"
       class="line"
     />
   </div>
@@ -35,11 +35,12 @@ export default {
     }
   },
   methods: {
-    scheduleGetHeightFromDate (currentInterval) {
-      const unit = this.scheduleHeight / (this.workingHours.end - this.workingHours.start)
-      const top = (unit * currentInterval * this.ordinateAxisHoursInterval + unit * this.ordinateAxisHoursInterval) + this.offset
+    scheduleGetHeightFromDate (currentInterval, scheduleHeight, ordinateAxisHoursInterval) { // à fusionner
+      const unit = scheduleHeight / (this.workingHours.end - this.workingHours.start)
+      const top = (unit * currentInterval * ordinateAxisHoursInterval)
       return top + 'px'
     }
+
   }
 }
 </script>

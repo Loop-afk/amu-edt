@@ -10,7 +10,7 @@
         <b-col cols="10">
           <schedule
             :days-of-the-week="getDaysOfTheWeek($route.fullPath)"
-            :schedule-settings-date="day"
+            :schedule-reference-date="day"
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
             class="schedule"
@@ -36,7 +36,6 @@ export default {
     NavigatorArrow,
     Formular
   },
-  layout: 'default',
   data () {
     return {
       day: new Date(), // date initiale qu'affiche le schedule
@@ -54,11 +53,8 @@ export default {
   },
   methods: {
     weekChange (event) {
-      let offset
       clearIdTarget()
-      // à optimiser
-      if (event === 'right') { offset = 7 } else if (event === 'left') { offset = -7 } else { console.warn('Illegal value from weekChange event: ' + event) }
-      this.day = addDays(this.day, offset)
+      this.day = addDays(this.day, event)
     },
     getDaysOfTheWeek (data) {
       if (data === '/semaine/') { return 7 }
