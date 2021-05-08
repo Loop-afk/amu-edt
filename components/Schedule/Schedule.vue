@@ -1,17 +1,16 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
-    <div
-      style="position: absolute; top: -30px;"
-    >
-      {{ scheduleReferenceDate + daysOfTheWeek }}
-    </div>
+    <br>
+    <!--
+      NOT UPDATING
     <div v-for="(index, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key">
-      {{ 'key: ' + key }}
+      {{ 'key: ' + key + ' on ' + daysOfTheWeek }}
     </div>
+    -->
     <ordinate-line
       :working-hours="scheduleSchedule.workingHours"
       :schedule-height="scheduleHeight"
-      style="position: absolute; top: -30px;"
+      style="position: absolute; top: 37px;"
     />
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex; top: 0px;" class="box">
