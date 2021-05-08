@@ -9,6 +9,7 @@
         </b-col>
         <b-col cols="10">
           <schedule
+            :days-of-the-week="getDaysOfTheWeek($route.fullPath)"
             :schedule-settings-date="day"
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
@@ -49,6 +50,7 @@ export default {
     }
   },
   computed: {
+
   },
   methods: {
     weekChange (event) {
@@ -57,6 +59,11 @@ export default {
       // à optimiser
       if (event === 'right') { offset = 7 } else if (event === 'left') { offset = -7 } else { console.warn('Illegal value from weekChange event: ' + event) }
       this.day = addDays(this.day, offset)
+    },
+    getDaysOfTheWeek (data) {
+      if (data === '/semaine/') { return 7 }
+      if (data === '/jour/') { return 1 }
+      return 7 // defaut
     }
   }
 }

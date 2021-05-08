@@ -2,12 +2,12 @@
   <div>
     <b-nav>
       <b-nav-item>
-        <NuxtLink to="/">
+        <NuxtLink to="/semaine/">
           Semaine
         </NuxtLink>
       </b-nav-item>
       <b-nav-item>
-        <NuxtLink to="/jour">
+        <NuxtLink to="/jour/">
           Jour
         </NuxtLink>
       </b-nav-item>

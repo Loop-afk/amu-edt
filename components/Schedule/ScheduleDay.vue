@@ -1,29 +1,34 @@
 <template>
   <div style="height: 100%; width: 100%; position: relative">
     <div class="scheduleDayContainer" style="width: 100%">
-      <div
-        v-for="(course, key) in scheduleSchedule.data"
-        :id="'course-target-'+generateTargetId()"
-        :key="key"
-        class="scheduleCourse"
-        :style="getCourseStyle(course)"
-      >
-        <div class="scheduleCourseMessage">
-          {{ course.ue.field.value }}
-          <br>
-          {{ getFormatedDate(course) }}
-        </div>
-        <b-popover
-          :target="'course-target-'+getTargetId()"
-          :triggers="['hover']"
-          placement="right"
-          delay="0"
+      <div v-if="scheduleSchedule != null ">
+        <div
+          v-for="(course, key) in scheduleSchedule.data"
+          :id="'course-target-'+generateTargetId()"
+          :key="key"
+          class="scheduleCourse"
+          :style="getCourseStyle(course)"
         >
-          {{ course.place.room.value + ' ' + course.teacher.value }}
-          <br>
-          {{ getFormatedTime(course) }}
-        </b-popover>
-        {{ course.title }}
+          <div class="scheduleCourseMessage">
+            {{ course.ue.field.value }}
+            <br>
+            {{ getFormatedDate(course) }}
+          </div>
+          <b-popover
+            :target="'course-target-'+getTargetId()"
+            :triggers="['hover']"
+            placement="right"
+            delay="0"
+          >
+            {{ course.place.room.value + ' ' + course.teacher.value }}
+            <br>
+            {{ getFormatedTime(course) }}
+          </b-popover>
+          {{ course.title }}
+        </div>
+      </div>
+      <div v-else>
+        Internal Error 500#1
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@
     />
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex;" class="box">
-        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
+        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate, daysOfTheWeek)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
@@ -17,7 +17,7 @@
           :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
-        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate)" :key="key" style="width: 100%;">
+        <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate, daysOfTheWeek)" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day)"
             :schedule-height="scheduleHeight"
@@ -52,11 +52,14 @@ export default {
       type: Array,
       default: () => [],
       required: false
+    },
+    daysOfTheWeek: {
+      type: Number,
+      default: 7
     }
   },
   data () {
     return {
-      daysOfTheWeek: 7,
       scheduleSchedule: {
         workingHours: {
           start: 4,
@@ -122,17 +125,20 @@ export default {
 
   },
   methods: {
-    scheduleSettingsGetWeekDays () {
+    testf () {
+      return this.daysOfTheWeek + 1
+    },
+    scheduleSettingsGetWeekDays (daysDisplayed) {
       const dayWeek = []
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
-      for (const dayWeekKey of Array(this.daysOfTheWeek).keys()) {
+      for (const dayWeekKey of Array(daysDisplayed).keys()) {
+        console.log('daysOfTheWeek reloading ' + daysDisplayed)
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push(tempDate)
-        // récuperer json et ajouter à scheduleSchedule ici
-        // todo : optimiser ça
       }
       return dayWeek
     },
+    // todo supprimer et remplaer par requete REST
     scheduleParseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
@@ -157,10 +163,10 @@ export default {
     lenWeekDays () {
       return lenWeekDays()
     },
-    generateWeekDays (date) {
+    generateWeekDays (date, days) {
       let weekDays = getWeekDays(date)
       if (weekDays != null) { return weekDays }
-      weekDays = this.scheduleSettingsGetWeekDays()
+      weekDays = this.scheduleSettingsGetWeekDays(days)
       setWeekDays(weekDays)
       return weekDays
     }

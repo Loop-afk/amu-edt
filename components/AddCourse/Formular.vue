@@ -1,7 +1,7 @@
 <template>
   <div class="formularContainer">
     <!-- novalidate à tester -->
-    <form novalidate="true" @submit="onSubmit" @reset="clear">
+    <form novalidate="true" @submit="onSubmit">
       <label>Matière</label>
       <b-form-input v-model="formular.title" type="text" list="list_title" placeholder="Nom du cours" required />
       <b-form-datalist id="list_title" :options="formular_options.title" />
@@ -71,12 +71,16 @@ export default {
       }
     }
   },
-  methods: { }
+  methods: {
+    onSubmit () {
+
+    }
+  }
 }
 </script>
 
 <style scoped>
 .formularContainer {
-
+  color: black;
 }
 </style>
