@@ -57,8 +57,8 @@ export default {
       this.day = addDays(this.day, event)
     },
     getDaysOfTheWeek (data) {
-      if (data === '/semaine/') { return 7 }
-      if (data === '/jour/') { return 1 }
+      if (data === '/agenda/semaine/') { return 7 }
+      if (data === '/agenda/jour/') { return 1 }
       return 7 // defaut
     }
   }
