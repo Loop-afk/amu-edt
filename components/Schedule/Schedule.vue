@@ -137,8 +137,7 @@ export default {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
       const dayWeek = []
       let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
-      if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) < daysDisplayed) { weekDate = scheduleReferenceDate }
-      console.log((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)))
+      if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) >= daysDisplayed) { weekDate = scheduleReferenceDate }
       for (const dayWeekKey of Array(daysDisplayed).keys()) {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push(tempDate)

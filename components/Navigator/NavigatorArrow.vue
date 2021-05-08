@@ -9,7 +9,7 @@
     <div @click="weekChange(-1)">
       #day ago#
     </div>
-    <div @click="weekChange(-1)">
+    <div @click="weekChange(1)">
       #next day#
     </div>
   </div>
