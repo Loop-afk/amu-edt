@@ -48,7 +48,6 @@ export default {
 
 .ordinateAxis {
   position: relative;
-  top: 0px;
 }
 
 </style>

@@ -3,17 +3,17 @@
     <ordinate-line
       :working-hours="scheduleSchedule.workingHours"
       :schedule-height="scheduleHeight"
-      style="position: absolute;"
+      style="position: absolute; top: -30px;"
     />
     <div class="schedule-row">
-      <div style="position: absolute; width: 100%; display: flex;" class="box">
+      <div style="position: absolute; width: 100%; display: flex; top: 0px;" class="box">
         <div v-for="(day, key) in generateWeekDays(scheduleSettingsDate, daysOfTheWeek)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
-      <div style="position: absolute; width: 100%; display: flex; top: 70px;">
+      <div style="position: absolute; width: 100%; display: flex; top: 37px;">
         <ordinate-axis
-          style="left: -20px; top: -20px; position: absolute;"
+          style="left: -20px; top: -12px; position: absolute;"
           :working-hours="scheduleSchedule.workingHours"
           :schedule-height="scheduleHeight"
         />
@@ -60,6 +60,7 @@ export default {
   },
   data () {
     return {
+      OrdinateAxisOffset: -30,
       scheduleSchedule: {
         workingHours: {
           start: 4,
@@ -132,7 +133,6 @@ export default {
       const dayWeek = []
       const weekDate = addDays(this.scheduleSettingsDate, -1 * this.scheduleSettingsDate.getDay() + 1)
       for (const dayWeekKey of Array(daysDisplayed).keys()) {
-        console.log('daysOfTheWeek reloading ' + daysDisplayed)
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push(tempDate)
       }
