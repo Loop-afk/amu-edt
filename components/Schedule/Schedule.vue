@@ -1,12 +1,5 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
-    <br>
-    <!--
-      NOT UPDATING
-    <div v-for="(index, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key">
-      {{ 'key: ' + key + ' on ' + daysOfTheWeek }}
-    </div>
-    -->
     <ordinate-line
       :working-hours="scheduleSchedule.workingHours"
       :schedule-height="scheduleHeight"
@@ -167,7 +160,7 @@ export default {
       return lenWeekDays()
     },
     generateWeekDays (date, days) {
-      let weekDays = getWeekDays(date)
+      let weekDays = getWeekDays(date, days)
       if (weekDays != null) { return weekDays }
       weekDays = this.scheduleSettingsGetWeekDays(days, date)
       setWeekDays(weekDays)

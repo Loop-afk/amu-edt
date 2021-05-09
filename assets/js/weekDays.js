@@ -3,13 +3,13 @@ import { getComparableFromDate, compareComparableDate } from '~/assets/js/compar
 let weekDays = null
 let date = null
 
-export function getWeekDays (scheduleSettingsDate) {
+export function getWeekDays (scheduleSettingsDate, days) {
   const scheduleSettingsDateComparable = getComparableFromDate(scheduleSettingsDate)
   if (date === null) {
     date = scheduleSettingsDateComparable
     return weekDays
   }
-  if (compareComparableDate(date, scheduleSettingsDateComparable)) {
+  if (compareComparableDate(date, scheduleSettingsDateComparable) && weekDays.length === days) {
     return weekDays
   }
   weekDays = null
