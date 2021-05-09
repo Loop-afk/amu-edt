@@ -4,8 +4,10 @@
       <b-row>
         <b-col cols="2">
           <list-groups />
-          <navigator-arrow @weekChangeEvent="weekChange($event)" />
-          <formular />
+          <navigator-arrow
+            @weekChangeEvent="weekChange($event)"
+          />
+          <formular :schedule-reference-date="day" />
         </b-col>
         <b-col cols="10">
           <schedule

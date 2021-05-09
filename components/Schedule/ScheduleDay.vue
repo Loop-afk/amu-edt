@@ -12,7 +12,7 @@
           <div class="scheduleCourseMessage">
             {{ course.ue.field.value }}
             <br>
-            {{ getFormatedDate(course) }}
+            {{ getReFormatedDate(course.day) }}
           </div>
           <b-popover
             :target="'course-target-'+getTargetId()"
@@ -36,6 +36,7 @@
 
 <script>
 import { generateTargetId, getTargetId } from '~/assets/js/targetId.js'
+import { getFormatedDate, getFormatedHoursMinutes } from '~/assets/js/formatedDate.js'
 export default {
   props: {
     scheduleSchedule: {
@@ -54,19 +55,6 @@ export default {
     }
   },
   methods: {
-    getFormatedUnit (minutes) {
-      if (minutes < 10) { return '0' + minutes }
-      return minutes
-    },
-    getFormatedHoursMinutes (courseDate) {
-      return courseDate.hours + 'h' + this.getFormatedUnit(courseDate.minutes)
-    },
-    getFormatedTime (course) {
-      return this.getFormatedHoursMinutes(course.start) + ' - ' + this.getFormatedHoursMinutes(course.end)
-    },
-    getFormatedDate (course) {
-      return this.getFormatedUnit(course.day.day) + '/' + this.getFormatedUnit(course.day.month) + '/' + course.day.year
-    },
     scheduleGetHeightFromDate (course) {
       const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
@@ -92,6 +80,12 @@ export default {
     },
     getTargetId () {
       return getTargetId()
+    },
+    getFormatedDate (date) {
+      return getFormatedDate(date)
+    },
+    getFormatedTime (course) {
+      return getFormatedHoursMinutes(course.start) + ' - ' + getFormatedHoursMinutes(course.end)
     }
   }
 }

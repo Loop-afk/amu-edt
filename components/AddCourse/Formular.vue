@@ -28,12 +28,20 @@
 </template>
 
 <script>
+import { getInputFormatedDate } from '~/assets/js/formatedDate.js'
+
 export default {
+  props: {
+    scheduleReferenceDate: {
+      type: Date,
+      required: true
+    }
+  },
   data () {
     return {
       formular: {
         title: null,
-        day: null,
+        day: getInputFormatedDate(this.scheduleReferenceDate),
         occurences: null,
         groups: [],
         start: { hour: null, minutes: null },
@@ -74,6 +82,9 @@ export default {
   methods: {
     onSubmit () {
 
+    },
+    getInputFormatedDate (date) {
+      return getInputFormatedDate(date)
     }
   }
 }
