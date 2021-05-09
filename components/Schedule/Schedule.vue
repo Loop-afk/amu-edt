@@ -7,7 +7,14 @@
     />
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex; top: 0px;" class="box">
-        <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" :style="{width: (100/lenWeekDays())+'%'}" :class="{scheduleToday: isDateToday(day)}" class="scheduleHeaderDate box">
+        <div
+          v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)"
+          :key="key"
+          :style="{width: (100/lenWeekDays())+'%'}"
+          :class="{scheduleToday: isDateSame(day, new Date()),
+                   scheduleReferenceDate: isDateSame(day, addDays(scheduleReferenceDate, 1))}"
+          class="scheduleHeaderDate box"
+        >
           {{ getFormatedWeekDay(day) }}
         </div>
       </div>
@@ -19,6 +26,7 @@
         />
         <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
           <schedule-day
+            :schedule-reference-date="scheduleReferenceDate"
             :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
           />
@@ -146,8 +154,8 @@ export default {
       }
       return { data: b, workingHours: schedule.workingHours } // attention avant chaque modification de data
     },
-    isDateToday (date) {
-      if (compareComparableDate(getComparableFromDate(new Date()), getComparableFromDate(date))) { return true }
+    isDateSame (date1, date2) {
+      if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }
       return false
     },
     getFormatedWeekDay (date) {
@@ -158,6 +166,9 @@ export default {
     },
     lenWeekDays () {
       return lenWeekDays()
+    },
+    addDays (date, days) {
+      return addDays(date, days)
     },
     generateWeekDays (date, days) {
       let weekDays = getWeekDays(date, days)
@@ -190,6 +201,10 @@ export default {
 
 .scheduleToday {
   color: blue;
+}
+
+.scheduleReferenceDate {
+  color:brown;
 }
 
 .schedule-row-child {
