@@ -1,5 +1,8 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
+    <div style="position: absolute; top: -30px;">
+      {{ scheduleReferenceDate }}
+    </div>
     <ordinate-line
       :working-hours="scheduleSchedule.workingHours"
       :schedule-height="scheduleHeight"

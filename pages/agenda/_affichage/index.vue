@@ -30,6 +30,7 @@ import Formular from '~/components/AddCourse/Formular.vue'
 import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
+import { getReferenceDate } from '~/assets/js/referenceDate.js'
 
 export default {
   components: {
@@ -40,7 +41,7 @@ export default {
   },
   data () {
     return {
-      day: new Date(), // date initiale qu'affiche le schedule
+      day: getReferenceDate(new Date()), // date initiale qu'affiche le schedule
       scheduleDisplayedGroups: [1, 2],
       scheduleHeight: 600
     }
@@ -49,9 +50,6 @@ export default {
     return {
       title: 'AMU edt'
     }
-  },
-  computed: {
-
   },
   methods: {
     weekChange (event) {
