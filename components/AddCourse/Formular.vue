@@ -8,6 +8,9 @@
       <b-form-input v-model="formular.day" type="date" required />
       <b-form-input v-model="startTime" type="time" required />
       <b-form-input v-model="endTime" type="time" required />
+      <b-form-select v-model="formular.occurences" :options="formular_options.occurences" />
+      <b-form-select v-model="formular.duration" :options="formular_options.duration" />
+      <b-form-input v-if="formular.duration === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
       <b-form-input v-model="formular.teacher" type="text" list="list_teacher" placeholder="Professeur" />
       <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
       <br>
@@ -42,7 +45,8 @@ export default {
       formular: {
         title: null,
         day: getInputFormatedDate(this.scheduleReferenceDate),
-        occurences: null,
+        occurences: null, // default value
+        duration: null,
         groups: [],
         start: { hour: null, minutes: null },
         end: { hour: null, minutes: null },
@@ -53,7 +57,9 @@ export default {
       formular_options: {
         title: ['Algorithmique', 'Logique', 'Projet'],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
-        groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie']
+        groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie'],
+        occurences: [{ text: 'Choisir une occurence', value: null }, 'spontané', 'journalier', 'hebdomadaire', 'bihebdomadaire', 'mensuel'],
+        duration: [{ text: 'Choisir une durée', value: null }, 'spontané', '1 semaine', 'semi-semestriel', 'semestriel', 'annuel']
       }
     }
   },
