@@ -32,6 +32,7 @@ import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
 import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js'
+import { getSchedule, setSchedule } from '~/assets/js/schedule.js'
 
 export default {
   components: {
@@ -40,16 +41,19 @@ export default {
     NavigatorArrow,
     Formular
   },
-  async asyncData () { // probably executed each times this page is loaded
-    const response = await fetch('http://192.168.1.36:18929/schedule/')
-    const schedule = await response.json()
-    return { schedule }
+  async asyncData () {
+    if (getSchedule() != null) { return }
+    const schedule = await fetch('http://192.168.1.36:18929/schedule/')
+      .then(res => res.json())
+      .then((data) => { return { schedule: data } })
+    setSchedule(schedule) // TODO à opti si pas d'autres utilisation
+    return schedule
   },
   data () {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
       scheduleDisplayedGroups: [1, 2],
-      user: null, // contains client - side rights
+      user: null, // contient client - side rights /!\ do not trust
       scheduleHeight: 600
     }
   },
@@ -65,7 +69,7 @@ export default {
       setReferenceDate(this.day)
     },
     getDaysDisplayed (data) {
-      if (data === '/agenda/semaine/') { return 7 }
+      // if (data === '/agenda/semaine/') { return 7 }
       if (data === '/agenda/jour/') { return 1 }
       return 7 // defaut
     }
