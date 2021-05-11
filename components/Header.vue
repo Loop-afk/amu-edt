@@ -16,13 +16,17 @@
           Connexion
         </NuxtLink>
       </b-nav-item>
+      <b-nav-item>
+        <NuxtLink to="/">
+          Home
+        </NuxtLink>
+      </b-nav-item>
     </b-nav>
   </div>
 </template>
 
 <script>
 export default {
-
 }
 </script>
 
