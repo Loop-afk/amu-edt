@@ -30,7 +30,7 @@ import Formular from '~/components/AddCourse/Formular.vue'
 import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
-import { getReferenceDate } from '~/assets/js/referenceDate.js'
+import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js'
 
 export default {
   components: {
@@ -40,8 +40,9 @@ export default {
     Formular
   },
   data () {
+    console.log('data()')
     return {
-      day: getReferenceDate(new Date()), // date initiale qu'affiche le schedule
+      day: getReferenceDate(), // date initiale qu'affiche le schedule
       scheduleDisplayedGroups: [1, 2],
       scheduleHeight: 600
     }
@@ -55,6 +56,7 @@ export default {
     weekChange (event) {
       clearIdTarget()
       this.day = addDays(this.day, event)
+      setReferenceDate(this.day)
     },
     getDaysOfTheWeek (data) {
       if (data === '/agenda/semaine/') { return 7 }
