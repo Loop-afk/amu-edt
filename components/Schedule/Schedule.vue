@@ -1,8 +1,5 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
-    <div style="position: absolute; top: -30px;">
-      {{ scheduleReferenceDate }}
-    </div>
     <ordinate-line
       :working-hours="scheduleSchedule.workingHours"
       :schedule-height="scheduleHeight"
@@ -32,6 +29,7 @@
             :schedule-reference-date="scheduleReferenceDate"
             :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
+            @courseClickedEvent="courseChange($event, scheduleSchedule)"
           />
         </div>
       </div>
@@ -70,71 +68,11 @@ export default {
     }
   },
   data () {
+    this.fetchScheduleData()
     return {
       OrdinateAxisOffset: -30,
-      scheduleSchedule: {
-        workingHours: {
-          start: 4,
-          end: 22
-        },
-        data: [
-          {
-            day: { day: 4, month: 5, year: 2021 },
-            groups: [{ id: 1, value: 'L3 info' }],
-            start: {
-              hours: 7,
-              minutes: 45
-            },
-            end: {
-              hours: 10,
-              minutes: 0
-            },
-            ue: {
-              field: { id: 1, value: 'Fourth Event' },
-              date: {
-                year: 2020,
-                semester: 0
-              }
-            },
-            teacher: { id: 1, value: 'Nobody.' },
-            place: {
-              room: { id: 1, value: 'Home' },
-              campus: { id: 1, value: 'Luminy' }
-            }
-          },
-          {
-            day: { day: 6, month: 5, year: 2021 },
-            groups: [{ id: 1, value: 'L3 info' }],
-            start: {
-              hours: 6,
-              minutes: 0
-            },
-            end: {
-              hours: 28,
-              minutes: 0
-            },
-            ue: {
-              field: { id: 1, value: 'Third Event' },
-              date: {
-                year: 2020,
-                semester: 0
-              }
-            },
-            teacher: { id: 1, value: 'Nobody.' },
-            place: {
-              room: { id: 1, value: 'Home' },
-              campus: { id: 1, value: 'Luminy' }
-            }
-          }
-        ]
-      }
+      scheduleSchedule: null
     }
-  },
-  beforeMount () {
-
-  },
-  mounted () {
-
   },
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
@@ -149,6 +87,7 @@ export default {
     },
     // todo supprimer et remplaer par requete REST
     scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
+      console.log('scheduleParseSchedule')
       const comparableDay = getComparableFromDate(day)
       const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
       let b = a.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
@@ -179,6 +118,23 @@ export default {
       weekDays = this.scheduleSettingsGetWeekDays(days, date)
       setWeekDays(weekDays)
       return weekDays
+    },
+    courseChange (event, schedule) {
+      console.log(schedule)
+      this.deleteCourse(event, schedule)
+      console.log(schedule)
+    },
+    deleteCourse (course, schedule) {
+      delete schedule.data[schedule.data.indexOf(course)]
+    },
+    fetchScheduleData () {
+      fetch('http://192.168.1.36:18929/schedule/')
+        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
+        .then(data => this.setScheduleData(data))
+    },
+    setScheduleData (data) {
+      this.scheduleSchedule = data
+      console.log(data)
     }
   }
 }

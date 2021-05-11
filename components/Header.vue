@@ -11,6 +11,11 @@
           Jour
         </NuxtLink>
       </b-nav-item>
+      <b-nav-item>
+        <NuxtLink to="/connexion/">
+          Connexion
+        </NuxtLink>
+      </b-nav-item>
     </b-nav>
   </div>
 </template>

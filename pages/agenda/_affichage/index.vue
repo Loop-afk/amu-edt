@@ -44,6 +44,7 @@ export default {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
       scheduleDisplayedGroups: [1, 2],
+      user: null, // contains client - side rights
       scheduleHeight: 600
     }
   },

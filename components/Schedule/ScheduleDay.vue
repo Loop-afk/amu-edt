@@ -8,6 +8,7 @@
           :key="key"
           class="scheduleCourse"
           :style="getCourseStyle(course)"
+          @click="courseClicked(course)"
         >
           <div class="scheduleCourseMessage">
             {{ course.ue.field.value }}
@@ -50,6 +51,7 @@ export default {
     }
   },
   data () {
+    console.log(this.scheduleSchedule)
     return {
 
     }
@@ -86,6 +88,10 @@ export default {
     },
     getInputFormatedDate (date) {
       getInputFormatedDate(date)
+    },
+    courseClicked (course) {
+      console.log('clicked')
+      this.$emit('courseClickedEvent', course)
     }
   }
 }
