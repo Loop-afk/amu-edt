@@ -1,7 +1,10 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
+    <div>
+      {{ facts }}
+    </div>
     <ordinate-line
-      :working-hours="scheduleSchedule.workingHours"
+      :working-hours="facts.workingHours"
       :schedule-height="scheduleHeight"
       style="position: absolute; top: 37px;"
     />
@@ -21,15 +24,15 @@
       <div style="position: absolute; width: 100%; display: flex; top: 37px;">
         <ordinate-axis
           style="left: -20px; top: -12px; position: absolute;"
-          :working-hours="scheduleSchedule.workingHours"
+          :working-hours="facts.workingHours"
           :schedule-height="scheduleHeight"
         />
         <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-reference-date="scheduleReferenceDate"
-            :schedule-schedule="scheduleParseSchedule(scheduleSchedule, day, scheduleDisplayedGroups)"
+            :schedule-schedule="scheduleParseSchedule(facts, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
-            @courseClickedEvent="courseChange($event, scheduleSchedule)"
+            @courseClickedEvent="courseChange($event, facts)"
           />
         </div>
       </div>
@@ -67,11 +70,15 @@ export default {
       default: 7
     }
   },
+  async asyncData () {
+    const response = await fetch('http://192.168.1.36:18929/schedule/')
+    const facts = await response.json()
+    console.log(facts)
+    return { facts } // Same as return  { facts: facts }
+  },
   data () {
-    this.fetchScheduleData()
     return {
-      OrdinateAxisOffset: -30,
-      scheduleSchedule: null
+      OrdinateAxisOffset: -30
     }
   },
   methods: {
@@ -126,15 +133,6 @@ export default {
     },
     deleteCourse (course, schedule) {
       delete schedule.data[schedule.data.indexOf(course)]
-    },
-    fetchScheduleData () {
-      fetch('http://192.168.1.36:18929/schedule/')
-        .then(res => res.json()) // the .json() method parses the JSON response into a JS object literal
-        .then(data => this.setScheduleData(data))
-    },
-    setScheduleData (data) {
-      this.scheduleSchedule = data
-      console.log(data)
     }
   }
 }

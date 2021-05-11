@@ -11,7 +11,7 @@
         </b-col>
         <b-col cols="10">
           <schedule
-            :days-of-the-week="getDaysOfTheWeek($route.fullPath)"
+            :days-of-the-week="getDaysDisplayed($route.fullPath)"
             :schedule-reference-date="day"
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
@@ -59,7 +59,7 @@ export default {
       this.day = addDays(this.day, event)
       setReferenceDate(this.day)
     },
-    getDaysOfTheWeek (data) {
+    getDaysDisplayed (data) {
       if (data === '/agenda/semaine/') { return 7 }
       if (data === '/agenda/jour/') { return 1 }
       return 7 // defaut
