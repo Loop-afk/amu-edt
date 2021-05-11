@@ -1,3 +1,4 @@
+import addDays from '~/assets/js/addDays.js'
 
 let date = null
 
@@ -5,7 +6,7 @@ let date = null
 
 export function getReferenceDate () {
   if (date == null) {
-    date = new Date()
+    date = addDays(new Date(), 1)
     return date
   }
   return date
@@ -15,11 +16,3 @@ export function setReferenceDate (ndate) {
   date = ndate
   return date
 }
-
-/*
- let cndate = getComparableFromDate(ndate)
-  if (compareComparableDate(cndate, cdate)) { return date }
-  date = ndate
-  cdate = cndate
-  return date
-  */

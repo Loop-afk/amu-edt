@@ -10,13 +10,12 @@
     />
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex; top: 0px;" class="box">
-        <!-- offset de 1 jour sur la date de réference -->
         <div
           v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)"
           :key="key"
           :style="{width: (100/lenWeekDays())+'%'}"
           :class="{scheduleToday: isDateSame(day, new Date()),
-                   scheduleReferenceDate: isDateSame(day, addDays(scheduleReferenceDate, 1))}"
+                   scheduleReferenceDate: isDateSame(day, scheduleReferenceDate)}"
           class="scheduleHeaderDate box"
         >
           {{ getFormatedWeekDay(day) }}
