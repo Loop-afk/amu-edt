@@ -1,10 +1,7 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
-    <div>
-      {{ schedule }}
-    </div>
     <ordinate-line
-      :working-hours="getSchedule().workingHours"
+      :working-hours="schedule.workingHours"
       :schedule-height="scheduleHeight"
       style="position: absolute; top: 37px;"
     />
@@ -24,7 +21,7 @@
       <div style="position: absolute; width: 100%; display: flex; top: 37px;">
         <ordinate-axis
           style="left: -20px; top: -12px; position: absolute;"
-          :working-hours="getSchedule().workingHours"
+          :working-hours="schedule.workingHours"
           :schedule-height="scheduleHeight"
         />
         <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
@@ -47,12 +44,15 @@ import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getWeekDays, setWeekDays, lenWeekDays } from '~/assets/js/weekDays.js'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
-import { getSchedule } from '~/assets/js/schedule.js'
 export default {
   components: {
     ScheduleDay, OrdinateAxis, OrdinateLine
   },
   props: {
+    schedule: {
+      type: Object,
+      default: null
+    },
     scheduleReferenceDate: {
       type: Date,
       required: true
@@ -89,14 +89,13 @@ export default {
     },
     // todo supprimer et remplaer par requete REST
     scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
-      console.log('scheduleParseSchedule')
       const comparableDay = getComparableFromDate(day)
-      const a = getSchedule().data.filter(course => compareComparableDate(course.day, comparableDay))
+      const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
       let b = a.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
       if (b.length === 0) {
         b = null
       }
-      return { data: b, workingHours: getSchedule().workingHours } // attention avant chaque modification de data
+      return { data: b, workingHours: schedule.workingHours } // attention avant chaque modification de data
     },
     isDateSame (date1, date2) {
       if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }
@@ -114,9 +113,6 @@ export default {
     addDays (date, days) {
       return addDays(date, days)
     },
-    getSchedule () {
-      return getSchedule()
-    },
     generateWeekDays (date, days) {
       let weekDays = getWeekDays(date, days)
       if (weekDays != null) { return weekDays }
@@ -130,7 +126,7 @@ export default {
       console.log(schedule)
     },
     deleteCourse (course, schedule) {
-      delete getSchedule().data[getSchedule().data.indexOf(course)]
+      delete schedule.data[schedule.data.indexOf(course)]
     }
   }
 }

@@ -1,7 +1,5 @@
 <template>
   <div>
-    {{ schedule }}
-    <!--
     <b-container>
       <b-row>
         <b-col cols="2">
@@ -15,6 +13,7 @@
           <schedule
             :days-of-the-week="getDaysDisplayed($route.fullPath)"
             :schedule-reference-date="day"
+            :schedule="schedule"
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
             class="schedule"
@@ -22,38 +21,31 @@
         </b-col>
       </b-row>
     </b-container>
-    -->
   </div>
 </template>
 
 <script>
-/*
 import ListGroups from '~/components/ListGroups.vue'
 import NavigatorArrow from '~/components/Navigator/NavigatorArrow.vue'
 import Formular from '~/components/AddCourse/Formular.vue'
 import Schedule from '~/components/Schedule/Schedule.vue'
-*/
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
 import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js'
 
 export default {
-  /*
   components: {
     ListGroups,
     Schedule,
     NavigatorArrow,
     Formular
   },
-  */
-  async asyncData () {
+  async asyncData () { // probably executed each times this page is loaded
     const response = await fetch('http://192.168.1.36:18929/schedule/')
     const schedule = await response.json()
-    console.log(schedule)
     return { schedule }
   },
   data () {
-    console.log('data()')
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
       scheduleDisplayedGroups: [1, 2],

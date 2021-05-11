@@ -51,10 +51,7 @@ export default {
     }
   },
   data () {
-    console.log(this.scheduleSchedule)
-    return {
-
-    }
+    return { }
   },
   methods: {
     scheduleGetHeightFromDate (course) {
@@ -90,7 +87,6 @@ export default {
       getInputFormatedDate(date)
     },
     courseClicked (course) {
-      console.log('clicked')
       this.$emit('courseClickedEvent', course)
     }
   }
