@@ -6,8 +6,10 @@
       <b-form-input v-model="formularAdaptor(selectedCourse).title" type="text" list="list_title" placeholder="Nom du cours" required />
       <b-form-datalist id="list_title" :options="formular_options.title" />
       <b-form-input v-model="formularAdaptor(selectedCourse).day" type="date" required />
+      <!--
       <b-form-input v-model="startTime" type="time" required />
       <b-form-input v-model="endTime" type="time" required />
+      -->
       <b-form-select v-model="formularAdaptor(selectedCourse).occurences" :options="formular_options.occurences" />
       <b-form-select v-model="formularAdaptor(selectedCourse).duration" :options="formular_options.duration" />
       <b-form-input v-if="formularAdaptor(selectedCourse).duration === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
@@ -15,9 +17,7 @@
       <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
       <br>
       <br>
-      <div class="debug">
-        {{ endTime }}
-      </div>
+      <div class="debug" />
       <b-button type="submit" variant="primary">
         Ajouter un cour
       </b-button>
@@ -55,6 +55,7 @@ export default {
       }
     }
   },
+  /*
   computed: {
     startTime: { // @Overide de v-model
       get () {
@@ -77,14 +78,19 @@ export default {
       }
     }
   },
+  */
   methods: {
     onSubmit () {
 
     },
-    getInputFormatedDate (date) {
-      return getInputFormatedDate(date)
+    formularGroupsAdaptor (groups) {
+      const extract = []
+      for (const group of groups) {
+        extract.push(group.value)
+      }
+      return extract
     },
-    formularAdaptor (course) {
+    formularAdaptor (course) { // TODO optimiser + TODO groups + TODO heures
       console.log('formular adaptor')
       if (course === null) { // on start up
         return {
@@ -93,18 +99,15 @@ export default {
           occurences: null, // default value
           duration: null,
           groups: [],
-          start: { hour: null, minutes: null },
-          end: { hour: null, minutes: null },
           teacher: null,
-          room: null
+          room: null,
+          campus: null
         }
       }
       return {
         title: course.ue.field.value,
-        day: getInputFormatedDate(new Date({ year: course.day.year, month: course.day.month, day: course.day.day })),
-        groups: [1, 2], // ça m'a soulé
-        start: course.start,
-        end: course.end,
+        day: getInputFormatedDate(new Date(course.day.year, course.day.month, course.day.day)),
+        groups: this.formularGroupsAdaptor(course.groups),
         teacher: course.teacher.value,
         room: course.place.room.value,
         campus: course.place.campus.value
