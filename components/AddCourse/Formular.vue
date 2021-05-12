@@ -3,18 +3,16 @@
     <!-- novalidate à tester -->
     <form novalidate="true" @submit="onSubmit">
       <label>Matière</label>
-      <b-form-input v-model="formular.title" type="text" list="list_title" placeholder="Nom du cours" required />
+      <b-form-input v-model="formularAdaptor(selectedCourse).title" type="text" list="list_title" placeholder="Nom du cours" required />
       <b-form-datalist id="list_title" :options="formular_options.title" />
-      <b-form-input v-model="formular.day" type="date" required />
+      <b-form-input v-model="formularAdaptor(selectedCourse).day" type="date" required />
       <b-form-input v-model="startTime" type="time" required />
       <b-form-input v-model="endTime" type="time" required />
-      <b-form-select v-model="formular.occurences" :options="formular_options.occurences" />
-      <b-form-select v-model="formular.duration" :options="formular_options.duration" />
-      <b-form-input v-if="formular.duration === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
-      <b-form-input v-model="formular.teacher" type="text" list="list_teacher" placeholder="Professeur" />
+      <b-form-select v-model="formularAdaptor(selectedCourse).occurences" :options="formular_options.occurences" />
+      <b-form-select v-model="formularAdaptor(selectedCourse).duration" :options="formular_options.duration" />
+      <b-form-input v-if="formularAdaptor(selectedCourse).duration === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
+      <b-form-input v-model="formularAdaptor(selectedCourse).teacher" type="text" list="list_teacher" placeholder="Professeur" />
       <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
-      <br>
-      <br>
       <br>
       <br>
       <div class="debug">
@@ -38,22 +36,16 @@ export default {
     scheduleReferenceDate: {
       type: Date,
       required: true
+    },
+    selectedCourse: {
+      type: Object,
+      default: null,
+      required: false
     }
   },
   data () {
     return {
-      formular: {
-        title: null,
-        day: getInputFormatedDate(this.scheduleReferenceDate),
-        occurences: null, // default value
-        duration: null,
-        groups: [],
-        start: { hour: null, minutes: null },
-        end: { hour: null, minutes: null },
-        teacher: null,
-        room: null
-      },
-
+      formular: this.formularAdaptor(this.selectedCourse),
       formular_options: {
         title: ['Algorithmique', 'Logique', 'Projet'],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
@@ -91,6 +83,32 @@ export default {
     },
     getInputFormatedDate (date) {
       return getInputFormatedDate(date)
+    },
+    formularAdaptor (course) {
+      console.log('formular adaptor')
+      if (course === null) { // on start up
+        return {
+          title: null,
+          day: getInputFormatedDate(this.scheduleReferenceDate),
+          occurences: null, // default value
+          duration: null,
+          groups: [],
+          start: { hour: null, minutes: null },
+          end: { hour: null, minutes: null },
+          teacher: null,
+          room: null
+        }
+      }
+      return {
+        title: course.ue.field.value,
+        day: getInputFormatedDate(new Date({ year: course.day.year, month: course.day.month, day: course.day.day })),
+        groups: [1, 2], // ça m'a soulé
+        start: course.start,
+        end: course.end,
+        teacher: course.teacher.value,
+        room: course.place.room.value,
+        campus: course.place.campus.value
+      }
     }
   }
 }

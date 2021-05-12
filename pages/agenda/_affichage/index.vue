@@ -2,14 +2,17 @@
   <div>
     <b-container>
       <b-row>
-        <b-col cols="2">
+        <b-col cols="4">
           <list-groups />
           <navigator-arrow
             @weekChangeEvent="weekChange($event)"
           />
-          <formular :schedule-reference-date="day" />
+          <formular
+            :schedule-reference-date="day"
+            :selected-course="selectedCourse"
+          />
         </b-col>
-        <b-col cols="10">
+        <b-col cols="8">
           <schedule
             :days-of-the-week="getDaysDisplayed($route.fullPath)"
             :schedule-reference-date="day"
@@ -17,6 +20,7 @@
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
             class="schedule"
+            @courseClickedEvent="courseChange($event, schedule)"
           />
         </b-col>
       </b-row>
@@ -41,12 +45,12 @@ export default {
     NavigatorArrow,
     Formular
   },
-  async asyncData () {
+  async asyncData () { // todo virer working hour du json
     if (getSchedule() != null) { return }
     const schedule = await fetch('http://192.168.1.36:18929/schedule/')
       .then(res => res.json())
       .then((data) => { return { schedule: data } })
-    setSchedule(schedule) // TODO à opti si pas d'autres utilisation
+    setSchedule(0) // à remplacer par vuex.store
     return schedule
   },
   data () {
@@ -54,7 +58,8 @@ export default {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
       scheduleDisplayedGroups: [1, 2],
       user: null, // contient client - side rights /!\ do not trust
-      scheduleHeight: 600
+      scheduleHeight: 600,
+      selectedCourse: null
     }
   },
   head () {
@@ -72,6 +77,14 @@ export default {
       // if (data === '/agenda/semaine/') { return 7 }
       if (data === '/agenda/jour/') { return 1 }
       return 7 // defaut
+    },
+    courseChange (event, schedule) {
+      console.log('clicked in index')
+      this.selectedCourse = event
+      // this.deleteCourse(event, schedule)
+    },
+    deleteCourse (course, schedule) {
+      delete schedule.data[schedule.data.indexOf(course)]
     }
   }
 }

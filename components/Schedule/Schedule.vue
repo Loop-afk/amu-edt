@@ -120,13 +120,9 @@ export default {
       setWeekDays(weekDays)
       return weekDays
     },
-    courseChange (event, schedule) {
-      console.log(schedule)
-      this.deleteCourse(event, schedule)
-      console.log(schedule)
-    },
-    deleteCourse (course, schedule) {
-      delete schedule.data[schedule.data.indexOf(course)]
+    courseChange (event) {
+      console.log('clicked in schedule')
+      this.$emit('courseClickedEvent', event)
     }
   }
 }
