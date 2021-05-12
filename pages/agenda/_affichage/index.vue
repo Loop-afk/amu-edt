@@ -84,7 +84,7 @@ export default {
       // this.deleteCourse(event, schedule)
     },
     deleteCourse (course, schedule) {
-      delete schedule.data[schedule.data.indexOf(course)]
+      delete schedule[schedule.indexOf(course)]
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
     <ordinate-line
-      :working-hours="schedule.workingHours"
+      :working-hours="workingHours"
       :schedule-height="scheduleHeight"
       style="position: absolute; top: 37px;"
     />
@@ -21,7 +21,7 @@
       <div style="position: absolute; width: 100%; display: flex; top: 37px;">
         <ordinate-axis
           style="left: -20px; top: -12px; position: absolute;"
-          :working-hours="schedule.workingHours"
+          :working-hours="workingHours"
           :schedule-height="scheduleHeight"
         />
         <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
@@ -50,7 +50,7 @@ export default {
   },
   props: {
     schedule: {
-      type: Object,
+      type: Array,
       default: null
     },
     scheduleReferenceDate: {
@@ -73,7 +73,8 @@ export default {
   },
   data () {
     return {
-      OrdinateAxisOffset: -30
+      OrdinateAxisOffset: -30,
+      workingHours: { start: 6, end: 20 }
     }
   },
   methods: {
@@ -90,12 +91,12 @@ export default {
     // todo supprimer et remplaer par requete REST
     scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
-      const a = schedule.data.filter(course => compareComparableDate(course.day, comparableDay))
+      const a = schedule.filter(course => compareComparableDate(course.day, comparableDay))
       let b = a.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
       if (b.length === 0) {
         b = null
       }
-      return { data: b, workingHours: schedule.workingHours } // attention avant chaque modification de data
+      return { data: b, workingHours: this.workingHours } // attention avant chaque modification de data
     },
     isDateSame (date1, date2) {
       if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }
