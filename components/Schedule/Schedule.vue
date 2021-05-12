@@ -88,7 +88,7 @@ export default {
       }
       return dayWeek
     },
-    // todo supprimer et remplaer par requete REST
+    // todo supprimer et remplaer par une requete
     scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       const a = schedule.filter(course => compareComparableDate(course.day, comparableDay))

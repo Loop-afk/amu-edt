@@ -45,7 +45,7 @@ export default {
     NavigatorArrow,
     Formular
   },
-  async asyncData () { // todo virer working hour du json
+  async asyncData () {
     if (getSchedule() != null) { return }
     const schedule = await fetch('http://192.168.1.36:18929/schedule/')
       .then(res => res.json())
