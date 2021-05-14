@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ListGroups from '~/components/ListGroups.vue'
+import ListGroups from '~/components/Navigator/ListGroups.vue'
 import NavigatorArrow from '~/components/Navigator/NavigatorArrow.vue'
 import Formular from '~/components/AddCourse/Formular.vue'
 import Schedule from '~/components/Schedule/Schedule.vue'

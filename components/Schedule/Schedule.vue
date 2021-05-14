@@ -97,7 +97,6 @@ export default {
       if (groupFiltered.length === 0) {
         groupFiltered = null
       }
-      console.log(groupFiltered)
       return groupFiltered // attention avant chaque modification de data
     },
     isDateSame (date1, date2) {

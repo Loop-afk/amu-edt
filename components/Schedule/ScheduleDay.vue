@@ -38,8 +38,8 @@ import { getInputFormatedDate, getReFormatedDate } from '~/assets/js/formatedDat
 export default {
   props: {
     parsedSchedule: {
-      type: Array,
-      required: true
+      default: null,
+      type: Array
     },
     scheduleHeight: {
       type: Number,

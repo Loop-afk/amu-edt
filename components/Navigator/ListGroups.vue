@@ -2,7 +2,6 @@
   <div>
     <div>cc</div>
     <div>ddd</div>
-    <div />
   </div>
 </template>
 
