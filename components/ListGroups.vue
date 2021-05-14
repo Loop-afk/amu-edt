@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div>cc</div>
-        <div>ddd</div>
-        <div></div>
-    </div>
+  <div>
+    <div>cc</div>
+    <div>ddd</div>
+    <div />
+  </div>
 </template>
 
 <script>

@@ -1,9 +1,9 @@
 <template>
   <div style="height: 100%; width: 100%; position: relative">
     <div class="scheduleDayContainer" style="width: 100%">
-      <div v-if="scheduleSchedule != null ">
+      <div v-if="parsedSchedule != null ">
         <div
-          v-for="(course, key) in scheduleSchedule.data"
+          v-for="(course, key) in parsedSchedule"
           :id="'course-target-'+generateTargetId()"
           :key="key"
           class="scheduleCourse"
@@ -28,9 +28,6 @@
           {{ course.title }}
         </div>
       </div>
-      <div v-else>
-        Internal Error 500#1
-      </div>
     </div>
   </div>
 </template>
@@ -40,13 +37,16 @@ import { generateTargetId, getTargetId } from '~/assets/js/targetId.js'
 import { getInputFormatedDate, getReFormatedDate } from '~/assets/js/formatedDate.js'
 export default {
   props: {
-    scheduleSchedule: {
-      type: Object,
-      default: null,
-      required: false
+    parsedSchedule: {
+      type: Array,
+      required: true
     },
     scheduleHeight: {
       type: Number,
+      required: true
+    },
+    workingHours: {
+      type: Object,
       required: true
     }
   },
@@ -55,14 +55,14 @@ export default {
   },
   methods: {
     scheduleGetHeightFromDate (course) {
-      const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
+      const unit = this.scheduleHeight / (this.workingHours.end - this.workingHours.start)
       const height = (unit * (course.end.hours - course.start.hours) + (unit * (course.end.minutes - course.start.minutes) / 60))
-      if (height > this.scheduleHeight) { return (unit * (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start - 2)) + 'px' } // - 2 totalement faux
+      if (height > this.scheduleHeight) { return (unit * (this.workingHours.end - this.workingHours.start - 2)) + 'px' } // - 2 totalement faux
       return height + 'px'
     },
     scheduleGetTopFromDate (course) {
-      const unit = this.scheduleHeight / (this.scheduleSchedule.workingHours.end - this.scheduleSchedule.workingHours.start)
-      const top = (unit * (course.start.hours - this.scheduleSchedule.workingHours.start)) + (unit * (course.start.minutes / 60))
+      const unit = this.scheduleHeight / (this.workingHours.end - this.workingHours.start)
+      const top = (unit * (course.start.hours - this.workingHours.start)) + (unit * (course.start.minutes / 60))
       if (top < 0) { return '0px' }
       return top + 'px'
     },

@@ -6,7 +6,7 @@
       style="position: absolute; top: 37px;"
     />
     <div class="schedule-row">
-      <div style="position: absolute; width: 100%; display: flex; top: 0px;" class="box">
+      <div style="position: absolute; width: 100%; display: flex; top: -50px;" class="box">
         <div
           v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)"
           :key="key"
@@ -27,8 +27,9 @@
         <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-reference-date="scheduleReferenceDate"
-            :schedule-schedule="scheduleParseSchedule(schedule, day, scheduleDisplayedGroups)"
+            :parsed-schedule="scheduleParseSchedule(schedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
+            :working-hours="workingHours"
             @courseClickedEvent="courseChange($event, schedule)"
           />
         </div>
@@ -91,12 +92,13 @@ export default {
     // todo supprimer et remplaer par une requete
     scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
-      const a = schedule.filter(course => compareComparableDate(course.day, comparableDay))
-      let b = a.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
-      if (b.length === 0) {
-        b = null
+      const dayFiltered = schedule.filter(course => compareComparableDate(course.day, comparableDay))
+      let groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
+      if (groupFiltered.length === 0) {
+        groupFiltered = null
       }
-      return { data: b, workingHours: this.workingHours } // attention avant chaque modification de data
+      console.log(groupFiltered)
+      return groupFiltered // attention avant chaque modification de data
     },
     isDateSame (date1, date2) {
       if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }

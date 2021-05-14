@@ -47,7 +47,7 @@ export default {
   },
   async asyncData () {
     if (getSchedule() != null) { return }
-    const schedule = await fetch('http://192.168.1.36:18929/schedule/')
+    const schedule = await fetch('http://192.168.1.29:18929/schedule/')
       .then(res => res.json())
       .then((data) => { return { schedule: data } })
     setSchedule(0) // à remplacer par vuex.store
