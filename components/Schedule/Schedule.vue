@@ -10,12 +10,12 @@
         <div
           v-for="(day, key) in weekDays"
           :key="key"
-          :style="{width: (100/weekDays)+'%'}"
+          :style="{width: (100/weekDays.length)+'%'}"
           :class="{scheduleToday: isDateSame(day, new Date()),
                    scheduleReferenceDate: isDateSame(day, scheduleReferenceDate)}"
           class="scheduleHeaderDate box"
         >
-          {{ getFormatedWeekDay(day) + key }}
+          {{ getFormatedWeekDay(day) }}
         </div>
       </div>
       <div style="position: absolute; width: 100%; display: flex; top: 37px;">
@@ -90,7 +90,6 @@ export default {
       }
       return dayWeek
     },
-    // todo supprimer et remplaer par une requete
     parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       const dayFiltered = schedule.filter(course => compareComparableDate(course.day, comparableDay))
@@ -98,7 +97,7 @@ export default {
       if (groupFiltered.length === 0) {
         groupFiltered = null
       }
-      return groupFiltered // attention avant chaque modification de data
+      return groupFiltered
     },
     isDateSame (date1, date2) {
       if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }
@@ -117,8 +116,8 @@ export default {
       console.log('clicked in schedule')
       this.$emit('courseClickedEvent', event)
     },
-    fetchSchedule (date) {
-      return fetch('http://192.168.1.29:18929/schedule/?' + date, {
+    fetchSchedule (interval) {
+      return fetch('http://192.168.1.29:18929/schedule/?from=' + interval.start + '&to=' + interval.end, {
         method: 'GET'
       })
         .then(res => res.json())
@@ -127,12 +126,12 @@ export default {
           console.error(error)
         })
     },
-    async getSchedule (a) {
-      console.log('baaa')
-
-      const b = await this.fetchSchedule('a')
-      console.log(b)
+    async getSchedule (weekDays) {
+      const b = await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays))
       return b
+    },
+    getIntervalFromWeekDays (weekDays) {
+      return { start: getComparableFromDate(weekDays[0]), end: getComparableFromDate(weekDays[weekDays.length - 1]) }
     }
   }
 }
