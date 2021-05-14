@@ -14,9 +14,8 @@
         </b-col>
         <b-col cols="8">
           <schedule
-            :days-of-the-week="getDaysDisplayed($route.fullPath)"
+            :displayed-days="getDaysDisplayed($route.fullPath)"
             :schedule-reference-date="day"
-            :schedule="schedule"
             :schedule-displayed-groups="scheduleDisplayedGroups"
             :schedule-height="scheduleHeight"
             class="schedule"
@@ -36,7 +35,6 @@ import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
 import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js'
-import { getSchedule, setSchedule } from '~/assets/js/schedule.js'
 
 export default {
   components: {
@@ -44,14 +42,6 @@ export default {
     Schedule,
     NavigatorArrow,
     Formular
-  },
-  async asyncData () {
-    if (getSchedule() != null) { return }
-    const schedule = await fetch('http://192.168.1.29:18929/schedule/')
-      .then(res => res.json())
-      .then((data) => { return { schedule: data } })
-    setSchedule(0) // à remplacer par vuex.store
-    return schedule
   },
   data () {
     return {

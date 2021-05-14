@@ -6,16 +6,16 @@
       style="position: absolute; top: 37px;"
     />
     <div class="schedule-row">
-      <div style="position: absolute; width: 100%; display: flex; top: -50px;" class="box">
+      <div style="position: absolute; width: 100%; display: flex; top: -40px;" class="box">
         <div
-          v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)"
+          v-for="(day, key) in weekDays"
           :key="key"
-          :style="{width: (100/lenWeekDays())+'%'}"
+          :style="{width: (100/weekDays)+'%'}"
           :class="{scheduleToday: isDateSame(day, new Date()),
                    scheduleReferenceDate: isDateSame(day, scheduleReferenceDate)}"
           class="scheduleHeaderDate box"
         >
-          {{ getFormatedWeekDay(day) }}
+          {{ getFormatedWeekDay(day) + key }}
         </div>
       </div>
       <div style="position: absolute; width: 100%; display: flex; top: 37px;">
@@ -24,10 +24,10 @@
           :working-hours="workingHours"
           :schedule-height="scheduleHeight"
         />
-        <div v-for="(day, key) in generateWeekDays(scheduleReferenceDate, daysOfTheWeek)" :key="key" style="width: 100%;">
+        <div v-for="(day, key) in weekDays" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-reference-date="scheduleReferenceDate"
-            :parsed-schedule="scheduleParseSchedule(schedule, day, scheduleDisplayedGroups)"
+            :parsed-schedule="parseSchedule(schedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
             :working-hours="workingHours"
             @courseClickedEvent="courseChange($event, schedule)"
@@ -39,21 +39,16 @@
 </template>
 
 <script>
-import ScheduleDay from '~/components/Schedule/ScheduleDay.vue'
 import addDays from '~/assets/js/addDays.js'
 import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
-import { getWeekDays, setWeekDays, lenWeekDays } from '~/assets/js/weekDays.js'
+// getWeekDays
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
 export default {
   components: {
-    ScheduleDay, OrdinateAxis, OrdinateLine
+    OrdinateAxis, OrdinateLine
   },
   props: {
-    schedule: {
-      type: Array,
-      default: null
-    },
     scheduleReferenceDate: {
       type: Date,
       required: true
@@ -67,7 +62,7 @@ export default {
       default: () => [],
       required: false
     },
-    daysOfTheWeek: {
+    displayedDays: {
       type: Number,
       default: 7
     }
@@ -75,8 +70,14 @@ export default {
   data () {
     return {
       OrdinateAxisOffset: -30,
-      workingHours: { start: 6, end: 20 }
+      workingHours: { start: 6, end: 20 },
+      schedule: [],
+      weekDays: this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
     }
+  },
+  async mounted () {
+    console.log('mounted')
+    this.schedule = await this.getSchedule(this.weekDays)
   },
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
@@ -90,7 +91,7 @@ export default {
       return dayWeek
     },
     // todo supprimer et remplaer par une requete
-    scheduleParseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
+    parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       const dayFiltered = schedule.filter(course => compareComparableDate(course.day, comparableDay))
       let groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
@@ -109,22 +110,29 @@ export default {
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
-    lenWeekDays () {
-      return lenWeekDays()
-    },
     addDays (date, days) {
       return addDays(date, days)
-    },
-    generateWeekDays (date, days) {
-      let weekDays = getWeekDays(date, days)
-      if (weekDays != null) { return weekDays }
-      weekDays = this.scheduleSettingsGetWeekDays(days, date)
-      setWeekDays(weekDays)
-      return weekDays
     },
     courseChange (event) {
       console.log('clicked in schedule')
       this.$emit('courseClickedEvent', event)
+    },
+    fetchSchedule (date) {
+      return fetch('http://192.168.1.29:18929/schedule/?' + date, {
+        method: 'GET'
+      })
+        .then(res => res.json())
+        .then((data) => { return data })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    async getSchedule (a) {
+      console.log('baaa')
+
+      const b = await this.fetchSchedule('a')
+      console.log(b)
+      return b
     }
   }
 }
