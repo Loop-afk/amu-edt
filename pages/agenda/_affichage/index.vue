@@ -64,14 +64,11 @@ export default {
       setReferenceDate(this.day)
     },
     getDaysDisplayed (data) {
-      // if (data === '/agenda/semaine/') { return 7 }
       if (data === '/agenda/jour/') { return 1 }
       return 7 // defaut
     },
     courseChange (event, schedule) {
-      console.log('clicked in index')
       this.selectedCourse = event
-      // this.deleteCourse(event, schedule)
     },
     deleteCourse (course, schedule) {
       delete schedule[schedule.indexOf(course)]

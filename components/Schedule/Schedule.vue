@@ -77,14 +77,12 @@ export default {
     }
   },
   async mounted () {
-    console.log('mounted')
     /* ordre important */
     this.weekDays = this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
     this.schedule = await this.getSchedule(this.weekDays)
   },
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
-      console.log('scheduleSettingsGetWeekDays executed')
       const dayWeek = []
       let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
       if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) >= daysDisplayed) { weekDate = scheduleReferenceDate }
@@ -117,7 +115,6 @@ export default {
       return addDays(date, days)
     },
     courseChange (event) {
-      console.log('clicked in schedule')
       this.$emit('courseClickedEvent', event)
     },
     fetchSchedule (interval) {

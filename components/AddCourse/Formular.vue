@@ -1,15 +1,10 @@
 <template>
   <div class="formularContainer">
-    <!-- novalidate à tester -->
     <form novalidate="true" @submit="onSubmit">
       <label>Matière</label>
       <b-form-input v-model="formularAdaptor(selectedCourse).title" type="text" list="list_title" placeholder="Nom du cours" required />
       <b-form-datalist id="list_title" :options="formular_options.title" />
       <b-form-input v-model="formularAdaptor(selectedCourse).day" type="date" required />
-      <!--
-      <b-form-input v-model="startTime" type="time" required />
-      <b-form-input v-model="endTime" type="time" required />
-      -->
       <b-form-select v-model="formularAdaptor(selectedCourse).occurences" :options="formular_options.occurences" />
       <b-form-select v-model="formularAdaptor(selectedCourse).duration" :options="formular_options.duration" />
       <b-form-input v-if="formularAdaptor(selectedCourse).duration === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
@@ -55,30 +50,6 @@ export default {
       }
     }
   },
-  /*
-  computed: {
-    startTime: { // @Overide de v-model
-      get () {
-        return this.formular.start.hour + ':' + this.formular.start.minutes
-      },
-      set (value) {
-        const temp = value.split(':')
-        this.formular.start.hour = temp[0]
-        this.formular.start.minutes = temp[1]
-      }
-    },
-    endTime: { // @Overide de v-model
-      get () {
-        return this.formular.end.hour + ':' + this.formular.end.minutes
-      },
-      set (value) {
-        const temp = value.split(':')
-        this.formular.end.hour = temp[0]
-        this.formular.end.minutes = temp[1]
-      }
-    }
-  },
-  */
   methods: {
     onSubmit () {
 
@@ -91,7 +62,6 @@ export default {
       return extract
     },
     formularAdaptor (course) { // TODO optimiser + TODO heures
-      console.log('formularAdaptor executed')
       if (course === null) { // on start up
         return {
           title: null,
