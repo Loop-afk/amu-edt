@@ -1,6 +1,5 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
-    <div> {{ scheduleReferenceDate }} </div>
     <ordinate-line
       :working-hours="workingHours"
       :schedule-height="scheduleHeight"
@@ -45,6 +44,9 @@ import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getInputFormatedDate } from '~/assets/js/formatedDate.js'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
+import { schedulePush, scheduleGetAll } from '~/assets/js/schedule.js'
+// import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
+
 export default {
   components: {
     OrdinateAxis, OrdinateLine
@@ -80,7 +82,7 @@ export default {
     console.log('mounted')
     /* ordre important */
     this.weekDays = this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
-    this.schedule = await this.getSchedule(this.weekDays)
+    this.schedule = await this.getSchedule(this.weekDays, this.scheduleDisplayedGroups)
   },
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
@@ -97,6 +99,7 @@ export default {
     parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       const dayFiltered = schedule.filter(course => compareComparableDate(course.day, comparableDay))
+      // à tester et supprimer (présence dans schedule.js)
       let groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
       if (groupFiltered.length === 0) {
         groupFiltered = null
@@ -130,8 +133,10 @@ export default {
           console.error(error)
         })
     },
-    async getSchedule (weekDays) {
-      return await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays))
+    async getSchedule (weekDays, scheduleDisplayedGroups) {
+      schedulePush(await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays)))
+      // return scheduleGet(weekDays, scheduleDisplayedGroups)
+      return scheduleGetAll()
     },
     getIntervalFromWeekDays (weekDays) {
       return { start: weekDays[0], end: weekDays[weekDays.length - 1] }
