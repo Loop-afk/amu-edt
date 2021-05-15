@@ -9,9 +9,9 @@
     <div class="schedule-row">
       <div style="position: absolute; width: 100%; display: flex; top: -40px;" class="box">
         <div
-          v-for="(day, key) in weekDays"
+          v-for="(day, key) in scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate)"
           :key="key"
-          :style="{width: (100/weekDays.length)+'%'}"
+          :style="{width: (100/scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate).length)+'%'}"
           :class="{scheduleToday: isDateSame(day, new Date()),
                    scheduleReferenceDate: isDateSame(day, scheduleReferenceDate)}"
           class="scheduleHeaderDate box"
@@ -25,7 +25,7 @@
           :working-hours="workingHours"
           :schedule-height="scheduleHeight"
         />
-        <div v-for="(day, key) in weekDays" :key="key" style="width: 100%;">
+        <div v-for="(day, key) in scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate)" :key="key" style="width: 100%;">
           <schedule-day
             :schedule-reference-date="scheduleReferenceDate"
             :parsed-schedule="parseSchedule(schedule, day, scheduleDisplayedGroups)"
@@ -84,6 +84,7 @@ export default {
   },
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
+      console.log('scheduleSettingsGetWeekDays executed')
       const dayWeek = []
       let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
       if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) >= daysDisplayed) { weekDate = scheduleReferenceDate }
@@ -91,7 +92,6 @@ export default {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push(tempDate)
       }
-      console.table(dayWeek)
       return dayWeek
     },
     parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
