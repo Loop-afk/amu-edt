@@ -91,7 +91,7 @@ export default {
       return extract
     },
     formularAdaptor (course) { // TODO optimiser + TODO heures
-      console.log('formular adaptor')
+      // console.log('formular adaptor')
       if (course === null) { // on start up
         return {
           title: null,

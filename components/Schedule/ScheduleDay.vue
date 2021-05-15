@@ -23,6 +23,8 @@
           >
             {{ course.place.room.value + ' ' + course.teacher.value }}
             <br>
+            {{ getFormatedHoursMinutes(course.start) + '-' + getFormatedHoursMinutes(course.end) }}
+            <br>
             {{ getInputFormatedDate(new Date({day:course.day, month: course.month, year: course.year})) }}
           </b-popover>
           {{ course.title }}
@@ -34,7 +36,7 @@
 
 <script>
 import { generateTargetId, getTargetId } from '~/assets/js/targetId.js'
-import { getInputFormatedDate, getReFormatedDate } from '~/assets/js/formatedDate.js'
+import { getInputFormatedDate, getReFormatedDate, getFormatedHoursMinutes } from '~/assets/js/formatedDate.js'
 export default {
   props: {
     parsedSchedule: {
@@ -82,6 +84,9 @@ export default {
     },
     getReFormatedDate (date) {
       return getReFormatedDate(date)
+    },
+    getFormatedHoursMinutes (time) {
+      return getFormatedHoursMinutes(time)
     },
     getInputFormatedDate (date) {
       getInputFormatedDate(date)

@@ -1,5 +1,6 @@
 <template>
   <div :style="{height: scheduleHeight + 'px'}">
+    <div> {{ scheduleReferenceDate }} </div>
     <ordinate-line
       :working-hours="workingHours"
       :schedule-height="scheduleHeight"
@@ -41,7 +42,7 @@
 <script>
 import addDays from '~/assets/js/addDays.js'
 import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
-// getWeekDays
+import { getInputFormatedDate } from '~/assets/js/formatedDate.js'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
 export default {
@@ -72,11 +73,13 @@ export default {
       OrdinateAxisOffset: -30,
       workingHours: { start: 6, end: 20 },
       schedule: [],
-      weekDays: this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
+      weekDays: []
     }
   },
   async mounted () {
     console.log('mounted')
+    /* ordre important */
+    this.weekDays = this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
     this.schedule = await this.getSchedule(this.weekDays)
   },
   methods: {
@@ -88,6 +91,7 @@ export default {
         const tempDate = addDays(weekDate, dayWeekKey)
         dayWeek.push(tempDate)
       }
+      console.table(dayWeek)
       return dayWeek
     },
     parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
@@ -117,7 +121,7 @@ export default {
       this.$emit('courseClickedEvent', event)
     },
     fetchSchedule (interval) {
-      return fetch('http://192.168.1.29:18929/schedule/?from=' + interval.start + '&to=' + interval.end, {
+      return fetch('http://192.168.1.29:18929/schedule/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end), {
         method: 'GET'
       })
         .then(res => res.json())
@@ -127,11 +131,10 @@ export default {
         })
     },
     async getSchedule (weekDays) {
-      const b = await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays))
-      return b
+      return await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays))
     },
     getIntervalFromWeekDays (weekDays) {
-      return { start: getComparableFromDate(weekDays[0]), end: getComparableFromDate(weekDays[weekDays.length - 1]) }
+      return { start: weekDays[0], end: weekDays[weekDays.length - 1] }
     }
   }
 }
