@@ -4,7 +4,7 @@
       v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval)) + 1"
       :key="currentInterval"
       :style="{top: scheduleGetHeightFromDate(currentInterval, scheduleHeight, ordinateAxisHoursInterval)}"
-      class="line"
+      class="line Ckdulzlinevertical"
     />
   </div>
 </template>
@@ -49,7 +49,6 @@ export default {
 .line {
   position: absolute;
   width: 100%;
-  box-shadow: 0px 0px 0px 1px rgb(50, 27, 184);
   z-index: 9;
 }
 

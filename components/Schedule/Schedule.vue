@@ -11,11 +11,22 @@
           v-for="(day, key) in scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate)"
           :key="key"
           :style="{width: (100/scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate).length)+'%'}"
-          :class="{scheduleToday: isDateSame(day, new Date()),
-                   scheduleReferenceDate: isDateSame(day, scheduleReferenceDate)}"
-          class="scheduleHeaderDate box"
+          class="scheduleHeader"
         >
-          {{ getFormatedWeekDay(day) }}
+          <p>
+            <span
+              class="scheduleHeaderDate"
+              :class="{
+                scheduleReferenceDate: isDateSame(day, scheduleReferenceDate),
+                scheduleToday: isDateSame(day, new Date()),}"
+            >
+              {{ day.toLocaleDateString('fr-fr', { day: 'numeric' }) }}
+            </span>
+            <br>
+            <span>
+              {{ capitalizeFirstLetter(day.toLocaleDateString('fr-fr', { weekday: 'long' })) }}
+            </span>
+          </p>
         </div>
       </div>
       <div style="position: absolute; width: 100%; display: flex; top: 37px;">
@@ -108,9 +119,6 @@ export default {
       if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }
       return false
     },
-    getFormatedWeekDay (date) {
-      return this.capitalizeFirstLetter(date.toLocaleDateString('fr-fr', { weekday: 'long', day: 'numeric' }))
-    },
     capitalizeFirstLetter (word) {
       return word.charAt(0).toUpperCase() + word.slice(1)
     },
@@ -144,7 +152,8 @@ export default {
 
 <style scoped>
 .box{
-  box-shadow: 0px 0px 0px 1px rgb(255, 71, 71);
+  /*box-shadow: 0px 0px 0px 1px rgb(255, 71, 71);*/
+
 }
 
 .schedule-row {
@@ -154,18 +163,21 @@ export default {
 }
 
 .scheduleHeaderDate {
-  font-style: italic;
-  flex-direction: row;
-  position: relative;
-  word-wrap: break-word;
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.scheduleHeader {
+  font-family: 'Open sans';
+  color: #BDC2C7;
 }
 
 .scheduleToday {
-  color: blue;
+  color: #0065BD;
 }
 
 .scheduleReferenceDate {
-  color:brown;
+  color: brown;
 }
 
 .schedule-row-child {
