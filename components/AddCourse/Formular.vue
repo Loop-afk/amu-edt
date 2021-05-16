@@ -1,5 +1,5 @@
 <template>
-  <div class="formularContainer">
+  <div>
     <form novalidate="true" @submit="onSubmit">
       <label>Matière</label>
       <b-form-input v-model="formularAdaptor(selectedCourse).title" type="text" list="list_title" placeholder="Nom du cours" required />

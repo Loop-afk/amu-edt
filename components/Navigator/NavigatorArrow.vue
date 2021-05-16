@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%; width: 100%;">
     <div @click="weekChange(-7)">
       #week ago#
     </div>

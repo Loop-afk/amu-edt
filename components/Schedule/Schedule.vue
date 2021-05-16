@@ -1,5 +1,5 @@
 <template>
-  <div :style="{height: scheduleHeight + 'px'}">
+  <div :style="{height: scheduleHeight + 'px', top: -1 * OrdinateAxisOffset + 20 + 'px'}">
     <ordinate-line
       :working-hours="workingHours"
       :schedule-height="scheduleHeight"
@@ -170,5 +170,9 @@ export default {
 
 .schedule-row-child {
   width: 100%;
+}
+
+.scheduleCorrectPadding {
+  padding: 0px;
 }
 </style>

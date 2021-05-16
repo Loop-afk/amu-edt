@@ -1,0 +1,24 @@
+.Ckdulzcontainer {
+  position: absolute;
+  background-color: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin: 20px;
+}
+
+.Ckdulzcontainercol {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+body {
+    background-color: #F2F3F4;
+}
+
+.Ckdulznav {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+}

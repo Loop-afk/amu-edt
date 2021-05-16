@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Ckdulznav">
     <b-nav>
       <b-nav-item>
         <NuxtLink to="/agenda/semaine/">

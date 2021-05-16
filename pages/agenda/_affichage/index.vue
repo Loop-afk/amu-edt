@@ -1,26 +1,39 @@
 <template>
-  <div>
-    <b-container>
+  <div style="height: 100%; width: 100%;">
+    <b-container style="height: 100%; width: 100%;">
       <b-row>
-        <b-col cols="4">
-          <list-groups />
-          <navigator-arrow
-            @weekChangeEvent="weekChange($event)"
-          />
-          <formular
-            :schedule-reference-date="day"
-            :selected-course="selectedCourse"
-          />
+        <b-col cols="4" class="Ckdulzcontainercol" style="height: 100%; width: 100%;">
+          <div class="Ckdulzcontainer" style="height: 100%; width: 100%; position: relative;">
+            <list-groups />
+          </div>
+          <div class="Ckdulzcontainer" style="height: 100%; width: 100%;position: relative;">
+            <navigator-arrow
+              @weekChangeEvent="weekChange($event)"
+            />
+          </div>
+          <div class="Ckdulzcontainer" style="height: 100%; width: 100%;position: relative;">
+            <b-button v-b-modal.modal-1>
+              Nouveau cours
+            </b-button>
+          </div>
+          <b-modal id="modal-1" title="Nouveau cours" scrollable centered>
+            <formular
+              :schedule-reference-date="day"
+              :selected-course="selectedCourse"
+            />
+          </b-modal>
         </b-col>
         <b-col cols="8">
-          <schedule
-            :displayed-days="getDaysDisplayed($route.fullPath)"
-            :schedule-reference-date="day"
-            :schedule-displayed-groups="scheduleDisplayedGroups"
-            :schedule-height="scheduleHeight"
-            class="schedule"
-            @courseClickedEvent="courseChange($event, schedule)"
-          />
+          <div class="Ckdulzcontainer" style="height: 100%; width: 100%;" :style="{height: scheduleHeight + 200 +'px'}">
+            <schedule
+              :displayed-days="getDaysDisplayed($route.params.affichage)"
+              :schedule-reference-date="day"
+              :schedule-displayed-groups="scheduleDisplayedGroups"
+              :schedule-height="scheduleHeight"
+              class="schedule"
+              @courseClickedEvent="courseChange($event, schedule)"
+            />
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -64,7 +77,7 @@ export default {
       setReferenceDate(this.day)
     },
     getDaysDisplayed (data) {
-      if (data === '/agenda/jour/') { return 1 }
+      if (data === 'jour') { return 1 }
       return 7 // defaut
     },
     courseChange (event, schedule) {
