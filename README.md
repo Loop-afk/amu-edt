@@ -24,3 +24,8 @@ $ npm run generate
 $ docker build -t nuxt-docker-test .
 $ docker run nuxt-docker-test
 ```
+
+## Design
+
+[Palette de couleur](https://coolors.co/0065bd-f2f3f4-3db7e4-001514-f0ab00)
+[Inspiration](https://dribbble.com/shots/9089543-Schedule-Dashboard-Design)
