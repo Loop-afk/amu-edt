@@ -27,5 +27,6 @@ $ docker run nuxt-docker-test
 
 ## Design
 
-[Palette de couleur](https://coolors.co/0065bd-f2f3f4-3db7e4-001514-f0ab00)
+[Palette de couleur](https://coolors.co/0065bd-3db7e4-f0ab00-f2f3f4-bdc2c7-677079-001514)
+
 [Inspiration](https://dribbble.com/shots/9089543-Schedule-Dashboard-Design)
