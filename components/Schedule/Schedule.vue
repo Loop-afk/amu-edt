@@ -11,14 +11,14 @@
           v-for="(day, key) in scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate)"
           :key="key"
           :style="{width: (100/scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate).length)+'%'}"
-          class="scheduleHeader"
+          class="scheduleHeader textDark"
         >
           <p>
             <span
               class="scheduleHeaderDate"
               :class="{
-                scheduleReferenceDate: isDateSame(day, scheduleReferenceDate),
-                scheduleToday: isDateSame(day, new Date()),}"
+                textEmphasize: isDateSame(day, scheduleReferenceDate),
+                textMain: isDateSame(day, new Date()),}"
             >
               {{ day.toLocaleDateString('fr-fr', { day: 'numeric' }) }}
             </span>
@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
 .box{
-  /*box-shadow: 0px 0px 0px 1px rgb(255, 71, 71);*/
+  box-shadow: 0px 0px 0px 1px rgb(255, 71, 71);
 
 }
 
@@ -169,15 +169,6 @@ export default {
 
 .scheduleHeader {
   font-family: 'Open sans';
-  color: #BDC2C7;
-}
-
-.scheduleToday {
-  color: #0065BD;
-}
-
-.scheduleReferenceDate {
-  color: brown;
 }
 
 .schedule-row-child {

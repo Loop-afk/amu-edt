@@ -4,7 +4,7 @@
       v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval)) + 1"
       :key="currentInterval"
       :style="{top: scheduleGetHeightFromDate(currentInterval, scheduleHeight, ordinateAxisHoursInterval)}"
-      class="hourInterval"
+      class="hourInterval textDark"
     >
       {{ currentInterval * ordinateAxisHoursInterval + workingHours.start }}
     </div>

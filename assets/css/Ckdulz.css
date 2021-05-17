@@ -1,4 +1,4 @@
-.Ckdulzcontainer {
+.cContainer {
   position: absolute;
   background-color: white;
   border-radius: 20px;
@@ -6,7 +6,7 @@
   margin: 20px;
 }
 
-.Ckdulzcontainercol {
+.cContainerCol {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -17,12 +17,12 @@ body {
     background-color: #F2F3F4;
 }
 
-.Ckdulznav {
+.cnav {
     background-color: white;
     height: 100%;
     width: 100%;
 }
 
-.Ckdulzlinevertical {
+.clineHorizontal {
     border-top: 1px solid #F2F3F4;
 }

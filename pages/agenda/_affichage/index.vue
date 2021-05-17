@@ -2,16 +2,16 @@
   <div style="height: 100%; width: 100%;">
     <b-container style="height: 100%; width: 100%;">
       <b-row>
-        <b-col cols="4" class="Ckdulzcontainercol" style="height: 100%; width: 100%;">
-          <div class="Ckdulzcontainer" style="height: 100%; width: 100%; position: relative;">
+        <b-col cols="4" class="cContainercol" style="height: 100%; width: 100%;">
+          <div class="cContainer" style="height: 100%; width: 100%; position: relative;">
             <list-groups />
           </div>
-          <div class="Ckdulzcontainer" style="height: 100%; width: 100%;position: relative;">
+          <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
             <navigator-arrow
               @weekChangeEvent="weekChange($event)"
             />
           </div>
-          <div class="Ckdulzcontainer" style="height: 100%; width: 100%;position: relative;">
+          <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
             <b-button v-b-modal.modal-1>
               Nouveau cours
             </b-button>
@@ -24,7 +24,7 @@
           </b-modal>
         </b-col>
         <b-col cols="8">
-          <div class="Ckdulzcontainer" style="height: 100%; width: 100%;" :style="{height: scheduleHeight + 200 +'px'}">
+          <div class="cContainer" style="height: 100%; width: 100%;" :style="{height: scheduleHeight + 200 +'px'}">
             <schedule
               :displayed-days="getDaysDisplayed($route.params.affichage)"
               :schedule-reference-date="day"
