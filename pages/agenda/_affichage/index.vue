@@ -15,13 +15,17 @@
             <b-button v-b-modal.modal-1>
               Nouveau cours
             </b-button>
-          </div>
-          <b-modal id="modal-1" title="Nouveau cours" scrollable centered>
             <formular
               :schedule-reference-date="day"
               :selected-course="selectedCourse"
             />
-          </b-modal>
+          </div>
+          <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
+            <navigator-calendar
+              :schedule-reference-date="day"
+              @calendarDateChangedEvent="dateChange($event);"
+            />
+          </div>
         </b-col>
         <b-col cols="8">
           <div class="cContainer" style="height: 100%; width: 100%;" :style="{height: scheduleHeight + 200 +'px'}">
@@ -48,13 +52,15 @@ import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
 import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js'
+import NavigatorCalendar from '~/components/Navigator/NavigatorCalendar.vue'
 
 export default {
   components: {
     ListGroups,
     Schedule,
     NavigatorArrow,
-    Formular
+    Formular,
+    NavigatorCalendar
   },
   data () {
     return {
@@ -74,6 +80,11 @@ export default {
     weekChange (event) {
       clearIdTarget()
       this.day = addDays(this.day, event)
+      setReferenceDate(this.day)
+    },
+    dateChange (event) {
+      clearIdTarget()
+      this.day = event
       setReferenceDate(this.day)
     },
     getDaysDisplayed (data) {

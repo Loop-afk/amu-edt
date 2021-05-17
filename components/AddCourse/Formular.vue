@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-modal id="modal-1" title="Nouveau cours" scrollable centered>
     <form novalidate="true" @submit="onSubmit">
       <label>Matière</label>
       <b-form-input v-model="formularAdaptor(selectedCourse).title" type="text" list="list_title" placeholder="Nom du cours" required />
@@ -20,7 +20,7 @@
         Effacer
       </b-button>
     </form>
-  </div>
+  </b-modal>
 </template>
 
 <script>
