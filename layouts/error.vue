@@ -1,17 +1,14 @@
 <template>
   <div>
     <h1 v-if="error.statusCode === 404">
-      Page not found
+      Page non trouvé
     </h1>
     <h1 v-else-if="error.statusCode === 500">
-      Internal error
+      Erreur interne
     </h1>
     <h1 v-else>
-      An error occurred
+      Une erreur est survenue
     </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
   </div>
 </template>
 

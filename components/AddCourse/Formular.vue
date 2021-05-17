@@ -1,25 +1,25 @@
 <template>
-  <b-modal id="modal-1" title="Nouveau cours" scrollable centered>
-    <form novalidate="true" @submit="onSubmit">
-      <label>Matière</label>
-      <b-form-input v-model="formularAdaptor(selectedCourse).title" type="text" list="list_title" placeholder="Nom du cours" required />
-      <b-form-datalist id="list_title" :options="formular_options.title" />
-      <b-form-input v-model="formularAdaptor(selectedCourse).day" type="date" required />
-      <b-form-select v-model="formularAdaptor(selectedCourse).occurences" :options="formular_options.occurences" />
-      <b-form-select v-model="formularAdaptor(selectedCourse).duration" :options="formular_options.duration" />
-      <b-form-input v-if="formularAdaptor(selectedCourse).duration === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
-      <b-form-input v-model="formularAdaptor(selectedCourse).teacher" type="text" list="list_teacher" placeholder="Professeur" />
+  <b-modal
+    id="modal-1"
+    title="Nouveau cours"
+    scrollable
+    centered
+    @ok="handleSubmit"
+  >
+    <label>Matière</label>
+    <b-form-input v-model="formularNewTitle" type="text" list="list_title" placeholder="Nom du cours" required />
+    <b-form-datalist id="list_title" :options="formular_options.title" />
+    <b-form-input v-model="formularNewDate" type="date" required />
+    <!--
+      <b-form-select v-model="formularAdaptor(selectedCourse)" :options="formular_options.occurences" />
+      <b-form-select v-model="formularAdaptor(selectedCourse)" :options="formular_options.duration" />
+      <b-form-input v-if="formularAdaptor(selectedCourse) === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
+      <b-form-input v-model="formularAdaptor(selectedCourse)" type="text" list="list_teacher" placeholder="Professeur" />
       <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
       <br>
-      <br>
-      <div class="debug" />
-      <b-button type="submit" variant="primary">
-        Ajouter un cour
-      </b-button>
-      <b-button type="reset" variant="secondary">
-        Effacer
-      </b-button>
-    </form>
+      -->
+    <br>
+    <div class="debug" />
   </b-modal>
 </template>
 
@@ -34,8 +34,7 @@ export default {
     },
     selectedCourse: {
       type: Object,
-      default: null,
-      required: false
+      required: true
     }
   },
   data () {
@@ -45,42 +44,110 @@ export default {
         title: ['Algorithmique', 'Logique', 'Projet'],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
         groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie'],
-        occurences: [{ text: 'Choisir une occurence', value: null }, 'spontané', 'journalier', 'hebdomadaire', 'bihebdomadaire', 'mensuel'],
-        duration: [{ text: 'Choisir une durée', value: null }, 'spontané', '1 semaine', 'semi-semestriel', 'semestriel', 'annuel']
+        occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'spontané', value: 0 }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
+        duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 0 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }]
       }
     }
   },
-  methods: {
-    onSubmit () {
-
+  computed: {
+    formularNewTitle: {
+      set (value) {
+        this.formular.title = value
+      },
+      get () {
+        return this.formular.title
+      }
     },
-    formularGroupsAdaptor (groups) {
+    formularNewDate: {
+      set (value) {
+        this.fomular.date = value
+      },
+      get () {
+        return this.formular.date
+      }
+    },
+    startTime: { // @Overide de v-model
+      get () {
+        return this.formular.start.hour + ':' + this.formular.start.minutes
+      },
+      set (value) {
+        const temp = value.split(':')
+        this.formular.start.hour = temp[0]
+        this.formular.start.minutes = temp[1]
+      }
+    },
+    endTime: { // @Overide de v-model
+      get () {
+        return this.formular.end.hour + ':' + this.formular.end.minutes
+      },
+      set (value) {
+        const temp = value.split(':')
+        this.formular.end.hour = temp[0]
+        this.formular.end.minutes = temp[1]
+      }
+    }
+  },
+  watch: {
+    selectedCourse () {
+      this.formular = this.formularAdaptor(this.selectedCourse)
+    }
+  },
+  methods: {
+    handleSubmit () {
+      console.log(this.formular)
+    },
+    formularAdaptorTitle (course) {
+      return course.ue.field.value
+    },
+    formularAdaptorDate (course) {
+      return getInputFormatedDate(new Date(course.date.year, course.date.month, course.date.day))
+    },
+    formularAdaptorOccurence (course) {
+      return null
+    },
+    formularAdaptorDuration (course) {
+      return null
+    },
+    formularAdaptorGroup (course) {
       const extract = []
-      for (const group of groups) {
+      for (const group of course.groups) {
         extract.push(group.value)
       }
       return extract
     },
-    formularAdaptor (course) { // TODO optimiser + TODO heures
-      if (course === null) { // on start up
+    formularAdaptorTeacher (course) {
+      return course.teacher.value
+    },
+    formularAdaptorRoom (course) {
+      return course.place.room.value
+    },
+    formularAdaptorCampus (course) {
+      return course.place.campus.value
+    },
+    formularAdaptor (course) {
+      console.log(course)
+      if (course.groups !== undefined) { // on assume que tout est indefinie
+        console.log('a')
         return {
-          title: null,
-          day: getInputFormatedDate(this.scheduleReferenceDate),
-          occurences: null, // default value
-          duration: null,
-          groups: [],
-          teacher: null,
-          room: null,
-          campus: null
+          title: this.formularAdaptorTitle(course),
+          date: this.formularAdaptorDate(course),
+          occurences: this.formularAdaptorOccurence(course),
+          duration: this.formularAdaptorDuration(course),
+          groups: this.formularAdaptorGroup(course),
+          teacher: this.formularAdaptorTeacher(course),
+          room: this.formularAdaptorRoom(course),
+          campus: this.formularAdaptorCampus(course)
         }
       }
       return {
-        title: course.ue.field.value,
-        day: getInputFormatedDate(new Date(course.day.year, course.day.month, course.day.day)),
-        groups: this.formularGroupsAdaptor(course.groups),
-        teacher: course.teacher.value,
-        room: course.place.room.value,
-        campus: course.place.campus.value
+        title: null,
+        date: getInputFormatedDate(this.scheduleReferenceDate),
+        occurences: null, // default value
+        duration: null,
+        groups: [],
+        teacher: null,
+        room: null,
+        campus: null
       }
     }
   }

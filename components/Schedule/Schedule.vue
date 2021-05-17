@@ -46,7 +46,7 @@
             :parsed-schedule="parseSchedule(schedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
             :working-hours="workingHours"
-            @courseClickedEvent="courseChange($event, schedule)"
+            @courseClickedEvent="courseChange($event)"
           />
         </div>
       </div>
@@ -101,6 +101,7 @@ export default {
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
       const dayWeek = []
+      console.log(scheduleReferenceDate)
       let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
       if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) >= daysDisplayed) { weekDate = scheduleReferenceDate }
       for (const dayWeekKey of Array(daysDisplayed).keys()) {
@@ -111,7 +112,7 @@ export default {
     },
     parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
-      const dayFiltered = schedule.filter(course => compareComparableDate(course.day, comparableDay))
+      const dayFiltered = schedule.filter(course => compareComparableDate(course.date, comparableDay))
       // à tester et supprimer (présence dans schedule.js)
       let groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
       if (groupFiltered.length === 0) {

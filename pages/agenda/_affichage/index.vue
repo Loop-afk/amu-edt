@@ -35,7 +35,7 @@
               :schedule-displayed-groups="scheduleDisplayedGroups"
               :schedule-height="scheduleHeight"
               class="schedule"
-              @courseClickedEvent="courseChange($event, schedule)"
+              @courseClickedEvent="courseChange($event)"
             />
           </div>
         </b-col>
@@ -68,7 +68,7 @@ export default {
       scheduleDisplayedGroups: [1, 2],
       user: null, // contient client - side rights /!\ do not trust
       scheduleHeight: 600,
-      selectedCourse: null
+      selectedCourse: {}
     }
   },
   head () {
@@ -89,9 +89,10 @@ export default {
     },
     getDaysDisplayed (data) {
       if (data === 'jour') { return 1 }
-      return 7 // defaut
+      return 7 // semaine et autre
     },
-    courseChange (event, schedule) {
+    courseChange (event) {
+      console.log(event)
       this.selectedCourse = event
     },
     deleteCourse (course, schedule) {

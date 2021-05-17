@@ -13,7 +13,7 @@
           <div class="scheduleCourseMessage">
             {{ course.ue.field.value }}
             <br>
-            {{ getReFormatedDate(course.day) }}
+            {{ getReFormatedDate(course.date) }}
           </div>
           <b-popover
             :target="'course-target-'+getTargetId()"
