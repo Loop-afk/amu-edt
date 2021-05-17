@@ -26,3 +26,7 @@ body {
 .clineHorizontal {
     border-top: 1px solid #F2F3F4;
 }
+
+.clineVertical {
+    border-right: 1px solid #F2F3F4;
+}

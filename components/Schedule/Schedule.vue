@@ -6,30 +6,35 @@
       style="position: absolute; top: 37px;"
     />
     <div class="schedule-row">
-      <div style="position: absolute; width: 100%; display: flex; top: -40px;" class="box">
+      <div style="position: absolute; width: 100%; display: flex; top: -23px; ">
         <div
           v-for="(day, key) in scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate)"
           :key="key"
           :style="{width: (100/scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate).length)+'%'}"
           class="scheduleHeader textDark"
         >
-          <p>
+          <p class="backGroundLightDark">
             <span
               class="scheduleHeaderDate"
               :class="{
                 textEmphasize: isDateSame(day, scheduleReferenceDate),
-                textMain: isDateSame(day, new Date()),}"
+                textMain: isDateSame(day, new Date())}"
             >
               {{ day.toLocaleDateString('fr-fr', { day: 'numeric' }) }}
             </span>
             <br>
-            <span>
+            <span class="scheduleHeaderDateSub">
               {{ capitalizeFirstLetter(day.toLocaleDateString('fr-fr', { weekday: 'long' })) }}
             </span>
           </p>
+          <div
+            style="position: relative; top: -20px;"
+            :style="{height: scheduleHeight + 80 + 'px'}"
+            class="clineVertical"
+          />
         </div>
       </div>
-      <div style="position: absolute; width: 100%; display: flex; top: 37px;">
+      <div style="position: absolute; width: 100%; display: flex; top: 38px;">
         <ordinate-axis
           style="left: -20px; top: -12px; position: absolute;"
           :working-hours="workingHours"
@@ -90,7 +95,6 @@ export default {
     }
   },
   async mounted () {
-    /* ordre important */
     this.weekDays = this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
     this.schedule = await this.getSchedule(this.weekDays, this.scheduleDisplayedGroups)
   },
@@ -163,8 +167,12 @@ export default {
 }
 
 .scheduleHeaderDate {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 600;
+}
+
+.scheduleHeaderDateSub {
+  font-size: 0.8em;
 }
 
 .scheduleHeader {
