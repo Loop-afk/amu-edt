@@ -76,13 +76,16 @@ export default {
       this.formularNewTimeStart = getInputFormatedCustomTime(newSelectedCourse.start)
       this.formularNewTimeEnd = getInputFormatedCustomTime(newSelectedCourse.end)
       this.formularNewTitle = newSelectedCourse.ue.field.value
+      this.formularNewTeacher = newSelectedCourse.teacher.value
+      this.formularNewRoom = newSelectedCourse.place.room.value
+      this.formularNewCampus = newSelectedCourse.place.campus.value
     }
   },
   methods: {
     handleSubmit () {
       console.log({
         title: this.formularNewTitle,
-        date: this.formularNewDate,
+        date: getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
@@ -96,7 +99,6 @@ export default {
     formularDefault () {
       return {
         title: null,
-        date: getInputFormatedDate(this.scheduleReferenceDate),
         start: { hours: null, minutes: null },
         end: { hours: null, minutes: null },
         occurences: null, // default value
