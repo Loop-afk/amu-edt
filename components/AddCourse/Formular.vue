@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="modal-1"
+    id="modal-formular"
     title="Nouveau cours"
     scrollable
     centered
@@ -59,7 +59,7 @@ export default {
       formularNewTeacher: null,
       formularNewRoom: null,
       formularNewCampus: null,
-      formular_options: {
+      formular_options: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
         title: ['Algorithmique', 'Logique', 'Projet'],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
         groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie'],
@@ -101,7 +101,7 @@ export default {
         title: null,
         start: { hours: null, minutes: null },
         end: { hours: null, minutes: null },
-        occurences: null, // default value
+        occurences: null,
         duration: null,
         groups: [],
         teacher: null,

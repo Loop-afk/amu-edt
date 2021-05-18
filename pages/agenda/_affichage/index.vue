@@ -12,7 +12,7 @@
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
-            <b-button v-b-modal.modal-1>
+            <b-button v-b-modal.modal-formular>
               Nouveau cours
             </b-button>
             <formular
