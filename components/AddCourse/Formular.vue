@@ -16,14 +16,10 @@
       :state="true"
     />
     <b-form-datalist id="list_title" :options="formular_options.title" />
-    <custom-input-time
-      :selected-course-time="formularNewTimeStart"
-      @time-change-event-time="timeChange($event)"
-    />
-    <custom-input-time
-      :selected-course-time="formularNewTimeEnd"
-      @time-change-event="timeChange($event)"
-    />
+
+    <b-form-input v-model="formularNewTimeStart" type="time" />
+    <b-form-input v-model="formularNewTimeEnd" type="time" />
+
     <b-form-select v-model="formularNewOccurence" :options="formular_options.occurences" />
     <b-form-select v-model="formularNewDuration" :options="formular_options.duration" />
     <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" />
@@ -39,12 +35,9 @@
 </template>
 
 <script>
-import { getInputFormatedDate } from '~/assets/js/formatedDate.js'
-import CustomInputTime from '~/components/AddCourse/CustomInputTime.vue'
+import { getInputFormatedDate, getInputFormatedCustomTime } from '~/assets/js/formatedDate.js'
+
 export default {
-  components: {
-    CustomInputTime
-  },
   props: {
     scheduleReferenceDate: {
       type: Date,
@@ -59,8 +52,8 @@ export default {
     return {
       formularNewTitle: null,
       formularNewDate: null,
-      formularNewTimeStart: {},
-      formularNewTimeEnd: {},
+      formularNewTimeStart: null,
+      formularNewTimeEnd: null,
       formularNewOccurence: null,
       formularNewDuration: null,
       formularNewTeacher: null,
@@ -80,8 +73,8 @@ export default {
   watch: {
     selectedCourse (newSelectedCourse, oldSelectedCourse) {
       console.log('here')
-      this.formularNewTimeStart = newSelectedCourse.start
-      this.formularNewTimeEnd = newSelectedCourse.end
+      this.formularNewTimeStart = getInputFormatedCustomTime(newSelectedCourse.start)
+      this.formularNewTimeEnd = getInputFormatedCustomTime(newSelectedCourse.end)
       this.formularNewTitle = newSelectedCourse.ue.field.value
     }
   },
@@ -90,7 +83,7 @@ export default {
       console.log({
         title: this.formularNewTitle,
         date: this.formularNewDate,
-        start: this.formularNewTimeStart,
+        start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
         duration: this.formularNewDuration,
