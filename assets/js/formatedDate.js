@@ -14,3 +14,7 @@ export function getReFormatedDate (date) {
 export function getInputFormatedDate (date) {
   return date.getFullYear() + '-' + getFormatedUnit(date.getMonth()) + '-' + getFormatedUnit(date.getDate())
 }
+
+export function getInputFormatedCustomTime (time) {
+  return getFormatedUnit(time.hours) + ':' + getFormatedUnit(time.minutes)
+}

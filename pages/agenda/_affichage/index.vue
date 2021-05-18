@@ -93,7 +93,6 @@ export default {
       return 7 // semaine et autre
     },
     courseChange (event) {
-      console.log(event)
       this.selectedCourse = event
     },
     deleteCourse (course, schedule) {
