@@ -34,6 +34,7 @@
               :schedule-reference-date="day"
               :schedule-displayed-groups="scheduleDisplayedGroups"
               :schedule-height="scheduleHeight"
+              :allow-course-click-event="true"
               class="schedule"
               @courseClickedEvent="courseChange($event)"
             />

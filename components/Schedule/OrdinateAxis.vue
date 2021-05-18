@@ -16,7 +16,7 @@ export default {
   props: {
     workingHours: {
       type: Object,
-      default () { return { start: 6, end: 20 } }
+      required: true
     },
     scheduleHeight: {
       type: Number,

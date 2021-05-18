@@ -10,8 +10,11 @@
     <b-form-input v-model="formularNewTitle" type="text" list="list_title" placeholder="Nom du cours" required />
     <b-form-datalist id="list_title" :options="formular_options.title" />
     <b-form-input v-model="formularNewDate" type="date" required />
+    <b-form-input v-model="startTime" type="time" required />
+    <b-form-input v-model="endTime" type="time" required />
+
     <!--
-      <b-form-select v-model="formularAdaptor(selectedCourse)" :options="formular_options.occurences" />
+    <b-form-select v-model="formularNewOccurence" :options="formular_options.occurences" />
       <b-form-select v-model="formularAdaptor(selectedCourse)" :options="formular_options.duration" />
       <b-form-input v-if="formularAdaptor(selectedCourse) === null || Number(formular.duration) != Number.NaN" v-model="formular.duration" type="number" placeholder="Nombre de semaine" />
       <b-form-input v-model="formularAdaptor(selectedCourse)" type="text" list="list_teacher" placeholder="Professeur" />
@@ -66,23 +69,30 @@ export default {
         return this.formular.date
       }
     },
-    startTime: { // @Overide de v-model
+    startTime: { // @Overide de v-model // broken
       get () {
-        return this.formular.start.hour + ':' + this.formular.start.minutes
+        console.log(this.fomular)
+        if (this.fomular === undefined) { return null }
+        return this.formular.start.hours + ':' + this.formular.start.minutes
       },
       set (value) {
+        if (this.fomular === undefined) { return null }
+
         const temp = value.split(':')
-        this.formular.start.hour = temp[0]
+        this.formular.start.hours = temp[0]
         this.formular.start.minutes = temp[1]
       }
     },
-    endTime: { // @Overide de v-model
+    endTime: { // @Overide de v-model // broken
       get () {
-        return this.formular.end.hour + ':' + this.formular.end.minutes
+        if (this.fomular === undefined) { return null }
+        return this.formular.end.hours + ':' + this.formular.end.minutes
       },
       set (value) {
+        if (this.fomular === undefined) { return null }
+
         const temp = value.split(':')
-        this.formular.end.hour = temp[0]
+        this.formular.end.hours = temp[0]
         this.formular.end.minutes = temp[1]
       }
     }
@@ -90,6 +100,8 @@ export default {
   watch: {
     selectedCourse () {
       this.formular = this.formularAdaptor(this.selectedCourse)
+      this.endTime = this.selectedCourse.end
+      this.startTime = this.selectedCourse.start
     }
   },
   methods: {
@@ -124,6 +136,12 @@ export default {
     formularAdaptorCampus (course) {
       return course.place.campus.value
     },
+    formularAdaptorTimeStart (course) {
+      return course.start
+    },
+    formularAdaptorTimeEnd (course) {
+      return course.end
+    },
     formularAdaptor (course) {
       console.log(course)
       if (course.groups !== undefined) { // on assume que tout est indefinie
@@ -131,6 +149,8 @@ export default {
         return {
           title: this.formularAdaptorTitle(course),
           date: this.formularAdaptorDate(course),
+          start: this.formularAdaptorTimeStart(course),
+          end: this.formularAdaptorTimeEnd(course),
           occurences: this.formularAdaptorOccurence(course),
           duration: this.formularAdaptorDuration(course),
           groups: this.formularAdaptorGroup(course),
@@ -142,6 +162,8 @@ export default {
       return {
         title: null,
         date: getInputFormatedDate(this.scheduleReferenceDate),
+        start: { hours: null, minutes: null },
+        end: { hours: null, minutes: null },
         occurences: null, // default value
         duration: null,
         groups: [],

@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%; width: 100%; position: relative">
     <div class="scheduleDayContainer" style="width: 100%">
-      <div v-if="parsedSchedule != null ">
+      <div v-if="allowCourseClickEvent === true">
         <div
           v-for="(course, key) in parsedSchedule"
           :id="'course-target-'+generateTargetId()"
@@ -30,6 +30,9 @@
           {{ course.title }}
         </div>
       </div>
+      <div v-else>
+        not required
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +52,10 @@ export default {
     },
     workingHours: {
       type: Object,
+      required: true
+    },
+    allowCourseClickEvent: {
+      type: Boolean,
       required: true
     }
   },

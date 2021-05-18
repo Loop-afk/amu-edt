@@ -46,6 +46,7 @@
             :parsed-schedule="parseSchedule(schedule, day, scheduleDisplayedGroups)"
             :schedule-height="scheduleHeight"
             :working-hours="workingHours"
+            :allow-course-click-event="allowCourseClickEvent"
             @courseClickedEvent="courseChange($event)"
           />
         </div>
@@ -84,6 +85,10 @@ export default {
     displayedDays: {
       type: Number,
       default: 7
+    },
+    allowCourseClickEvent: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
