@@ -15,23 +15,27 @@
       required
       :state="true"
     />
-    <b-form-datalist id="list_title" :options="formular_options.title" />
+    <b-form-datalist id="list_title" :options="formularOptions.title" />
 
     <b-form-input v-model="formularNewTimeStart" type="time" />
+
     <b-form-input v-model="formularNewTimeEnd" type="time" />
 
-    <b-form-select v-model="formularNewOccurence" :options="formular_options.occurences" />
-    <b-form-select v-model="formularNewDuration" :options="formular_options.duration" />
+    <b-form-select v-model="formularNewOccurence" :options="formularOptions.occurences" />
+
+    <b-form-select v-model="formularNewDuration" :options="formularOptions.duration" />
+
     <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" />
-    <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
+    <b-form-datalist id="list_teacher" :options="formularOptions.teacher" />
 
-    <b-form-tags v-model="formularNewGroups" tag-pills placeholder="Classes" />
+    <b-form-tags v-model="formularNewGroups" tag-pills placeholder="Classes" :input-attrs="{ list: 'list_groups'}" />
+    <b-form-datalist id="list_groups" :options="formularOptions.groups" />
+
     <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cour" />
-    <b-form-datalist id="list_room" :options="formular_options.room" />
-    <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" />
-    <b-form-datalist id="list_campus" :options="formular_options.campus" />
+    <b-form-datalist id="list_room" :options="formularOptions.room" />
 
-    <br>
+    <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" />
+    <b-form-datalist id="list_campus" :options="formularOptions.campus" />
   </b-modal>
 </template>
 
@@ -47,6 +51,11 @@ export default {
     selectedCourse: {
       type: Object,
       required: true
+    },
+    formularOptions: {
+      type: Object,
+      default: () => {},
+      required: false
     }
   },
   data () {
@@ -60,16 +69,7 @@ export default {
       formularNewTeacher: null,
       formularNewGroups: [],
       formularNewRoom: null,
-      formularNewCampus: null,
-      formular_options: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
-        title: ['Algorithmique', 'Logique', 'Projet'],
-        teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
-        groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie'],
-        occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'spontané', value: 0 }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
-        duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 0 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }],
-        campus: [{ text: 'Luminy', value: 1 }, { text: 'Aix en provence', value: 2 }, { text: 'Saint Charles', value: 3 }, { text: 'St Charles', value: 3 }],
-        room: [{ text: 'A300', value: 1 }, { text: 'B302', value: 2 }, { text: 'B310', value: 3 }]
-      }
+      formularNewCampus: null
     }
   },
   watch: {

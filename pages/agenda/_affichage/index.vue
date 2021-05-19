@@ -4,7 +4,7 @@
       <b-row>
         <b-col cols="4" class="cContainercol" style="height: 100%; width: 100%;">
           <div class="cContainer" style="height: 100%; width: 100%; position: relative;">
-            <list-groups />
+            <list-groups :list-groups="formularOptions.groups" />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
             <navigator-arrow
@@ -18,6 +18,7 @@
             <formular
               :schedule-reference-date="day"
               :selected-course="selectedCourse"
+              :formular-options="formularOptions"
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
@@ -69,7 +70,16 @@ export default {
       scheduleDisplayedGroups: [1, 2],
       user: null, // contient client - side rights /!\ do not trust
       scheduleHeight: 600,
-      selectedCourse: {}
+      selectedCourse: {},
+      formularOptions: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
+        title: ['Algorithmique', 'Logique', 'Projet'],
+        teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
+        groups: ['Aix/L3 info', 'Luminy/L3 info', 'L2 chimie'],
+        occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'spontané', value: 0 }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
+        duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 0 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }],
+        campus: [{ text: 'Luminy', value: 1 }, { text: 'Aix en provence', value: 2 }, { text: 'Saint Charles', value: 3 }, { text: 'St Charles', value: 3 }],
+        room: [{ text: 'A300', value: 1 }, { text: 'B302', value: 2 }, { text: 'B310', value: 3 }]
+      }
     }
   },
   head () {
