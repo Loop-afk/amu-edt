@@ -25,6 +25,7 @@
     <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" />
     <b-form-datalist id="list_teacher" :options="formular_options.teacher" />
 
+    <b-form-tags v-model="formularNewGroups" tag-pills placeholder="Classes" />
     <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cour" />
     <b-form-datalist id="list_room" :options="formular_options.room" />
     <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" />
@@ -57,6 +58,7 @@ export default {
       formularNewOccurence: null,
       formularNewDuration: null,
       formularNewTeacher: null,
+      formularNewGroups: [],
       formularNewRoom: null,
       formularNewCampus: null,
       formular_options: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
@@ -79,6 +81,7 @@ export default {
       this.formularNewTeacher = newSelectedCourse.teacher.value
       this.formularNewRoom = newSelectedCourse.place.room.value
       this.formularNewCampus = newSelectedCourse.place.campus.value
+      this.formularNewGroups = this.groupsValueExtractor(newSelectedCourse.groups)
     }
   },
   methods: {
@@ -90,25 +93,20 @@ export default {
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
         duration: this.formularNewDuration,
-        groups: [],
+        groups: this.formularNewGroups,
         teacher: this.formularNewTeacher,
         room: this.formularNewRoom,
         campus: this.formularNewCampus
       })
     },
-    formularDefault () {
-      return {
-        title: null,
-        start: { hours: null, minutes: null },
-        end: { hours: null, minutes: null },
-        occurences: null,
-        duration: null,
-        groups: [],
-        teacher: null,
-        room: null,
-        campus: null
+    groupsValueExtractor (groups) {
+      const extract = []
+      for (const group of groups) {
+        extract.push(group.value)
       }
+      return extract
     }
+
   }
 }
 </script>
