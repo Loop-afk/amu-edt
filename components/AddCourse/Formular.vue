@@ -31,7 +31,7 @@
     <b-form-tags v-model="formularNewGroups" tag-pills placeholder="Classes" :input-attrs="{ list: 'list_groups'}" />
     <b-form-datalist id="list_groups" :options="formularOptions.groups" />
 
-    <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cour" />
+    <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cours" />
     <b-form-datalist id="list_room" :options="formularOptions.room" />
 
     <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" />
@@ -81,7 +81,7 @@ export default {
       this.formularNewTeacher = newSelectedCourse.teacher.value
       this.formularNewRoom = newSelectedCourse.place.room.value
       this.formularNewCampus = newSelectedCourse.place.campus.value
-      this.formularNewGroups = this.groupsValueExtractor(newSelectedCourse.groups)
+      this.formularNewGroups = newSelectedCourse.groups
     }
   },
   methods: {

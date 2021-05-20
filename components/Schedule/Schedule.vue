@@ -139,7 +139,7 @@ export default {
       this.$emit('courseClickedEvent', event)
     },
     fetchSchedule (interval) {
-      return fetch('http://192.168.1.29:18929/schedule/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end), {
+      return fetch('http://192.168.1.29:8000/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end), {
         method: 'GET'
       })
         .then(res => res.json())
@@ -149,6 +149,7 @@ export default {
         })
     },
     async getSchedule (weekDays, scheduleDisplayedGroups) {
+      console.log('refresh')
       schedulePush(await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays)))
       // return scheduleGet(weekDays, scheduleDisplayedGroups)
       return scheduleGetAll()

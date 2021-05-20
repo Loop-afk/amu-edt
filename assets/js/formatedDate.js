@@ -12,7 +12,7 @@ export function getReFormatedDate (date) {
 }
 
 export function getInputFormatedDate (date) {
-  return date.getFullYear() + '-' + getFormatedUnit(date.getMonth()) + '-' + getFormatedUnit(date.getDate())
+  return date.getFullYear() + '-' + getFormatedUnit(date.getMonth() + 1) + '-' + getFormatedUnit(date.getDate())
 }
 
 export function getInputFormatedCustomTime (time) {
