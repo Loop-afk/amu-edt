@@ -3,7 +3,7 @@
     <div
       v-for="(i, currentInterval) in (((workingHours.end - workingHours.start) / ordinateAxisHoursInterval)) + 1"
       :key="currentInterval"
-      :style="{top: scheduleGetHeightFromDate(currentInterval, scheduleHeight, ordinateAxisHoursInterval)}"
+      :style="{top: scheduleGetHeightFromDate(currentInterval, scheduleHeight, ordinateAxisHoursInterval, workingHours)}"
       class="hourInterval textDark"
     >
       {{ currentInterval * ordinateAxisHoursInterval + workingHours.start }}
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import scheduleGetHeightFromDate from '~/assets/js/scheduleGetHeightFromDate.js'
 export default {
   props: {
     workingHours: {
@@ -32,10 +33,8 @@ export default {
     }
   },
   methods: {
-    scheduleGetHeightFromDate (currentInterval, scheduleHeight, ordinateAxisHoursInterval) {
-      const unit = scheduleHeight / (this.workingHours.end - this.workingHours.start)
-      const top = (unit * currentInterval * ordinateAxisHoursInterval)
-      return top + 'px'
+    scheduleGetHeightFromDate (currentInterval, scheduleHeight, ordinateAxisHoursInterval, workingHours) {
+      return scheduleGetHeightFromDate(currentInterval, scheduleHeight, ordinateAxisHoursInterval, workingHours)
     }
   }
 }
