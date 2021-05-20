@@ -10,7 +10,7 @@
         <div
           v-for="(day, key) in scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate)"
           :key="key"
-          :style="{width: (100/scheduleSettingsGetWeekDays (displayedDays, scheduleReferenceDate).length)+'%'}"
+          :style="{width: (100/displayedDays)+'%'}"
           class="scheduleHeader textDark"
         >
           <p class="backGroundLightDark">
@@ -97,6 +97,14 @@ export default {
       workingHours: { start: 6, end: 20 },
       schedule: [],
       weekDays: []
+    }
+  },
+  watch: {
+    async scheduleReferenceDate (newScheduleReferenceDate) {
+      console.log('scheduleReferenceDate')
+      console.log('weekdays => ', this.weekDays)
+      this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, newScheduleReferenceDate), this.scheduleDisplayedGroups)
+      console.log(this.schedule)
     }
   },
   async mounted () {

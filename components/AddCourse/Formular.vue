@@ -98,15 +98,7 @@ export default {
         room: this.formularNewRoom,
         campus: this.formularNewCampus
       })
-    },
-    groupsValueExtractor (groups) {
-      const extract = []
-      for (const group of groups) {
-        extract.push(group.value)
-      }
-      return extract
     }
-
   }
 }
 </script>

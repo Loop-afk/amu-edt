@@ -19,6 +19,8 @@
 
 <script>
 import { BIconSearch } from 'bootstrap-vue'
+// import groupsValueExtractor from '~/assets/js/groupsValueExtractor'
+
 export default {
   components: {
     BIconSearch
@@ -32,7 +34,7 @@ export default {
   },
   data () {
     return {
-      researchTermsData: null,
+      researchTerms: null,
       listGroupsTemp: []
     }
   },
@@ -40,6 +42,7 @@ export default {
   },
   watch: {
     listGroupsTemp () {
+      console.log(this.listGroupsTemp)
       // this.$emit('displayedGroupsEvent', this.groupsValueExtractor(this.listGroupsTemp))
     }
   },
@@ -50,15 +53,7 @@ export default {
     submitGroup (researchTerms) {
       if (this.listGroups.find(({ value }) => value === Number(researchTerms)) !== undefined) { this.listGroupsTemp.push(researchTerms) }
       this.researchTerms = ''
-    },
-    groupsValueExtractor (groups) {
-      const extract = []
-      for (const group of groups) {
-        extract.push(group.value)
-      }
-      return extract
     }
-
   }
 }
 </script>
