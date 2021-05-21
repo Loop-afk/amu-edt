@@ -101,15 +101,11 @@ export default {
   },
   watch: {
     async scheduleReferenceDate (newScheduleReferenceDate) {
-      console.log('scheduleReferenceDate')
-      console.log('weekdays => ', this.weekDays)
       this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, newScheduleReferenceDate), this.scheduleDisplayedGroups)
-      console.log(this.schedule)
     }
   },
   async mounted () {
-    this.weekDays = this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate)
-    this.schedule = await this.getSchedule(this.weekDays, this.scheduleDisplayedGroups)
+    this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate), this.scheduleDisplayedGroups)
   },
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {

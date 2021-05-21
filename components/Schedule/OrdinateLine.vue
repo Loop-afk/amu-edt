@@ -24,10 +24,6 @@ export default {
     ordinateAxisHoursInterval: {
       type: Number,
       default: 2
-    },
-    ordinateAxisMinutesInterval: { // unused
-      type: Number,
-      default: 0
     }
   },
   data () {

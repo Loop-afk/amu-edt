@@ -81,12 +81,14 @@ export default {
       this.formularNewTeacher = newSelectedCourse.teacher.value
       this.formularNewRoom = newSelectedCourse.place.room.value
       this.formularNewCampus = newSelectedCourse.place.campus.value
-      this.formularNewGroups = newSelectedCourse.groups
+      this.formularNewGroups = this.groupsTextExtractor(newSelectedCourse.groups)
+      console.log(newSelectedCourse.groups)
+      console.log(this.formularNewGroups)
     }
   },
   methods: {
     handleSubmit () {
-      console.log({
+      const course = {
         title: this.formularNewTitle,
         date: getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
@@ -97,7 +99,39 @@ export default {
         teacher: this.formularNewTeacher,
         room: this.formularNewRoom,
         campus: this.formularNewCampus
-      })
+      }
+      const callbackSendNewCourse = (course, status) => {
+        this.makeToast(course, status)
+      }
+      this.sendNewCourse(course, callbackSendNewCourse)
+    },
+    sendNewCourse (course, callbackSendNewCourse) {
+      console.log(course) // fetch ici
+      const status = 0
+      callbackSendNewCourse(course, status)
+    },
+    makeToast (course, status) {
+      if (status === 0) {
+        this.$bvToast.toast(`${course.title}`, {
+          title: 'Echec d\'ajout',
+          autoHideDelay: 10000,
+          variant: 'danger',
+          appendToast: false
+        })
+      } else {
+        this.$bvToast.toast(`${course.title}`, {
+          title: 'Cours ajouté',
+          autoHideDelay: 5000,
+          appendToast: false
+        })
+      }
+    },
+    groupsTextExtractor (groups) {
+      const extract = []
+      for (const group of groups) {
+        extract.push(group.value)
+      }
+      return extract
     }
   }
 }
