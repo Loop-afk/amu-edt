@@ -23,11 +23,19 @@
               :selected-course="selectedCourse"
               :formular-options="formularOptions"
             />
+            <br>
+            <br>
+            <b-button v-b-modal.modal-delete variant="danger">
+              Supprimer le cours
+            </b-button>
+            <delete-course
+              :selected-course="selectedCourse"
+            />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
             <navigator-calendar
               :schedule-reference-date="day"
-              @calendarDateChangedEvent="dateChange($event);"
+              @calendarDateChangedEvent="dateChange($event)"
             />
           </div>
         </b-col>
@@ -53,6 +61,7 @@
 import ListGroups from '~/components/Navigator/ListGroups.vue'
 import NavigatorArrow from '~/components/Navigator/NavigatorArrow.vue'
 import Formular from '~/components/AddCourse/Formular.vue'
+import deleteCourse from '~/components/AddCourse/deleteCourse.vue'
 import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
@@ -65,7 +74,8 @@ export default {
     Schedule,
     NavigatorArrow,
     Formular,
-    NavigatorCalendar
+    NavigatorCalendar,
+    deleteCourse
   },
   data () {
     return {
@@ -107,9 +117,6 @@ export default {
     },
     courseChange (event) {
       this.selectedCourse = event
-    },
-    deleteCourse (course, schedule) {
-      delete schedule[schedule.indexOf(course)]
     },
     displayedGroupsChange (event) {
       this.scheduleDisplayedGroups = event

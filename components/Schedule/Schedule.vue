@@ -110,7 +110,6 @@ export default {
   methods: {
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
       const dayWeek = []
-      console.log(scheduleReferenceDate)
       let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
       if ((Math.abs(scheduleReferenceDate - weekDate) / (1000 * 3600 * 24)) >= daysDisplayed) { weekDate = scheduleReferenceDate }
       for (const dayWeekKey of Array(daysDisplayed).keys()) {
@@ -153,7 +152,6 @@ export default {
         })
     },
     async getSchedule (weekDays, scheduleDisplayedGroups) {
-      console.log('refresh')
       schedulePush(await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays)))
       // return scheduleGet(weekDays, scheduleDisplayedGroups)
       return scheduleGetAll()
