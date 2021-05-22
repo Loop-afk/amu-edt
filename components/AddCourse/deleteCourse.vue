@@ -9,6 +9,8 @@
     <label>Matière</label>
     <b-form-input v-model="formularNewUeName" type="text" readonly />
 
+    <b-form-input v-model="formularNewDate" type="date" readonly />
+
     <b-form-input v-model="formularNewTimeStart" type="time" readonly />
 
     <b-form-input v-model="formularNewTimeEnd" type="time" readonly />
@@ -29,7 +31,7 @@
 </template>
 
 <script>
-import { getInputFormatedDate, getInputFormatedCustomTime } from '~/assets/js/formatedDate.js'
+import { getInputFormatedDateFromObject, getInputFormatedCustomTime } from '~/assets/js/formatedDate.js'
 
 export default {
   props: {
@@ -46,7 +48,7 @@ export default {
       formularNewTimeEnd: null,
       formularNewOccurence: null,
       formularNewTeacher: null,
-      formularNewGroups: [],
+      formularNewGroups: null,
       formularNewRoom: null,
       formularNewCampus: null
     }
@@ -55,6 +57,7 @@ export default {
     selectedCourse (newSelectedCourse, oldSelectedCourse) {
       this.formularNewTimeStart = getInputFormatedCustomTime(newSelectedCourse.start)
       this.formularNewTimeEnd = getInputFormatedCustomTime(newSelectedCourse.end)
+      this.formularNewDate = getInputFormatedDateFromObject(newSelectedCourse.date)
       this.formularNewUeName = newSelectedCourse.ue.field.value
       this.formularNewTeacher = newSelectedCourse.teacher.value
       this.formularNewRoom = newSelectedCourse.place.room.value
@@ -66,25 +69,28 @@ export default {
     handleSubmit () {
       const course = {
         ueName: this.formularNewUeName,
-        date: getInputFormatedDate(this.scheduleReferenceDate),
+        date: getInputFormatedDateFromObject(this.selectedCourse.date),
         start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
-        occurences: this.formularNewOccurence,
-        duration: this.formularNewDuration,
+        // occurences: this.formularNewOccurence,
+        // duration: this.formularNewDuration,
         groups: this.formularNewGroups,
         teacher: this.formularNewTeacher,
         room: this.formularNewRoom,
         campus: this.formularNewCampus
       }
-      const callbackSendNewCourse = (course, status) => {
+      const callbacksendDeleteCourse = (course, status) => {
         this.makeToast(course, status)
       }
-      this.sendNewCourse(course, callbackSendNewCourse)
+      this.sendDeleteCourse(course, callbacksendDeleteCourse)
     },
-    sendNewCourse (course, callbackSendNewCourse) {
+    sendDeleteCourse (course, callbacksendDeleteCourse) {
       console.log(course) // fetch ici
-      const status = 0
-      callbackSendNewCourse(course, status)
+      const res = fetch(`http://192.168.1.29:8000/supprimer/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`)
+      res.then(res => res.json())
+        .then((data) => { return data })
+      const status = (res.ok === 200) ? 1 : 0
+      callbacksendDeleteCourse(course, status)
     },
     makeToast (course, status) {
       if (status === 0) {

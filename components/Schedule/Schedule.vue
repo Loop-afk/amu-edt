@@ -140,9 +140,7 @@ export default {
       this.$emit('courseClickedEvent', event)
     },
     fetchSchedule (interval) {
-      return fetch('http://192.168.1.29:8000/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end), {
-        method: 'GET'
-      })
+      return fetch('http://192.168.1.29:8000/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end))
         .then(res => res.json())
         .then((data) => { return data })
         .catch((error) => {

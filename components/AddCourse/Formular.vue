@@ -97,7 +97,11 @@ export default {
     },
     sendNewCourse (course, callbackSendNewCourse) {
       console.log(course) // fetch ici
-      const status = 1
+      const res = fetch(`http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`)
+      res.then(res => res.json())
+        .then((data) => { return data })
+        .catch(error => console.error(error))
+      const status = (res.ok === 200) ? 1 : 0
       callbackSendNewCourse(course, status)
     },
     makeToast (course, status) {
