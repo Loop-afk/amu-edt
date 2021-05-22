@@ -30,3 +30,23 @@ body {
 .clineVertical {
     border-right: 1px solid #F2F3F4;
 }
+
+.cScheduleCourse {
+    background-color: #7CC7E2;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: 5px solid #0065BD;
+
+}
+
+.cScheduleCourseUe {
+    font-family: 'Open sans';
+    font-weight: 700;
+    color: #0065BD;
+    font-size: 1em;
+}
+
+.cScheduleCourseDate {
+    color: #004C8F;
+    font-size: 0.8em;
+}

@@ -5,14 +5,15 @@
         v-for="(course, key) in parsedSchedule"
         :id="'course-target-'+generateTargetId()"
         :key="key"
-        class="scheduleCourse"
+        class="scheduleCourse cScheduleCourse"
         :style="getCourseStyle(course)"
         @click="courseClicked(course)"
       >
-        <div class="scheduleCourseMessage">
+        <div class="scheduleCourseUe cScheduleCourseUe">
           {{ course.ue.field.value }}
-          <br>
-          {{ getReFormatedDate(course.date) }}
+        </div>
+        <div class="scheduleCourseDate cScheduleCourseDate">
+          {{ getFormatedHoursMinutes(course.start) + '-' + getFormatedHoursMinutes(course.end) }}
         </div>
         <b-popover
           :target="'course-target-'+getTargetId()"
@@ -20,11 +21,9 @@
           placement="right"
           delay="0"
         >
-          {{ course.place.room.value + ' ' + course.teacher.value }}
-          <br>
-          {{ getFormatedHoursMinutes(course.start) + '-' + getFormatedHoursMinutes(course.end) }}
-          <br>
-          {{ getInputFormatedDate(new Date({day:course.day, month: course.month, year: course.year})) }}
+          <p>Salle de classe {{ course.place.room.value }}</p>
+          <p>Professeur {{ course.teacher.value }}</p>
+          <p>Date du cours {{ getReFormatedDate(course.date) }}</p>
         </b-popover>
       </div>
     </div>
@@ -107,16 +106,18 @@ export default {
 }
 
 .scheduleCourse{
-  box-shadow: 0px 0px 0px 1px rgb(53, 139, 72);
   position: absolute;
   top: 0px;
   word-wrap: break-word;
   width: 100%;
-  background-color: aqua;
   z-index: 10;
 }
 
-.scheduleCourseMessage {
+.scheduleCourseDate {
+  text-align: center;
+}
+
+.scheduleCourseUe {
   text-align: center;
 }
 </style>

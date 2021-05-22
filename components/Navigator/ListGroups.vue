@@ -10,10 +10,9 @@
     </b-input-group>
     <br>
     <div>
-      <div v-for="(group, key) in listGroupsTemp" :key="key">
-        {{ group }} ++ {{ key }}
-        <!--{{ listGroups.find(({text}) => text === Number(group)).text }}-->
-      </div>
+      <b-button v-for="(group, key) in listGroupsTemp" :key="key" pill variant="outline-danger" @click="removeFromDisplayedGroups(group)">
+        {{ group }}
+      </b-button>
     </div>
   </div>
 </template>
@@ -54,6 +53,10 @@ export default {
       const listGroupEntries = []
       for (const group of listGroupsTemp) { listGroupEntries.push(listGroups.find(({ value }) => value === group).text) }
       return listGroupEntries
+    },
+    removeFromDisplayedGroups (group) {
+      this.listGroupsTemp = this.listGroupsTemp.filter(current => current !== group)
+      this.$emit('displayedGroupsEvent', this.createDisplayedGroups(this.listGroups, this.listGroupsTemp))
     }
   }
 }
