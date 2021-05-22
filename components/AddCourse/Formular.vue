@@ -7,14 +7,8 @@
     @ok="handleSubmit"
   >
     <label>Matière</label>
-    <b-form-input
-      v-model="formularNewTitle"
-      type="text"
-      list="list_title"
-      placeholder="Nom du cours"
-      required
-    />
-    <b-form-datalist id="list_title" :options="formularOptions.title" />
+    <b-form-input v-model="formularNewUeName" type="text" list="list_title" placeholder="Nom du cours" required />
+    <b-form-datalist id="list_title" :options="formularOptions.ueName" />
 
     <b-form-input v-model="formularNewTimeStart" type="time" />
 
@@ -27,7 +21,7 @@
     <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" />
     <b-form-datalist id="list_teacher" :options="formularOptions.teacher" />
 
-    <b-form-tags v-model="formularNewGroups" tag-pills placeholder="Classes" :input-attrs="{ list: 'list_groups'}" />
+    <b-form-input v-model="formularNewGroups" placeholder="Classes" list="list_groups" />
     <b-form-datalist id="list_groups" :options="formularOptions.groups" />
 
     <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cours" />
@@ -59,14 +53,14 @@ export default {
   },
   data () {
     return {
-      formularNewTitle: null,
+      formularNewUeName: null,
       formularNewDate: null,
       formularNewTimeStart: null,
       formularNewTimeEnd: null,
       formularNewOccurence: null,
       formularNewDuration: null,
       formularNewTeacher: null,
-      formularNewGroups: [],
+      formularNewGroups: null,
       formularNewRoom: null,
       formularNewCampus: null
     }
@@ -75,26 +69,26 @@ export default {
     selectedCourse (newSelectedCourse, oldSelectedCourse) {
       this.formularNewTimeStart = getInputFormatedCustomTime(newSelectedCourse.start)
       this.formularNewTimeEnd = getInputFormatedCustomTime(newSelectedCourse.end)
-      this.formularNewTitle = newSelectedCourse.ue.field.value
+      this.formularNewUeName = newSelectedCourse.ue.field.value
       this.formularNewTeacher = newSelectedCourse.teacher.value
       this.formularNewRoom = newSelectedCourse.place.room.value
       this.formularNewCampus = newSelectedCourse.place.campus.value
-      this.formularNewGroups = this.groupsTextExtractor(newSelectedCourse.groups)
+      this.formularNewGroups = newSelectedCourse.groups.value
     }
   },
   methods: {
     handleSubmit () {
       const course = {
-        title: this.formularNewTitle,
+        ueName: this.selectedCourse.ue.field.id,
         date: getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
         duration: this.formularNewDuration,
-        groups: this.formularNewGroups,
-        teacher: this.formularNewTeacher,
-        room: this.formularNewRoom,
-        campus: this.formularNewCampus
+        groups: this.selectedCourse.groups.id,
+        teacher: this.selectedCourse.teacher.id,
+        room: this.selectedCourse.place.room.id,
+        campus: this.selectedCourse.place.campus.id
       }
       const callbackSendNewCourse = (course, status) => {
         this.makeToast(course, status)
@@ -103,31 +97,27 @@ export default {
     },
     sendNewCourse (course, callbackSendNewCourse) {
       console.log(course) // fetch ici
-      const status = 0
+      const status = 1
       callbackSendNewCourse(course, status)
     },
     makeToast (course, status) {
       if (status === 0) {
-        this.$bvToast.toast(`${course.title}`, {
+        this.$bvToast.toast(`${course.ueName}`, {
           title: 'Echec d\'ajout',
           autoHideDelay: 10000,
           variant: 'danger',
           appendToast: false
         })
       } else {
-        this.$bvToast.toast(`${course.title}`, {
+        this.$bvToast.toast(`${course.ueName}`, {
           title: 'Cours ajouté',
           autoHideDelay: 5000,
           appendToast: false
         })
       }
     },
-    groupsTextExtractor (groups) {
-      const extract = []
-      for (const group of groups) {
-        extract.push(group.value)
-      }
-      return extract
+    groupsExtractor (group) {
+      return group.value
     }
   }
 }

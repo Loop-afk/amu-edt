@@ -85,13 +85,13 @@ export default {
       scheduleHeight: 600,
       selectedCourse: {},
       formularOptions: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
-        title: ['Algorithmique', 'Logique', 'Projet'],
+        ueName: [{ value: 'Algorithmique', text: 1 }, { value: 'Logique', text: 2 }, { value: 'Projet', text: 3 }],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
-        groups: [{ text: 'l3info AIX', value: 1 }, { text: 'Luminy/L3 info', value: 2 }, { text: 'L2 chimie', value: 3 }],
+        groups: [{ value: 'l3info AIX', text: 1 }, { value: 'Luminy/L3 info', text: 2 }, { value: 'L2 chimie', text: 3 }],
         occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'spontané', value: 0 }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
         duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 0 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }],
-        campus: [{ text: 'Luminy', value: 1 }, { text: 'Aix en provence', value: 2 }, { text: 'Saint Charles', value: 3 }, { text: 'St Charles', value: 3 }],
-        room: [{ text: 'A300', value: 1 }, { text: 'B302', value: 2 }, { text: 'B310', value: 3 }]
+        campus: [{ value: 'Luminy', text: 1 }, { value: 'Aix en provence', text: 2 }, { value: 'Saint Charles', text: 3 }, { value: 'St Charles', text: 3 }],
+        room: [{ value: 'A300', text: 1 }, { value: 'B302', text: 2 }, { value: 'B310', text: 3 }]
       }
     }
   },

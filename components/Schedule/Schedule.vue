@@ -61,7 +61,7 @@ import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getInputFormatedDate } from '~/assets/js/formatedDate.js'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
-import { schedulePush, scheduleGetAll } from '~/assets/js/schedule.js'
+import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
 // import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
 
 export default {
@@ -120,13 +120,11 @@ export default {
     },
     parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
-      const dayFiltered = schedule.filter(course => compareComparableDate(course.date, comparableDay))
-      // à tester et supprimer (présence dans schedule.js)
-      let groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
-      if (groupFiltered.length === 0) {
-        groupFiltered = null
+      let dayFiltered = schedule.filter(course => compareComparableDate(course.date, comparableDay))
+      if (dayFiltered.length === 0) {
+        dayFiltered = null
       }
-      return groupFiltered
+      return dayFiltered
     },
     isDateSame (date1, date2) {
       if (compareComparableDate(getComparableFromDate(date2), getComparableFromDate(date1))) { return true }
@@ -153,8 +151,8 @@ export default {
     },
     async getSchedule (weekDays, scheduleDisplayedGroups) {
       schedulePush(await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays)))
-      // return scheduleGet(weekDays, scheduleDisplayedGroups)
-      return scheduleGetAll()
+      return scheduleGet(weekDays, scheduleDisplayedGroups)
+      // return scheduleGetAll()
     },
     getIntervalFromWeekDays (weekDays) {
       return { start: weekDays[0], end: weekDays[weekDays.length - 1] }

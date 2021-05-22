@@ -1,37 +1,31 @@
 <template>
   <div style="height: 100%; width: 100%; position: relative">
     <div class="scheduleDayContainer" style="width: 100%">
-      <div v-if="allowCourseClickEvent === true">
-        <div
-          v-for="(course, key) in parsedSchedule"
-          :id="'course-target-'+generateTargetId()"
-          :key="key"
-          class="scheduleCourse"
-          :style="getCourseStyle(course)"
-          @click="courseClicked(course)"
-        >
-          <div class="scheduleCourseMessage">
-            {{ course.ue.field.value }}
-            <br>
-            {{ getReFormatedDate(course.date) }}
-          </div>
-          <b-popover
-            :target="'course-target-'+getTargetId()"
-            :triggers="['hover']"
-            placement="right"
-            delay="0"
-          >
-            {{ course.place.room.value + ' ' + course.teacher.value }}
-            <br>
-            {{ getFormatedHoursMinutes(course.start) + '-' + getFormatedHoursMinutes(course.end) }}
-            <br>
-            {{ getInputFormatedDate(new Date({day:course.day, month: course.month, year: course.year})) }}
-          </b-popover>
-          {{ course.title }}
+      <div
+        v-for="(course, key) in parsedSchedule"
+        :id="'course-target-'+generateTargetId()"
+        :key="key"
+        class="scheduleCourse"
+        :style="getCourseStyle(course)"
+        @click="courseClicked(course)"
+      >
+        <div class="scheduleCourseMessage">
+          {{ course.ue.field.value }}
+          <br>
+          {{ getReFormatedDate(course.date) }}
         </div>
-      </div>
-      <div v-else>
-        not required
+        <b-popover
+          :target="'course-target-'+getTargetId()"
+          :triggers="['hover']"
+          placement="right"
+          delay="0"
+        >
+          {{ course.place.room.value + ' ' + course.teacher.value }}
+          <br>
+          {{ getFormatedHoursMinutes(course.start) + '-' + getFormatedHoursMinutes(course.end) }}
+          <br>
+          {{ getInputFormatedDate(new Date({day:course.day, month: course.month, year: course.year})) }}
+        </b-popover>
       </div>
     </div>
   </div>
@@ -99,7 +93,7 @@ export default {
       getInputFormatedDate(date)
     },
     courseClicked (course) {
-      this.$emit('courseClickedEvent', course)
+      if (this.allowCourseClickEvent) { this.$emit('courseClickedEvent', course) }
     }
   }
 }

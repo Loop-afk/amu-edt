@@ -7,7 +7,7 @@
     @ok="handleSubmit"
   >
     <label>Matière</label>
-    <b-form-input v-model="formularNewTitle" type="text" readonly />
+    <b-form-input v-model="formularNewUeName" type="text" readonly />
 
     <b-form-input v-model="formularNewTimeStart" type="time" readonly />
 
@@ -20,7 +20,7 @@
 
     <b-form-input v-model="formularNewTeacher" type="text" readonly />
 
-    <b-form-tags v-model="formularNewGroups" tag-pills readonly />
+    <b-form-input v-model="formularNewGroups" type="text" readonly />
 
     <b-form-input v-model="formularNewRoom" type="text" readonly />
 
@@ -40,7 +40,7 @@ export default {
   },
   data () {
     return {
-      formularNewTitle: null,
+      formularNewUeName: null,
       formularNewDate: null,
       formularNewTimeStart: null,
       formularNewTimeEnd: null,
@@ -55,17 +55,17 @@ export default {
     selectedCourse (newSelectedCourse, oldSelectedCourse) {
       this.formularNewTimeStart = getInputFormatedCustomTime(newSelectedCourse.start)
       this.formularNewTimeEnd = getInputFormatedCustomTime(newSelectedCourse.end)
-      this.formularNewTitle = newSelectedCourse.ue.field.value
+      this.formularNewUeName = newSelectedCourse.ue.field.value
       this.formularNewTeacher = newSelectedCourse.teacher.value
       this.formularNewRoom = newSelectedCourse.place.room.value
       this.formularNewCampus = newSelectedCourse.place.campus.value
-      this.formularNewGroups = this.groupsTextExtractor(newSelectedCourse.groups)
+      this.formularNewGroups = this.groupsExtractor(newSelectedCourse.groups)
     }
   },
   methods: {
     handleSubmit () {
       const course = {
-        title: this.formularNewTitle,
+        ueName: this.formularNewUeName,
         date: getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
@@ -88,26 +88,22 @@ export default {
     },
     makeToast (course, status) {
       if (status === 0) {
-        this.$bvToast.toast(`${course.title}`, {
+        this.$bvToast.toast(`${course.ueName}`, {
           title: 'Echec de suppression',
           autoHideDelay: 10000,
           variant: 'danger',
           appendToast: false
         })
       } else {
-        this.$bvToast.toast(`${course.title}`, {
+        this.$bvToast.toast(`${course.ueName}`, {
           title: 'Cours supprimé',
           autoHideDelay: 5000,
           appendToast: false
         })
       }
     },
-    groupsTextExtractor (groups) {
-      const extract = []
-      for (const group of groups) {
-        extract.push(group.value)
-      }
-      return extract
+    groupsExtractor (group) {
+      return group.value
     }
   }
 }

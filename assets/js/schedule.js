@@ -6,8 +6,8 @@ export const scheduleGetAll = function () {
 }
 
 export const scheduleGet = function (weekDays, scheduleDisplayedGroups) {
-  const dayFiltered = schedule.filter(course => weekDays.some(day => compareComparableDate(course.day, getComparableFromDate(day))))
-  return dayFiltered.filter(course => scheduleDisplayedGroups.some(eachGroup => course.groups.some(courseAllowed => courseAllowed.id === eachGroup)) === true)
+  const dayFiltered = schedule.filter(course => weekDays.some(date => compareComparableDate(course.date, getComparableFromDate(date))))
+  return dayFiltered.filter(course => scheduleDisplayedGroups.includes(course.groups.id) === true)
 }
 
 export const schedulePush = function (array) {
