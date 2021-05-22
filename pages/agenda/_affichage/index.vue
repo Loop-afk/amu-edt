@@ -1,6 +1,5 @@
 <template>
   <div style="height: 100%; width: 100%;">
-    {{ scheduleDisplayedGroups }}
     <b-container style="height: 100%; width: 100%;">
       <b-row>
         <b-col cols="4" class="cContainercol" style="height: 100%; width: 100%;">

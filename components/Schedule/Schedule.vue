@@ -102,6 +102,9 @@ export default {
   watch: {
     async scheduleReferenceDate (newScheduleReferenceDate) {
       this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, newScheduleReferenceDate), this.scheduleDisplayedGroups)
+    },
+    async scheduleDisplayedGroups (newscheduleDisplayedGroups) {
+      this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate), newscheduleDisplayedGroups)
     }
   },
   async mounted () {
@@ -118,7 +121,7 @@ export default {
       }
       return dayWeek
     },
-    parseSchedule (schedule, day, scheduleDisplayedGroups) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
+    parseSchedule (schedule, day) { // permet d'envoyer seulement les cours du jour au composant ScheduleDay
       const comparableDay = getComparableFromDate(day)
       let dayFiltered = schedule.filter(course => compareComparableDate(course.date, comparableDay))
       if (dayFiltered.length === 0) {
