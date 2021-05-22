@@ -1,5 +1,6 @@
 <template>
   <div style="height: 100%; width: 100%;">
+    {{ scheduleDisplayedGroups }}
     <b-container style="height: 100%; width: 100%;">
       <b-row>
         <b-col cols="4" class="cContainercol" style="height: 100%; width: 100%;">
@@ -80,10 +81,9 @@ export default {
   data () {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
-      scheduleDisplayedGroups: [1, 2],
-      user: null, // contient client - side rights /!\ do not trust
+      scheduleDisplayedGroups: [3], // défaut
       scheduleHeight: 600,
-      selectedCourse: {},
+      selectedCourse: {}, // cours clické
       formularOptions: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
         ueName: [{ value: 'Algorithmique', text: 1 }, { value: 'Logique', text: 2 }, { value: 'Projet', text: 3 }],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],

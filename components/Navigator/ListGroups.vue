@@ -11,7 +11,8 @@
     <br>
     <div>
       <div v-for="(group, key) in listGroupsTemp" :key="key">
-        {{ listGroups.find(({value}) => value === Number(group)).text }}
+        {{ group }} ++ {{ key }}
+        <!--{{ listGroups.find(({text}) => text === Number(group)).text }}-->
       </div>
     </div>
   </div>
@@ -19,7 +20,6 @@
 
 <script>
 import { BIconSearch } from 'bootstrap-vue'
-// import groupsValueExtractor from '~/assets/js/groupsValueExtractor'
 
 export default {
   components: {
@@ -40,19 +40,20 @@ export default {
   },
   computed: {
   },
-  watch: {
-    listGroupsTemp () {
-      console.log(this.listGroupsTemp)
-      // this.$emit('displayedGroupsEvent', this.groupsValueExtractor(this.listGroupsTemp))
-    }
-  },
+
   methods: {
     listGroupsTempReset () {
       this.listGroupsTemp = this.listGroups
     },
     submitGroup (researchTerms) {
-      if (this.listGroups.find(({ value }) => value === Number(researchTerms)) !== undefined) { this.listGroupsTemp.push(researchTerms) }
-      this.researchTerms = ''
+      console.log(this.listGroups)
+      const listGroupEntry = this.listGroups.find(({ value }) => value === researchTerms)
+      if (listGroupEntry !== undefined) { this.listGroupsTemp.push(listGroupEntry.value); this.$emit('displayedGroupsEvent', this.createDisplayedGroups(this.listGroups, this.listGroupsTemp)) } else { this.researchTerms = '' }
+    },
+    createDisplayedGroups (listGroups, listGroupsTemp) {
+      const listGroupEntries = []
+      for (const group of listGroupsTemp) { listGroupEntries.push(listGroups.find(({ value }) => value === group).text) }
+      return listGroupEntries
     }
   }
 }

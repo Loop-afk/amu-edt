@@ -19,7 +19,7 @@
               :class="{
                 textEmphasize: isDateSame(day, scheduleReferenceDate),
                 textMain: isDateSame(day, new Date())}"
-            >
+            > <!-- click pour changer reference date -->
               {{ day.toLocaleDateString('fr-fr', { day: 'numeric' }) }}
             </span>
             <br>
