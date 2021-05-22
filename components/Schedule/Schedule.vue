@@ -36,7 +36,7 @@
       </div>
       <div style="position: absolute; width: 100%; display: flex; top: 38px;">
         <ordinate-axis
-          style="left: -20px; top: -12px; position: absolute;"
+          style="left: -14px; top: -12px; position: absolute;"
           :working-hours="workingHours"
           :schedule-height="scheduleHeight"
         />
@@ -143,7 +143,7 @@ export default {
       this.$emit('courseClickedEvent', event)
     },
     fetchSchedule (interval) {
-      return fetch('http://192.168.1.29:8000/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end))
+      return fetch('http://192.168.1.29:8000/affichage/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end))
         .then(res => res.json())
         .then((data) => { return data })
         .catch((error) => {

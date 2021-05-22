@@ -45,7 +45,6 @@ export default {
       this.listGroupsTemp = this.listGroups
     },
     submitGroup (researchTerms) {
-      console.log(this.listGroups)
       const listGroupEntry = this.listGroups.find(({ value }) => value === researchTerms)
       if (listGroupEntry !== undefined) { this.listGroupsTemp.push(listGroupEntry.value); this.$emit('displayedGroupsEvent', this.createDisplayedGroups(this.listGroups, this.listGroupsTemp)) } else { this.researchTerms = '' }
     },

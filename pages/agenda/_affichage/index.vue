@@ -80,7 +80,7 @@ export default {
   data () {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
-      scheduleDisplayedGroups: [3], // défaut
+      scheduleDisplayedGroups: [1], // défaut
       scheduleHeight: 600,
       selectedCourse: {}, // cours clické
       formularOptions: { // Autocomplétion avec requete ou récupérer tout avant (une fois)

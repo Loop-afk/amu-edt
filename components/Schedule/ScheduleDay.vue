@@ -21,9 +21,9 @@
           placement="right"
           delay="0"
         >
-          <p>Salle de classe {{ course.place.room.value }}</p>
-          <p>Professeur {{ course.teacher.value }}</p>
-          <p>Date du cours {{ getReFormatedDate(course.date) }}</p>
+          <p>Salle de classe: {{ course.place.room.value }} à {{ course.place.campus.value }}</p>
+          <p>Professeur: {{ course.teacher.value }}</p>
+          <p>Date du cours: {{ getReFormatedDate(course.date) }}</p>
         </b-popover>
       </div>
     </div>
@@ -103,6 +103,7 @@ export default {
 .scheduleDayContainer {
   height: 100%;
   position: relative;
+  padding-left: 5px;
 }
 
 .scheduleCourse{
