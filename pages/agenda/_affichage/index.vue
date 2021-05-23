@@ -15,21 +15,19 @@
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
-            <b-button v-b-modal.modal-formular>
+            <b-button v-b-modal.modal-formular @click="setDeleteMode(false)">
               Nouveau cours
+            </b-button>
+            <br>
+            <br>
+            <b-button v-b-modal.modal-formular variant="danger" @click="setDeleteMode(true)">
+              Supprimer le cours
             </b-button>
             <formular
               :schedule-reference-date="day"
               :selected-course="selectedCourse"
               :formular-options="formularOptions"
-            />
-            <br>
-            <br>
-            <b-button v-b-modal.modal-delete variant="danger">
-              Supprimer le cours
-            </b-button>
-            <delete-course
-              :selected-course="selectedCourse"
+              :delete-mode="deleteMode"
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
@@ -61,7 +59,6 @@
 import ListGroups from '~/components/Navigator/ListGroups.vue'
 import NavigatorArrow from '~/components/Navigator/NavigatorArrow.vue'
 import Formular from '~/components/AddCourse/Formular.vue'
-import deleteCourse from '~/components/AddCourse/deleteCourse.vue'
 import Schedule from '~/components/Schedule/Schedule.vue'
 import addDays from '~/assets/js/addDays.js'
 import { clearIdTarget } from '~/assets/js/targetId.js'
@@ -74,12 +71,12 @@ export default {
     Schedule,
     NavigatorArrow,
     Formular,
-    NavigatorCalendar,
-    deleteCourse
+    NavigatorCalendar
   },
   data () {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
+      deleteMode: false,
       scheduleDisplayedGroups: [1], // défaut
       scheduleHeight: 600,
       selectedCourse: {}, // cours clické
@@ -119,6 +116,9 @@ export default {
     },
     displayedGroupsChange (event) {
       this.scheduleDisplayedGroups = event
+    },
+    setDeleteMode (state) {
+      this.deleteMode = state
     }
   }
 }

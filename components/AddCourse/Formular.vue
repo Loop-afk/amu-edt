@@ -7,40 +7,44 @@
     @ok="handleSubmit"
   >
     <label>Matière</label>
-    <b-form-input v-model="formularNewUeName" type="text" list="list_title" placeholder="Nom du cours" required />
-    <b-form-datalist id="list_title" :options="formularOptions.ueName" />
+    <b-form-input
+      v-model="formularNewUeName"
+      type="text"
+      list="list_title"
+      placeholder="Nom du cours"
+      required
+      :readonly="deleteMode"
+    />
+    <b-form-datalist v-if="!deleteMode" id="list_title" :options="formularOptions.ueName" />
 
-    <b-form-input v-model="formularNewTimeStart" type="time" />
+    <b-form-input v-model="formularNewTimeStart" type="time" :readonly="deleteMode" />
 
-    <b-form-input v-model="formularNewTimeEnd" type="time" />
+    <b-form-input v-model="formularNewTimeEnd" type="time" :readonly="deleteMode" />
 
-    <b-form-select v-model="formularNewOccurence" :options="formularOptions.occurences" />
+    <b-form-select v-if="!deleteMode" v-model="formularNewOccurence" :options="formularOptions.occurences" />
 
-    <b-form-select v-model="formularNewDuration" :options="formularOptions.duration" />
+    <b-form-select v-if="!deleteMode" v-model="formularNewDuration" :options="formularOptions.duration" />
 
-    <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" />
-    <b-form-datalist id="list_teacher" :options="formularOptions.teacher" />
+    <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" :readonly="deleteMode" />
+    <b-form-datalist v-if="!deleteMode" id="list_teacher" :options="formularOptions.teacher" />
 
-    <b-form-input v-model="formularNewGroups" placeholder="Classes" list="list_groups" />
-    <b-form-datalist id="list_groups" :options="formularOptions.groups" />
+    <b-form-input v-model="formularNewGroups" placeholder="Classes" list="list_groups" :readonly="deleteMode" />
+    <b-form-datalist v-if="!deleteMode" id="list_groups" :options="formularOptions.groups" />
 
-    <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cours" />
-    <b-form-datalist id="list_room" :options="formularOptions.room" />
+    <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cours" :readonly="deleteMode" />
+    <b-form-datalist v-if="!deleteMode" id="list_room" :options="formularOptions.room" />
 
-    <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" />
-    <b-form-datalist id="list_campus" :options="formularOptions.campus" />
+    <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" :readonly="deleteMode" />
+    <b-form-datalist v-if="!deleteMode" id="list_campus" :options="formularOptions.campus" />
   </b-modal>
 </template>
 
 <script>
-import { getInputFormatedDate, getInputFormatedCustomTime } from '~/assets/js/formatedDate.js'
+import { getInputFormatedDate, getInputFormatedCustomTime, getInputFormatedDateFromObject } from '~/assets/js/formatedDate.js'
 
 export default {
   props: {
-    scheduleReferenceDate: {
-      type: Date,
-      required: true
-    },
+    scheduleReferenceDate: { type: Date, default: null },
     selectedCourse: {
       type: Object,
       required: true
@@ -49,6 +53,10 @@ export default {
       type: Object,
       default: () => {},
       required: false
+    },
+    deleteMode: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -80,7 +88,7 @@ export default {
     handleSubmit () {
       const course = {
         ueName: this.selectedCourse.ue.field.id,
-        date: getInputFormatedDate(this.scheduleReferenceDate),
+        date: (this.deleteMode) ? getInputFormatedDateFromObject(this.selectedCourse.date) : getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
@@ -90,23 +98,26 @@ export default {
         room: this.selectedCourse.place.room.id,
         campus: this.selectedCourse.place.campus.id
       }
-      const callbackSendNewCourse = (course, status) => {
+      const callbackSendRequest = (course, status) => {
         this.makeToast(course, status)
       }
-      this.sendNewCourse(course, callbackSendNewCourse)
+      this.sendRequest(course, callbackSendRequest)
     },
-    sendNewCourse (course, callbackSendNewCourse) {
-      console.log(course) // fetch ici
-      const res = fetch(`http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`)
+    sendRequest (course, callbackSendRequest) {
+      console.log(course)
+      const request = (!this.deleteMode)
+        ? `http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
+        : `http://192.168.1.29:8000/supprimer/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
+      const res = fetch(request)
       res.then(res => res.json())
         .then((data) => { return data })
         .catch(error => console.error(error))
-      const status = (res.ok === 200) ? 1 : 0
-      callbackSendNewCourse(course, status)
+      callbackSendRequest(course, res.status)
     },
     makeToast (course, status) {
-      if (status === 0) {
-        this.$bvToast.toast(`${course.ueName}`, {
+      if (status !== 200) {
+        console.log(status)
+        this.$bvToast.toast(`Numéro de l'ue: ${course.ueName}, code d'erreur: ${status}`, {
           title: 'Echec d\'ajout',
           autoHideDelay: 10000,
           variant: 'danger',
