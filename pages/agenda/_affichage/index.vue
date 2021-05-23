@@ -86,7 +86,7 @@ export default {
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
         groups: [{ value: 'l3info AIX', text: 1 }, { value: 'Luminy/L3 info', text: 2 }, { value: 'L2 chimie', text: 3 }],
         occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'spontané', value: 0 }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
-        duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 0 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }],
+        duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 1 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }],
         campus: [{ value: 'Luminy', text: 1 }, { value: 'Aix en provence', text: 2 }, { value: 'Saint Charles', text: 3 }, { value: 'St Charles', text: 3 }],
         room: [{ value: 'A300', text: 1 }, { value: 'B302', text: 2 }, { value: 'B310', text: 3 }]
       }
@@ -96,6 +96,13 @@ export default {
     return {
       title: 'AMU edt'
     }
+  },
+  mounted () {
+    /*
+    const ueName = 'http://192.168.1.29/suggestion/ueName'
+    console.log("[AMU'EDT log] Sending to server =>", ueName)
+    this.formularOptions.ueName = this.handleFetch(fetch(ueName)).then(res => res.json()).then((data) => { return data })
+    */
   },
   methods: {
     weekChange (event) {
@@ -120,6 +127,21 @@ export default {
     },
     setDeleteMode (state) {
       this.deleteMode = state
+    },
+    makeToast (status) {
+      if (status !== 200) {
+        console.log(status)
+        this.$bvToast.toast(`Les suggestions n'ont pas pu être récupérés, code d'erreur: ${status}`, {
+          title: 'Une erreur est survenue',
+          autoHideDelay: 10000,
+          variant: 'danger',
+          appendToast: false
+        })
+      }
+    },
+    handleFetch (res) {
+      this.makeToast(res.status)
+      return res
     }
   }
 }

@@ -147,7 +147,8 @@ export default {
         .then(res => res.json())
         .then((data) => { return data })
         .catch((error) => {
-          this.$bvToast.toast(`Une erreur s'est produite lors de la réception des données de l'agenda: ${error}`, {
+          this.$bvToast.toast(`Une erreur s'est produite lors de la réception des données de l'agenda
+          Description: ${error}`, {
             title: 'Une erreur est survenue',
             autoHideDelay: 10000,
             variant: 'danger',
@@ -156,7 +157,7 @@ export default {
         })
     },
     async getSchedule (weekDays, scheduleDisplayedGroups) {
-      schedulePush(await this.fetchSchedule(schedulePrepareRequest(weekDays, scheduleDisplayedGroups)))
+      if (schedulePrepareRequest(weekDays, scheduleDisplayedGroups) != null) { schedulePush(await this.fetchSchedule()) }
       return scheduleGet(weekDays, scheduleDisplayedGroups)
       // return scheduleGetAll()
     }

@@ -19,6 +19,7 @@ export const schedulePush = function (array) {
 
 export const schedulePrepareRequest = function (weekDays, scheduleDisplayedGroups) {
   weekDays = weekDays.filter(day => searchInSchedule(getComparableFromDate(day)) === false)
+  if (weekDays.length === 0) { return null }
   const interval = getIntervalFromWeekDays(weekDays)
   const request = 'http://192.168.1.29:8000/affichage/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end)
   console.log("[AMU'EDT log] Sending to server =>", request)
@@ -26,6 +27,7 @@ export const schedulePrepareRequest = function (weekDays, scheduleDisplayedGroup
 }
 
 const getIntervalFromWeekDays = function (weekDays) {
+  console.log(weekDays)
   return { start: weekDays[0], end: weekDays[weekDays.length - 1] }
 }
 
