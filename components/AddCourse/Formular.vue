@@ -39,7 +39,8 @@
     <br v-if="!deleteMode">
     <br v-if="!deleteMode">
 
-    <b-form-select v-if="!deleteMode" v-model="formularNewDuration" :options="formularOptions.duration" />
+    <!-- <b-form-select v-if="!deleteMode" v-model="formularNewDuration" :options="formularOptions.duration" /> -->
+    <b-form-input v-if="!deleteMode" v-model="formularNewDuration" type="number" placeholder="Plage" />
 
     <br v-if="!deleteMode">
     <br v-if="!deleteMode">
@@ -115,6 +116,7 @@ export default {
   methods: {
     handleSubmit () {
       const course = {
+        id: this.selectedCourse.id,
         ueName: this.selectedCourse.ue.field.id,
         date: (this.deleteMode) ? getInputFormatedDateFromComparable(this.selectedCourse.date) : getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
@@ -135,7 +137,7 @@ export default {
       console.log(course)
       const request = (!this.deleteMode)
         ? `http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
-        : `http://192.168.1.29:8000/supprimer/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
+        : `http://192.168.1.29:8000/supprimer/cours/?courseId=${course.id}`
       console.log("[AMU'EDT log] Sending to server =>", request)
       const res = fetch(request)
       res.then(res => res.json())
@@ -147,7 +149,7 @@ export default {
       if (status !== 200) {
         console.log(status)
         this.$bvToast.toast(`Numéro de l'ue: ${course.ueName}, code d'erreur: ${status}`, {
-          title: (this.deleteMode) ? 'Echec d\'ajout' : 'Echec de suppression',
+          title: (!this.deleteMode) ? 'Echec d\'ajout' : 'Echec de suppression',
           autoHideDelay: 10000,
           variant: 'danger',
           appendToast: false

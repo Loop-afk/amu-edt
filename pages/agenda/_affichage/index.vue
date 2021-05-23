@@ -85,8 +85,7 @@ export default {
         ueName: [{ value: 'Algorithmique', text: 1 }, { value: 'Logique', text: 2 }, { value: 'Projet', text: 3 }],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
         groups: [{ value: 'l3info AIX', text: 1 }, { value: 'Luminy/L3 info', text: 2 }, { value: 'L2 chimie', text: 3 }],
-        occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'spontané', value: 0 }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
-        duration: [{ text: 'Choisir une durée', value: null }, { text: 'spontané', value: 1 }, { text: '1 semaine', value: 7 }, { text: 'semi-semestriel', value: 45 }, { text: 'semestriel', value: 90 }, { text: 'annuel', value: 365 }],
+        occurences: [{ text: 'Choisir une occurence', value: null }, { text: 'journalier', value: 1 }, { text: 'hebdomadaire', value: 7 }, { text: 'bihebdomadaire', value: 14 }, { text: 'mensuel', value: 30 }],
         campus: [{ value: 'Luminy', text: 1 }, { value: 'Aix en provence', text: 2 }, { value: 'Saint Charles', text: 3 }, { value: 'St Charles', text: 3 }],
         room: [{ value: 'A300', text: 1 }, { value: 'B302', text: 2 }, { value: 'B310', text: 3 }]
       }
