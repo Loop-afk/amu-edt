@@ -16,23 +16,40 @@
       :readonly="deleteMode"
     />
     <b-form-datalist v-if="!deleteMode" id="list_title" :options="formularOptions.ueName" />
+    <br>
 
     <b-form-input v-model="formularNewTimeStart" type="time" :readonly="deleteMode" />
 
+    <br>
+
     <b-form-input v-model="formularNewTimeEnd" type="time" :readonly="deleteMode" />
+
+    <br>
 
     <b-form-select v-if="!deleteMode" v-model="formularNewOccurence" :options="formularOptions.occurences" />
 
+    <br v-if="!deleteMode">
+    <br v-if="!deleteMode">
+
     <b-form-select v-if="!deleteMode" v-model="formularNewDuration" :options="formularOptions.duration" />
+
+    <br v-if="!deleteMode">
+    <br v-if="!deleteMode">
 
     <b-form-input v-model="formularNewTeacher" type="text" list="list_teacher" placeholder="Professeur" :readonly="deleteMode" />
     <b-form-datalist v-if="!deleteMode" id="list_teacher" :options="formularOptions.teacher" />
 
+    <br>
+
     <b-form-input v-model="formularNewGroups" placeholder="Classes" list="list_groups" :readonly="deleteMode" />
     <b-form-datalist v-if="!deleteMode" id="list_groups" :options="formularOptions.groups" />
 
+    <br>
+
     <b-form-input v-model="formularNewRoom" type="text" list="list_room" placeholder="Salle de cours" :readonly="deleteMode" />
     <b-form-datalist v-if="!deleteMode" id="list_room" :options="formularOptions.room" />
+
+    <br>
 
     <b-form-input v-model="formularNewCampus" type="text" list="list_campus" placeholder="Campus" :readonly="deleteMode" />
     <b-form-datalist v-if="!deleteMode" id="list_campus" :options="formularOptions.campus" />
@@ -118,14 +135,14 @@ export default {
       if (status !== 200) {
         console.log(status)
         this.$bvToast.toast(`Numéro de l'ue: ${course.ueName}, code d'erreur: ${status}`, {
-          title: 'Echec d\'ajout',
+          title: (this.deleteMode) ? 'Echec d\'ajout' : 'Echec de suppression',
           autoHideDelay: 10000,
           variant: 'danger',
           appendToast: false
         })
       } else {
         this.$bvToast.toast(`${course.ueName}`, {
-          title: 'Cours ajouté',
+          title: (this.deleteMode) ? 'Cours ajouté' : 'Cours supprimé',
           autoHideDelay: 5000,
           appendToast: false
         })
@@ -137,9 +154,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.formularContainer {
-  color: black;
-}
-</style>
