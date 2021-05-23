@@ -156,7 +156,8 @@ export default {
         })
     },
     async getSchedule (weekDays, scheduleDisplayedGroups) {
-      schedulePush(await this.fetchSchedule(schedulePrepareRequest(weekDays, scheduleDisplayedGroups)))
+      const req = schedulePrepareRequest(weekDays, scheduleDisplayedGroups)
+      if (req !== null) { schedulePush(await this.fetchSchedule(req)) }
       return scheduleGet(weekDays, scheduleDisplayedGroups)
       // return scheduleGetAll()
     }
