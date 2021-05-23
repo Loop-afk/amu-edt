@@ -15,7 +15,7 @@ export function getInputFormatedDate (date) {
   return date.getFullYear() + '-' + getFormatedUnit(date.getMonth() + 1) + '-' + getFormatedUnit(date.getDate())
 }
 
-export function getInputFormatedDateFromObject (date) {
+export function getInputFormatedDateFromComparable (date) {
   return date.year + '-' + getFormatedUnit(date.month) + '-' + getFormatedUnit(date.day)
 }
 

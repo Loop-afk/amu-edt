@@ -28,6 +28,7 @@
               :selected-course="selectedCourse"
               :formular-options="formularOptions"
               :delete-mode="deleteMode"
+              @calendarDateChangedEvent="dateChange($event)"
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">

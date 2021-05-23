@@ -18,6 +18,14 @@
     <b-form-datalist v-if="!deleteMode" id="list_title" :options="formularOptions.ueName" />
     <br>
 
+    <navigator-calendar
+      :schedule-reference-date="new Date(formularNewDate)"
+      :readonly="deleteMode"
+      @calendarDateChangedEvent="dateChange($event)"
+    />
+
+    <br>
+
     <b-form-input v-model="formularNewTimeStart" type="time" :readonly="deleteMode" />
 
     <br>
@@ -57,9 +65,11 @@
 </template>
 
 <script>
-import { getInputFormatedDate, getInputFormatedCustomTime, getInputFormatedDateFromObject } from '~/assets/js/formatedDate.js'
+import NavigatorCalendar from '../Navigator/NavigatorCalendar.vue'
+import { getInputFormatedDate, getInputFormatedCustomTime, getInputFormatedDateFromComparable } from '~/assets/js/formatedDate.js'
 
 export default {
+  components: { NavigatorCalendar },
   props: {
     scheduleReferenceDate: { type: Date, default: null },
     selectedCourse: {
@@ -92,6 +102,7 @@ export default {
   },
   watch: {
     selectedCourse (newSelectedCourse, oldSelectedCourse) {
+      this.formularNewDate = getInputFormatedDateFromComparable(newSelectedCourse.date)
       this.formularNewTimeStart = getInputFormatedCustomTime(newSelectedCourse.start)
       this.formularNewTimeEnd = getInputFormatedCustomTime(newSelectedCourse.end)
       this.formularNewUeName = newSelectedCourse.ue.field.value
@@ -105,7 +116,7 @@ export default {
     handleSubmit () {
       const course = {
         ueName: this.selectedCourse.ue.field.id,
-        date: (this.deleteMode) ? getInputFormatedDateFromObject(this.selectedCourse.date) : getInputFormatedDate(this.scheduleReferenceDate),
+        date: (this.deleteMode) ? getInputFormatedDateFromComparable(this.selectedCourse.date) : getInputFormatedDate(this.scheduleReferenceDate),
         start: this.formularNewTimeStart, // format "hh:mm"
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
@@ -151,6 +162,9 @@ export default {
     },
     groupsExtractor (group) {
       return group.value
+    },
+    dateChange (value) {
+      this.$emit('calendarDateChangedEvent', value)
     }
   }
 }

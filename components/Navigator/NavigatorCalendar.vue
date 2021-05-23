@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <b-form-input v-model="scheduleReferenceDateReactive" type="date" />
-  </div>
+  <b-form-input v-model="scheduleReferenceDateReactive" type="date" />
 </template>
 
 <script>
