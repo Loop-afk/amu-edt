@@ -100,7 +100,7 @@ export default {
     /*
     const ueName = 'http://192.168.1.29/suggestion/ueName'
     console.log("[AMU'EDT log] Sending to server =>", ueName)
-    this.formularOptions.ueName = this.handleFetch(fetch(ueName)).then(res => res.json()).then((data) => { return data })
+    this.formularOptions.ueName = this.handleFetch(await fetch(ueName)).then(res => res.json()).then((data) => { return data })
     */
   },
   methods: {
