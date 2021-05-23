@@ -58,10 +58,9 @@
 <script>
 import addDays from '~/assets/js/addDays.js'
 import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
-import { getInputFormatedDate } from '~/assets/js/formatedDate.js'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
-import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
+import { schedulePush, scheduleGet, schedulePrepareRequest } from '~/assets/js/schedule.js'
 // import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
 
 export default {
@@ -142,21 +141,24 @@ export default {
     courseChange (event) {
       this.$emit('courseClickedEvent', event)
     },
-    fetchSchedule (interval) {
-      return fetch('http://192.168.1.29:8000/affichage/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end))
+    fetchSchedule (request) {
+      if (request === null) { return undefined }
+      return fetch(request)
         .then(res => res.json())
         .then((data) => { return data })
         .catch((error) => {
-          console.error(error)
+          this.$bvToast.toast(`Une erreur s'est produite lors de la réception des données de l'agenda: ${error}`, {
+            title: 'Une erreur est survenue',
+            autoHideDelay: 10000,
+            variant: 'danger',
+            appendToast: false
+          })
         })
     },
     async getSchedule (weekDays, scheduleDisplayedGroups) {
-      schedulePush(await this.fetchSchedule(this.getIntervalFromWeekDays(weekDays)))
+      schedulePush(await this.fetchSchedule(schedulePrepareRequest(weekDays, scheduleDisplayedGroups)))
       return scheduleGet(weekDays, scheduleDisplayedGroups)
       // return scheduleGetAll()
-    },
-    getIntervalFromWeekDays (weekDays) {
-      return { start: weekDays[0], end: weekDays[weekDays.length - 1] }
     }
   }
 }

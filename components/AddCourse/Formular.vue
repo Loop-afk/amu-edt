@@ -125,6 +125,7 @@ export default {
       const request = (!this.deleteMode)
         ? `http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
         : `http://192.168.1.29:8000/supprimer/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
+      console.log("[AMU'EDT log] Sending to server =>", request)
       const res = fetch(request)
       res.then(res => res.json())
         .then((data) => { return data })
