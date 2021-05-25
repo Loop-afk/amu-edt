@@ -15,7 +15,7 @@ export const scheduleGet = function (weekDays, scheduleDisplayedGroups) {
 
 export const schedulePush = function (array) {
   if (array === undefined) { return }
-  for (const el of array) { schedule.push(el) }
+  for (const el of array) { if (!schedule.find(({ id }) => id === el.id)) { schedule.push(el) } } // n'est pas adapté à la modification
 }
 
 export const schedulePrepareRequest = function (weekDays, scheduleDisplayedGroups, force) {
