@@ -11,7 +11,7 @@
       v-model="formularNewUeName"
       type="text"
       list="list_title"
-      placeholder="Nom du cours"
+      placeholder="Nom de l'ue"
       required
       :readonly="deleteMode"
     />
@@ -114,11 +114,20 @@ export default {
   },
   methods: {
     handleSubmit () {
+      if (this.selectedCourse.isNull === null && this.deleteMode) {
+        this.$bvToast.toast('Aucun cours à supprimer', {
+          title: 'Une erreur est survenue',
+          autoHideDelay: 10000,
+          variant: 'danger',
+          appendToast: false
+        }); return
+      }
+
       const course = {
         id: this.selectedCourse.id,
-        ueName: this.selectedCourse.ue.field.id,
+        ueName: this.selectedCourse.ue.field.id, // ne prend pas en compte ce qui est dans le champ Nom de l'ue
         date: (this.deleteMode) ? getInputFormatedDateFromComparable(this.selectedCourse.date) : getInputFormatedDate(this.scheduleReferenceDate),
-        start: this.formularNewTimeStart, // format "hh:mm"
+        start: this.formularNewTimeStart,
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
         duration: this.formularNewDuration,
@@ -127,8 +136,10 @@ export default {
         room: this.selectedCourse.place.room.id,
         campus: this.selectedCourse.place.campus.id
       }
+
       const callbackSendRequest = (course, status) => {
         this.makeToast(course, status)
+        this.$emit('requestScheduleRefreshEvent')
       }
       this.sendRequest(course, callbackSendRequest)
     },
@@ -139,7 +150,6 @@ export default {
       console.log("[AMU'EDT log] Sending to server =>", request)
       const res = await fetch(request)
       callbackSendRequest(course, res)
-      this.$emit('requestScheduleRefreshEvent')
     },
     async makeToast (course, res) {
       if (res.status !== 200) {

@@ -61,7 +61,6 @@ import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
 import { schedulePush, scheduleGet, schedulePrepareRequest } from '~/assets/js/schedule.js'
-// import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
 
 export default {
   components: {

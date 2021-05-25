@@ -82,7 +82,7 @@ export default {
       deleteMode: false,
       scheduleDisplayedGroups: [1], // défaut
       scheduleHeight: 600,
-      selectedCourse: {}, // cours clické
+      selectedCourse: { isNull: null }, // cours clické
       formularOptions: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
         ueName: [{ value: 'Algorithmique', text: 1 }, { value: 'Logique', text: 2 }, { value: 'Projet', text: 3 }],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
@@ -144,7 +144,7 @@ export default {
 </script>
 
 <style scoped>
-.schedule { /* classe du composant schedule */
+.schedule {
   position: relative;
   top: 10px;
 }
