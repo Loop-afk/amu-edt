@@ -143,16 +143,15 @@ export default {
     },
     async makeToast (course, res) {
       if (res.status !== 200) {
-        this.$bvToast.toast(`Numéro de l'ue: ${course.ueName},
-          code d'erreur: ${res.status},
-          ${await res.json()}`, {
+        const data = await res.json()
+        this.$bvToast.toast(`code d'erreur: ${res.status},${data.message}`, {
           title: (!this.deleteMode) ? 'Echec d\'ajout' : 'Echec de suppression',
           autoHideDelay: 10000,
           variant: 'danger',
           appendToast: false
         })
       } else {
-        this.$bvToast.toast(`${course.ueName}`, {
+        this.$bvToast.toast(`UE: ${this.formularNewUeName}`, {
           title: (!this.deleteMode) ? 'Cours ajouté' : 'Cours supprimé',
           autoHideDelay: 5000,
           appendToast: false
