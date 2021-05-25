@@ -1,7 +1,7 @@
 import { getComparableFromDate, compareComparableDate } from './comparableDate'
 import { getInputFormatedDate } from './formatedDate'
 
-const schedule = []
+let schedule = []
 export const scheduleGetAll = function () {
   return schedule
 }
@@ -9,6 +9,7 @@ export const scheduleGetAll = function () {
 export const scheduleGet = function (weekDays, scheduleDisplayedGroups) {
   const dayFiltered = schedule.filter(course => weekDays.some(date => compareComparableDate(course.date, getComparableFromDate(date))))
   const groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.includes(course.groups.id) === true)
+  console.log(groupFiltered)
   return groupFiltered
 }
 
@@ -17,8 +18,9 @@ export const schedulePush = function (array) {
   for (const el of array) { schedule.push(el) }
 }
 
-export const schedulePrepareRequest = function (weekDays, scheduleDisplayedGroups) {
-  weekDays = weekDays.filter(day => searchInSchedule(getComparableFromDate(day)) === false)
+export const schedulePrepareRequest = function (weekDays, scheduleDisplayedGroups, force) {
+  scheduleGet(weekDays, scheduleDisplayedGroups)
+  if (!force) { weekDays = weekDays.filter(day => searchInSchedule(getComparableFromDate(day)) === false) } else { schedule = [] }
   if (weekDays.length === 0) { return null }
   const interval = getIntervalFromWeekDays(weekDays)
   const request = 'http://192.168.1.29:8000/affichage/?from=' + getInputFormatedDate(interval.start) + '&to=' + getInputFormatedDate(interval.end)
@@ -27,7 +29,6 @@ export const schedulePrepareRequest = function (weekDays, scheduleDisplayedGroup
 }
 
 const getIntervalFromWeekDays = function (weekDays) {
-  console.log(weekDays)
   return { start: weekDays[0], end: weekDays[weekDays.length - 1] }
 }
 

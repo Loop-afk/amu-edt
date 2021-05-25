@@ -133,20 +133,19 @@ export default {
       this.sendRequest(course, callbackSendRequest)
     },
     async sendRequest (course, callbackSendRequest) {
-      console.log(course)
       const request = (!this.deleteMode)
         ? `http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
         : `http://192.168.1.29:8000/supprimer/cours/?courseId=${course.id}`
       console.log("[AMU'EDT log] Sending to server =>", request)
       const res = await fetch(request)
-      console.log(res)
-      callbackSendRequest(course, res.status)
+      callbackSendRequest(course, res)
+      this.$emit('requestScheduleRefreshEvent')
     },
-    makeToast (course, status) {
-      if (status !== 200) {
-        console.log(status)
+    async makeToast (course, res) {
+      if (res.status !== 200) {
         this.$bvToast.toast(`Numéro de l'ue: ${course.ueName},
-          code d'erreur: ${status},`, {
+          code d'erreur: ${res.status},
+          ${await res.json()}`, {
           title: (!this.deleteMode) ? 'Echec d\'ajout' : 'Echec de suppression',
           autoHideDelay: 10000,
           variant: 'danger',
@@ -154,7 +153,7 @@ export default {
         })
       } else {
         this.$bvToast.toast(`${course.ueName}`, {
-          title: (this.deleteMode) ? 'Cours ajouté' : 'Cours supprimé',
+          title: (!this.deleteMode) ? 'Cours ajouté' : 'Cours supprimé',
           autoHideDelay: 5000,
           appendToast: false
         })

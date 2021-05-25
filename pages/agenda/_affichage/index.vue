@@ -29,6 +29,7 @@
               :formular-options="formularOptions"
               :delete-mode="deleteMode"
               @calendarDateChangedEvent="dateChange($event)"
+              @requestScheduleRefreshEvent="requestScheduleRefresh()"
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
@@ -48,6 +49,7 @@
               :allow-course-click-event="true"
               class="schedule"
               @courseClickedEvent="courseChange($event)"
+              ref="scheduleComponent"
             />
           </div>
         </b-col>
@@ -141,6 +143,9 @@ export default {
     handleFetch (res) {
       this.makeToast(res.status)
       return res
+    },
+    requestScheduleRefresh () {
+      this.$refs.scheduleComponent.scheduleRefresh()
     }
   }
 }
