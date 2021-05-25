@@ -9,7 +9,6 @@ export const scheduleGetAll = function () {
 export const scheduleGet = function (weekDays, scheduleDisplayedGroups) {
   const dayFiltered = schedule.filter(course => weekDays.some(date => compareComparableDate(course.date, getComparableFromDate(date))))
   const groupFiltered = dayFiltered.filter(course => scheduleDisplayedGroups.includes(course.groups.id) === true)
-  console.log(groupFiltered)
   return groupFiltered
 }
 

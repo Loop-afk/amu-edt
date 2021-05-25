@@ -42,6 +42,7 @@
         <b-col cols="8">
           <div class="cContainer" style="height: 100%; width: 100%;" :style="{height: scheduleHeight + 200 +'px'}">
             <schedule
+              ref="scheduleComponent"
               :displayed-days="getDaysDisplayed($route.params.affichage)"
               :schedule-reference-date="day"
               :schedule-displayed-groups="scheduleDisplayedGroups"
@@ -49,7 +50,6 @@
               :allow-course-click-event="true"
               class="schedule"
               @courseClickedEvent="courseChange($event)"
-              ref="scheduleComponent"
             />
           </div>
         </b-col>
@@ -98,13 +98,6 @@ export default {
       title: 'AMU edt'
     }
   },
-  mounted () {
-    /*
-    const ueName = 'http://192.168.1.29/suggestion/ueName'
-    console.log("[AMU'EDT log] Sending to server =>", ueName)
-    this.formularOptions.ueName = this.handleFetch(await fetch(ueName)).then(res => res.json()).then((data) => { return data })
-    */
-  },
   methods: {
     weekChange (event) {
       clearIdTarget()
@@ -131,7 +124,6 @@ export default {
     },
     makeToast (status) {
       if (status !== 200) {
-        console.log(status)
         this.$bvToast.toast(`Les suggestions n'ont pas pu être récupérés, code d'erreur: ${status}`, {
           title: 'Une erreur est survenue',
           autoHideDelay: 10000,
