@@ -90,13 +90,6 @@ export default {
       default: true
     }
   },
-  async asyncData (context) {
-    const { data } = await context.$axios.get('/api/courses/')
-    console.log(data)
-    return {
-      article: data
-    }
-  },
   data () {
     return {
       OrdinateAxisOffset: -30,
