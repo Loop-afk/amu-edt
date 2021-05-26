@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="modal-formular"
-    title="Nouveau cours"
+    :title="(deleteMode) ? 'Supprimer un cours' : 'Nouveau cours'"
     scrollable
     centered
     @ok="handleSubmit"
@@ -89,7 +89,7 @@ export default {
   data () {
     return {
       formularNewUeName: null,
-      formularNewDate: null,
+      formularNewDate: getInputFormatedDate(this.scheduleReferenceDate),
       formularNewTimeStart: null,
       formularNewTimeEnd: null,
       formularNewOccurence: null,
@@ -135,8 +135,8 @@ export default {
     async sendRequest (course, callbackSendRequest) {
       console.log(course)
       const request = (!this.deleteMode)
-        ? `http://192.168.1.29:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
-        : `http://192.168.1.29:8000/supprimer/cours/?courseId=${course.id}`
+        ? `http://localhost:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
+        : `http://localhost:8000/supprimer/cours/?courseId=${course.id}`
       console.log("[AMU'EDT log] Sending to server =>", request)
       const res = await fetch(request)
       console.log(res)

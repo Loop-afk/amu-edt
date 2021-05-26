@@ -67,6 +67,9 @@ import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js
 import NavigatorCalendar from '~/components/Navigator/NavigatorCalendar.vue'
 
 export default {
+  
+  middleware: 'auth',
+
   components: {
     ListGroups,
     Schedule,
@@ -74,6 +77,7 @@ export default {
     Formular,
     NavigatorCalendar
   },
+  
   data () {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule

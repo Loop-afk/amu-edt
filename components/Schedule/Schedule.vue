@@ -64,6 +64,7 @@ import { schedulePush, scheduleGet, schedulePrepareRequest } from '~/assets/js/s
 // import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
 
 export default {
+
   components: {
     OrdinateAxis, OrdinateLine
   },
@@ -88,6 +89,13 @@ export default {
     allowCourseClickEvent: {
       type: Boolean,
       default: true
+    }
+  },
+  async asyncData (context) {
+    const { data } = await context.$axios.get('/api/courses/')
+    console.log(data)
+    return {
+      article: data
     }
   },
   data () {

@@ -50,26 +50,46 @@ export default {
 
   server: {
     port: 3000, // port of node.js server
-    host: '0', // allow to serve lan-wide
+    //host: '0', // allow to serve lan-wide
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
+    baseURL: 'http://localhost:8000/',
+    //browserBaseURL: '/' 
   },
 
   auth: {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'login', method: 'post', propertyName: 'data.token' },
-          user: { url: 'me', method: 'get', propertyName: 'data' },
-          logout: false
-        }
+          login: {
+            url: '/users/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: true,
+          user: {
+            url: '/users/user',
+            method: 'get',
+            propertyName: 'user'
+          }
+        },
+        tokenRequired: true,
+        tokenType: "Bearer"
       }
-    }
+    },
+    redirect: {
+      login: '/connexion', // User will be redirected to this path if login is required
+      logout: '/', // User will be redirected to this path if after logout, current route is protected
+      home: '/' // User will be redirect to this path after login if accessed login page directly
+    },
+    rewriteRedirects: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+
 }
+
