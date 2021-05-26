@@ -14,7 +14,7 @@
               @weekChangeEvent="weekChange($event)"
             />
           </div>
-          <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
+          <div v-if="isAdmin" class="cContainer" style="height: 100%; width: 100%;position: relative;">
             <b-button v-b-modal.modal-formular @click="setDeleteMode(false)">
               Nouveau cours
             </b-button>
@@ -69,8 +69,6 @@ import { getReferenceDate, setReferenceDate } from '~/assets/js/referenceDate.js
 import NavigatorCalendar from '~/components/Navigator/NavigatorCalendar.vue'
 
 export default {
-  
-  middleware: 'auth',
 
   components: {
     ListGroups,
@@ -79,7 +77,9 @@ export default {
     Formular,
     NavigatorCalendar
   },
-  
+
+  middleware: 'auth',
+
   data () {
     return {
       day: getReferenceDate(), // date initiale qu'affiche le schedule
@@ -100,6 +100,12 @@ export default {
   head () {
     return {
       title: 'AMU edt'
+    }
+  },
+  computed: {
+    isAdmin () {
+      console.log(this.$auth.user.role)
+      return this.$auth.user.role === 3 || this.$auth.user.role === 4
     }
   },
   methods: {
