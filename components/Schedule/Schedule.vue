@@ -61,7 +61,6 @@ import OrdinateAxis from '~/components/Schedule/OrdinateAxis.vue'
 import { getComparableFromDate, compareComparableDate } from '~/assets/js/comparableDate.js'
 import OrdinateLine from '~/components/Schedule/OrdinateLine.vue'
 import { schedulePush, scheduleGet, schedulePrepareRequest } from '~/assets/js/schedule.js'
-// import { schedulePush, scheduleGet } from '~/assets/js/schedule.js'
 
 export default {
 
@@ -114,10 +113,13 @@ export default {
       this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate), newscheduleDisplayedGroups)
     }
   },
-  async mounted () {
-    this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate), this.scheduleDisplayedGroups)
+  mounted () {
+    this.scheduleRefresh()
   },
   methods: {
+    async scheduleRefresh () {
+      this.schedule = await this.getSchedule(this.scheduleSettingsGetWeekDays(this.displayedDays, this.scheduleReferenceDate), this.scheduleDisplayedGroups, true)
+    },
     scheduleSettingsGetWeekDays (daysDisplayed, scheduleReferenceDate) {
       const dayWeek = []
       let weekDate = addDays(scheduleReferenceDate, -1 * scheduleReferenceDate.getDay() + 1)
@@ -150,7 +152,6 @@ export default {
       this.$emit('courseClickedEvent', event)
     },
     fetchSchedule (request) {
-      if (request === null) { return undefined }
       return fetch(request)
         .then(res => res.json())
         .then((data) => { return data })
@@ -164,22 +165,16 @@ export default {
           })
         })
     },
-    async getSchedule (weekDays, scheduleDisplayedGroups) {
-      const req = schedulePrepareRequest(weekDays, scheduleDisplayedGroups)
+    async getSchedule (weekDays, scheduleDisplayedGroups, force = false) {
+      const req = schedulePrepareRequest(weekDays, scheduleDisplayedGroups, force)
       if (req !== null) { schedulePush(await this.fetchSchedule(req)) }
       return scheduleGet(weekDays, scheduleDisplayedGroups)
-      // return scheduleGetAll()
     }
   }
 }
 </script>
 
 <style scoped>
-.box{
-  box-shadow: 0px 0px 0px 1px rgb(255, 71, 71);
-
-}
-
 .schedule-row {
   display: flex;
   flex-flow: row;

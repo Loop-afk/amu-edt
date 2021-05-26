@@ -29,6 +29,7 @@
               :formular-options="formularOptions"
               :delete-mode="deleteMode"
               @calendarDateChangedEvent="dateChange($event)"
+              @requestScheduleRefreshEvent="requestScheduleRefresh()"
             />
           </div>
           <div class="cContainer" style="height: 100%; width: 100%;position: relative;">
@@ -41,6 +42,7 @@
         <b-col cols="8">
           <div class="cContainer" style="height: 100%; width: 100%;" :style="{height: scheduleHeight + 200 +'px'}">
             <schedule
+              ref="scheduleComponent"
               :displayed-days="getDaysDisplayed($route.params.affichage)"
               :schedule-reference-date="day"
               :schedule-displayed-groups="scheduleDisplayedGroups"
@@ -84,7 +86,7 @@ export default {
       deleteMode: false,
       scheduleDisplayedGroups: [1], // défaut
       scheduleHeight: 600,
-      selectedCourse: {}, // cours clické
+      selectedCourse: { isNull: null }, // cours clické
       formularOptions: { // Autocomplétion avec requete ou récupérer tout avant (une fois)
         ueName: [{ value: 'Algorithmique', text: 1 }, { value: 'Logique', text: 2 }, { value: 'Projet', text: 3 }],
         teacher: ['Line JAMET JAKUBIEC', 'Victor CEPOI', 'Séverine Fratanie'],
@@ -99,13 +101,6 @@ export default {
     return {
       title: 'AMU edt'
     }
-  },
-  mounted () {
-    /*
-    const ueName = 'http://192.168.1.29/suggestion/ueName'
-    console.log("[AMU'EDT log] Sending to server =>", ueName)
-    this.formularOptions.ueName = this.handleFetch(await fetch(ueName)).then(res => res.json()).then((data) => { return data })
-    */
   },
   methods: {
     weekChange (event) {
@@ -133,7 +128,6 @@ export default {
     },
     makeToast (status) {
       if (status !== 200) {
-        console.log(status)
         this.$bvToast.toast(`Les suggestions n'ont pas pu être récupérés, code d'erreur: ${status}`, {
           title: 'Une erreur est survenue',
           autoHideDelay: 10000,
@@ -145,13 +139,16 @@ export default {
     handleFetch (res) {
       this.makeToast(res.status)
       return res
+    },
+    requestScheduleRefresh () {
+      this.$refs.scheduleComponent.scheduleRefresh()
     }
   }
 }
 </script>
 
 <style scoped>
-.schedule { /* classe du composant schedule */
+.schedule {
   position: relative;
   top: 10px;
 }

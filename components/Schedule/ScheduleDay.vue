@@ -76,7 +76,7 @@ export default {
         display: (parseInt(top) > this.scheduleHeight) ? 'none' : 'block'
       }
     },
-    generateTargetId () { // permet d'utiliser les fonctions importés dans la template
+    generateTargetId () {
       return generateTargetId()
     },
     getTargetId () {

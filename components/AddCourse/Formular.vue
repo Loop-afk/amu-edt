@@ -11,7 +11,7 @@
       v-model="formularNewUeName"
       type="text"
       list="list_title"
-      placeholder="Nom du cours"
+      placeholder="Nom de l'ue"
       required
       :readonly="deleteMode"
     />
@@ -114,11 +114,20 @@ export default {
   },
   methods: {
     handleSubmit () {
+      if (this.selectedCourse.isNull === null && this.deleteMode) {
+        this.$bvToast.toast('Aucun cours à supprimer', {
+          title: 'Une erreur est survenue',
+          autoHideDelay: 10000,
+          variant: 'danger',
+          appendToast: false
+        }); return
+      }
+
       const course = {
         id: this.selectedCourse.id,
-        ueName: this.selectedCourse.ue.field.id,
+        ueName: this.selectedCourse.ue.field.id, // ne prend pas en compte ce qui est dans le champ Nom de l'ue
         date: (this.deleteMode) ? getInputFormatedDateFromComparable(this.selectedCourse.date) : getInputFormatedDate(this.scheduleReferenceDate),
-        start: this.formularNewTimeStart, // format "hh:mm"
+        start: this.formularNewTimeStart,
         end: this.formularNewTimeEnd,
         occurences: this.formularNewOccurence,
         duration: this.formularNewDuration,
@@ -127,34 +136,33 @@ export default {
         room: this.selectedCourse.place.room.id,
         campus: this.selectedCourse.place.campus.id
       }
+
       const callbackSendRequest = (course, status) => {
         this.makeToast(course, status)
+        this.$emit('requestScheduleRefreshEvent')
       }
       this.sendRequest(course, callbackSendRequest)
     },
     async sendRequest (course, callbackSendRequest) {
-      console.log(course)
       const request = (!this.deleteMode)
         ? `http://localhost:8000/nouveau/cours/?ueName=${course.ueName}&date=${course.date}&start=${course.start}&end=${course.end}&occurences=${course.occurences}&duration=${course.duration}&groups=${course.groups}&teacher=${course.teacher}&room=${course.room}&campus=${course.campus}`
         : `http://localhost:8000/supprimer/cours/?courseId=${course.id}`
       console.log("[AMU'EDT log] Sending to server =>", request)
       const res = await fetch(request)
-      console.log(res)
-      callbackSendRequest(course, res.status)
+      callbackSendRequest(course, res)
     },
-    makeToast (course, status) {
-      if (status !== 200) {
-        console.log(status)
-        this.$bvToast.toast(`Numéro de l'ue: ${course.ueName},
-          code d'erreur: ${status},`, {
+    async makeToast (course, res) {
+      if (res.status !== 200) {
+        const data = await res.json()
+        this.$bvToast.toast(`code d'erreur: ${res.status},${data.message}`, {
           title: (!this.deleteMode) ? 'Echec d\'ajout' : 'Echec de suppression',
           autoHideDelay: 10000,
           variant: 'danger',
           appendToast: false
         })
       } else {
-        this.$bvToast.toast(`${course.ueName}`, {
-          title: (this.deleteMode) ? 'Cours ajouté' : 'Cours supprimé',
+        this.$bvToast.toast(`UE: ${this.formularNewUeName}`, {
+          title: (!this.deleteMode) ? 'Cours ajouté' : 'Cours supprimé',
           autoHideDelay: 5000,
           appendToast: false
         })
